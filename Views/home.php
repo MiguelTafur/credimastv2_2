@@ -7,6 +7,6 @@
   <title>SISTEMA - CREDIMAST</title>
 </head>
 <body>
-    <p>Iniciar sesión - <a href="<?= base_url() ?>/login">credimast</a></p>
+    <p>Iniciar sesión - <a href="<?= base_url() ?>/login">credimast git e hostinguer</a></p>
 </body>
 </html>
