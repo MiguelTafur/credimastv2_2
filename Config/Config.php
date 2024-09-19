@@ -12,6 +12,10 @@
 	const DB_USER = "root";
 	const DB_PASSWORD = "";
 
+	/*const DB_NAME = "u124563208_credimast";
+	const DB_USER = "u124563208_credimast";
+	const DB_PASSWORD = "m!Guel03";*/
+
 	const DB_CHARSET = "utf8";
 
 	//Deliminadores decimal y millar Ej. 24,1989.00
