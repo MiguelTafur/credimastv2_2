@@ -11,7 +11,7 @@
           <?= $data['page_title'] ?> 
           <?php if($_SESSION['permisosMod']['w']){ ?>
           <button class="btn btn-warning btn-sm ms-1" type="button" onclick="openModal();" >
-              <i class="bi bi-person-plus-fill m-0"></i>
+              <i class="bi bi-person-plus-fill m-0"></i>adicionar
           </button>
           <?php } ?>
       </h1>
