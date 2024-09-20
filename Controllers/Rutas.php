@@ -35,15 +35,34 @@ class Rutas extends Controllers{
                 $btnDelete = '';
 
                 if($_SESSION['permisosMod']['u']){
-                    $btnEdit = '<button class="btn btn-secondary btn-sm me-1" onClick="fntEditInfo('.$arrData[$i]['codigo'].')" title="Editar Ruta"><i class="bi bi-pencil-square me-0"></i></button>';
+                    $btnEdit = '<button class="btn btn-secondary btn-sm me-1" onClick="fntEditInfo('.$arrData[$i]['idruta'].')" title="Editar Ruta"><i class="bi bi-pencil-square me-0"></i></button>';
                 }
                 if($_SESSION['permisosMod']['d']){
-                    $btnDelete = '<button class="btn btn-danger btn-sm me-1" onClick="fntDelInfo('.$arrData[$i]['codigo'].')" title="Eliminar Ruta"><i class="bi bi-trash3-fill me-0"></i></button>';
+                    $btnDelete = '<button class="btn btn-danger btn-sm me-1" onClick="fntDelInfo('.$arrData[$i]['idruta'].')" title="Eliminar Ruta"><i class="bi bi-trash3-fill me-0"></i></button>';
                 }
 
                 $arrData[$i]['options'] = '<div class="text-center d-flex justify-content-center">'.$btnEdit.' '.$btnDelete.'</div>';
             }
             echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
+        }
+        die();
+    }
+
+    public function getRuta()
+    {
+        if($_SESSION['permisosMod']['r']){
+            $idRuta = $_POST['idRuta'];
+            if($idRuta > 0)
+            {
+                $arrData = $this->model->selectRuta($idRuta);
+                if(empty($arrData))
+                {
+                    $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados.');
+                }else{
+                    $arrResponse = array('status' => true, 'data' => $arrData);
+                }
+                echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+            }
         }
         die();
     }
@@ -71,8 +90,7 @@ class Rutas extends Controllers{
                 }else{
                         $option = 2;
                         if($_SESSION['permisosMod']['u']){
-                        $diaPagamento = strClean($_POST['txtDia']);
-                        $request_user = $this->model->updateRuta($idRuta,$intCodigo,$strNombre,$diaPagamento);
+                        $request_user = $this->model->updateRuta($idRuta,$intCodigo,$strNombre);
                         }
                     }
 
@@ -91,6 +109,25 @@ class Rutas extends Controllers{
                 }
             }	
             echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+        }
+        die();
+    }
+
+    public function delRuta()
+    {
+        if($_POST)
+        {
+            if($_SESSION['permisosMod']['d']){
+                $intIdRuta = intval($_POST['idRuta']);
+                $requestDelete = $this->model->deleteRuta($intIdRuta);
+                if($requestDelete)
+                {
+                    $arrResponse = array('status' => true, 'msg' => 'Se ha eliminado la Ruta.');
+                }else{
+                    $arrResponse = array('status' => false, 'msg' => 'La ruta tiene algún usuario vinculado.');
+                }
+                echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);	
+            }
         }
         die();
     }

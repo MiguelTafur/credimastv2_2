@@ -16,11 +16,11 @@
               <input type="hidden" class="form-control" id="txtDia" name="txtDia">
 
               <div class="form-group col-md-6">
-                <label class="form-label" for="txtNombre">Nombre <span class="required">*</span></label>
+                <label class="form-label" for="txtNombre">Nombre</label>
                 <input type="text" class="form-control valid validText" id="txtNombre" name="txtNombre" placeholder="Nombre" required>
               </div> 
               <div class="form-group col-md-6">
-                <label class="form-label" for="txtCodigo">Código <span class="required">*</span></label>
+                <label class="form-label" for="txtCodigo">Código</label>
                 <input type="tel" class="form-control" id="txtCodigo" name="txtCodigo" placeholder="Código" required onkeypress="return controlTag(event)">
               </div>  
 

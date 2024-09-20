@@ -63,39 +63,155 @@ function fntNewRuta()
                 }
             }
 
-            divLoading.style.display = "flex";
-            let request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-            let ajaxUrl = base_url + '/Rutas/setRutas';
-            let formData = new FormData(formRuta);
-            request.open("POST",ajaxUrl,true);
-            request.send(formData);
-            request.onreadystatechange = function(){
-                if(request.readyState == 4 && request.status == 200)
-                {
-                    let json = JSON.parse(request.responseText);
-                    if(json.status)
-                    {
-                        tableRutas.ajax.reload(null, false);
-                        //Swal.fire("Roles de usuario", json.msg ,"success");
-                        Toast.fire({
-                            icon: "success",
-                            title: json.msg
-                        });
-                        $('#modalFormRutas').modal("hide");
-                        formRuta.reset();
-                    }else{
-                        Swal.fire("Error", json.msg , "error");
-                        /*Toast.fire({
-                            icon: "warning",
-                            title: json.msg
-                        });*/
-                    }
-                }
-                divLoading.style.display = "none";
-                return false;
-            }
+            fntGuardarRuta();
         }
     }
+}
+
+async function fntGuardarRuta()
+{
+    divLoading.style.display = "flex";
+    try {
+        const data = new FormData(formRuta);
+        let resp = await fetch(base_url + '/Rutas/setRutas', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: data
+        });
+        json = await resp.json();
+        if(json.status) {
+            tableRutas.ajax.reload(null, false);
+            $('#modalFormRutas').modal("hide");
+            formRuta.reset();
+            //Swal.fire("Roles de usuario", json.msg ,"success");
+            Toast.fire({
+                icon: "success",
+                title: json.msg
+            });
+        } else {
+            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            /*Toast.fire({
+                icon: "warning",
+                title: "Ocurrió un error en el Servidor"
+            });*/
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Sua sesión expiró, recarga la página para entrar nuevamente"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+async function fntEditInfo(idruta)
+{
+    document.querySelector('#titleModal').innerHTML = "Actualizar Ruta";
+    document.querySelector('#btnText').innerHTML = "Actualizar";
+
+    divLoading.style.display = "flex";
+    try {
+        const formData = new FormData();
+        formData.append('idRuta', idruta);
+        let resp = await fetch(base_url+'/Rutas/getRuta', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            document.querySelector("#idRuta").value = json.data.idruta;
+            document.querySelector("#txtCodigo").value = json.data.codigo;
+            document.querySelector("#txtNombre").value = json.data.nombre;
+            $('#modalFormRutas').modal('show');
+        }else{
+            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error interno"
+            });*/
+            console.log(error);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+function fntDelInfo(idruta)
+{
+    Swal.fire({
+        title: "Eliminar Ruta",
+        text: "¿Realmente quiere eliminar la Ruta?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d9a300",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminar!",
+        cancelButtonText: "No, cancelar!",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fntEliminarRuta(idruta);
+        }
+    });
+}
+
+async function fntEliminarRuta(idruta)
+{
+    const formData = new FormData();
+    formData.append('idRuta', idruta);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Rutas/delRuta', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status)
+        {
+            //Swal.fire("Eliminar!", json.msg , "success");
+            Toast.fire({
+                icon: "success",
+                title: json.msg
+            });
+            tableRutas.ajax.reload(null, false);
+        }else{
+            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error en el Servidor"
+            });*/
+            console.log(error);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Sua sesión expiró, recarga la página para entrar nuevamente"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
 }
 
 function openModal()

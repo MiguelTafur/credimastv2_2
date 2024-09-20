@@ -96,17 +96,20 @@ async function fntGurdarRol()
                 title: json.msg
             });
         } else {
-            //Swal.fire("Error", objData.msg , "error");
-            Toast.fire({
+            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            /*Toast.fire({
                 icon: "error",
                 title: json.msg
-            });
+            });*/
+            console.log(error);
         }
     } catch (error) {
-        Toast.fire({
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
             icon: "error",
             title: "Ocurrió un error: " + error
-        });
+        });*/
+        console.log(error);
     }
     divLoading.style.display = "none";
     return false;
@@ -161,18 +164,19 @@ async function fntEditRol(idrol)
             
             $('#modalFormRol').modal('show');
         }else{
-            //Swal.fire("Error", json.msg , "error");
-            Toast.fire({
+            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            /*Toast.fire({
                 icon: "error",
                 title: "Ocurrió un error interno"
-            });
+            });*/
             console.log(error);
         }
     } catch (error) {
-        Toast.fire({
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
             icon: "error",
             title: "Ocurrió un error interno"
-        });
+        });*/
         console.log(error);
     }
     divLoading.style.display = "none";
@@ -223,18 +227,19 @@ async function fntDeleteRol(idrol)
                 title: json.msg
             });
         }else{
-            //Swal.fire("Error", json.msg , "error");
-            Toast.fire({
+            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            /*Toast.fire({
                 icon: "error",
                 title: "Ocurrió un error"
-            });
+            });*/
             console.log(error);
         }
     } catch (error) {
-        Toast.fire({
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
             icon: "error",
             title: "Ocurrió un error interno"
-        });
+        });*/
         console.log(error);
     }
     divLoading.style.display = "none";
@@ -243,10 +248,10 @@ async function fntDeleteRol(idrol)
 
 async function fntPermisos(idrol)
 {
-    const formData = new FormData();
-    formData.append('idrol', idrol);
     divLoading.style.display = "flex";
     try {
+        const formData = new FormData();
+        formData.append('idrol', idrol);
         let resp = await fetch(base_url+'/Permisos/getPermisosRol', {
             method: 'POST',
             mode: 'cors',
@@ -259,10 +264,12 @@ async function fntPermisos(idrol)
         $('.modalPermisos').modal('show');
         document.querySelector('#formPermisos').addEventListener('submit',fntSavePermisos,false);
     } catch (error) {
-        Toast.fire({
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
             icon: "error",
             title: "Ocurrió un error: " + error
-        });
+        });*/
+        console.log(error);
     }
     divLoading.style.display = "none";
     return false;
@@ -295,17 +302,20 @@ async function fntGuardarPermiso(formElement)
                     title: json.msg
                 });
             } else {
-                //Swal.fire("Error", objData.msg , "error");
-                Toast.fire({
+                Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+                /*Toast.fire({
                     icon: "error",
                     title: objData.msg
-                });
+                });*/
+                console.log(error);
             }
     } catch (error) {
-        Toast.fire({
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
             icon: "error",
             title: "Ocurrió un error: " + error
-        });
+        });*/
+        console.log(error);
     }
     divLoading.style.display = "none";
     return false;
