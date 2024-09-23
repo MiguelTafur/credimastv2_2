@@ -1,3 +1,4 @@
+
 let tableClientes;
 let divLoading = document.querySelector("#divLoading");
 
@@ -12,7 +13,7 @@ function iniciarApp() {
 
 function fntTableClientes()
 {
-    tableClientes = $('#tableClientes').dataTable( 
+    tableClientes = $('#tableClientes').DataTable( 
     {
         "aProcessing":true,
         "aServerSide":true,
@@ -51,7 +52,7 @@ function fntNewCliente()
             let strDireccion1 = document.querySelector('#txtDireccion1').value;
             let strDireccion2 = document.querySelector('#txtDireccion2').value;
 
-            if(strIdentificacion == '' || strNombre == '' || strApellido == '' || intTelefono == '' || strDireccion1 == '' || strDireccion2 == '')
+            if(strIdentificacion == '' || strNombre == '' || strApellido == '' || intTelefono == '' || strDireccion1 == '')
             {
                 Swal.fire("Atención", "Todos los campos son obligatorios.", "error");
                 return false;
@@ -65,40 +66,221 @@ function fntNewCliente()
                 }
             }
 
-            divLoading.style.display = "flex";
-            let request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-            let ajaxUrl = base_url + '/Clientes/setCliente';
-            let formData = new FormData(formCliente);
-            request.open("POST",ajaxUrl,true);
-            request.send(formData);
-            request.onreadystatechange = function(){
-                if(request.readyState == 4 && request.status == 200)
-                {
-                    let json = JSON.parse(request.responseText);
-                    if(json.status)
-                    {
-                        $('#modalFormCliente').modal("hide");
-                        formCliente.reset();
-                        Swal.fire("Clientes", json.msg, "success");
-                        tableClientes.ajax.reload(null, false);
-                        
-                    }else{
-                        swal("Error", json.msg, "error");
-                    }
-                }
-                divLoading.style.display = "none";
-                return false;
-            }
+            fntGuardarCliente();
         }
     }
 }
 
+async function fntGuardarCliente()
+{
+    divLoading.style.display = "flex";
+    try {
+        const data = new FormData(formCliente);
+        let resp = await fetch(base_url + '/Clientes/setCliente', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: data
+        });
+        json = await resp.json();
+        if(json.status) {
+            tableClientes.ajax.reload(null, false);
+            $('#modalFormCliente').modal("hide");
+            formCliente.reset();
+            //Swal.fire("Roles de usuario", json.msg ,"success");
+            Toast.fire({
+                icon: "success",
+                title: json.msg
+            });
+        } else {
+            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            /*Toast.fire({
+                icon: "warning",
+                title: json.msg
+            });*/
+            console.log(error);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+async function fntViewInfo(idpersona)
+{
+    const formData = new FormData();
+    formData.append('idPersona', idpersona);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Clientes/getCliente', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            document.querySelector("#celIdentificacion").innerHTML = json.data.identificacion;
+            document.querySelector("#celNombres").innerHTML = json.data.nombres;
+            document.querySelector("#celApellidos").innerHTML = json.data.apellidos;
+            document.querySelector("#celTelefono").innerHTML = json.data.telefono;
+            document.querySelector("#celDireccion1").innerHTML = json.data.direccion1;
+            document.querySelector("#celDireccion2").innerHTML = json.data.direccion2;
+            document.querySelector("#celFechaRegistro").innerHTML = json.data.fechaRegistro;
+            
+            if(json.data.prestamos === undefined)
+            {
+                document.querySelector("#celPrestamos").innerHTML = 0;
+            } else {
+                document.querySelector("#celPrestamos").innerHTML = json.data.prestamos;
+            }
+
+            $('#modalViewCliente').modal('show');
+        }else{
+            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error interno"
+            });*/
+            console.log(error);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+async function fntEditInfo(idpersona)
+{
+    document.querySelector('#titleModal').innerHTML = "Actualizar Cliente";
+    document.querySelector('#btnText').innerHTML = "Actualizar";
+
+    const formData = new FormData();
+    formData.append('idPersona', idpersona);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Clientes/getCliente', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status)
+        {
+            document.querySelector("#idUsuario").value = json.data.idpersona;
+            document.querySelector("#txtIdentificacion").value = json.data.identificacion;
+            document.querySelector("#txtNombre").value = json.data.nombres;
+            document.querySelector("#txtApellido").value = json.data.apellidos;
+            document.querySelector("#txtTelefono").value = json.data.telefono;
+            document.querySelector("#txtDireccion1").value = json.data.direccion1;
+            document.querySelector("#txtDireccion2").value = json.data.direccion2;
+            
+            $('#modalFormCliente').modal('show');
+        }else{
+            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error interno"
+            });*/
+            console.log(error);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+function fntDelInfo(idpersona)
+{
+    Swal.fire({
+        title: "Eliminar Cliente",
+        text: "¿Realmente quiere eliminar el Cliente?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d9a300",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminar!",
+        cancelButtonText: "No, cancelar!",
+    }).then((result) => {
+    if (result.isConfirmed) {
+        fntDeleteCliente(idpersona);
+    }
+    });
+}
+
+async function fntDeleteCliente(idpersona)
+{
+    const formData = new FormData();
+    formData.append('idPersona', idpersona);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Clientes/delCliente', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            //Swal.fire("Eliminar!", json.msg , "success");
+            tableClientes.ajax.reload(null, false);
+            Toast.fire({
+                icon: "success",
+                title: json.msg
+            });
+        }else{
+            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error"
+            });*/
+            console.log(error);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
 function openModal()
 {
-    //document.querySelector('#idUsuario').value ="";
-    //document.querySelector('#btnActionForm').classList.replace("btn-info", "btn-primary");
-    //document.querySelector('#btnText').innerHTML ="Registrar";
-    //document.querySelector('#titleModal').innerHTML = "Nuevo Cliente";
-    //document.querySelector("#formCliente").reset();
+    document.querySelector('#idCliente').value ="";
+    document.querySelector('#btnText').innerHTML ="Registrar";
+    document.querySelector('#titleModal').innerHTML = "Nuevo Cliente";
+    document.querySelector("#formCliente").reset();
     $('#modalFormCliente').modal('show');
 }

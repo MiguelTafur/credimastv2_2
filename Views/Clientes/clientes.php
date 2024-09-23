@@ -1,6 +1,6 @@
 <?php 
   headerAdmin($data);
-  getModal('modalUsuarios',$data); 
+  getModal('modalClientes',$data); 
 ?>
 
 <main class="app-content">

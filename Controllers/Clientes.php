@@ -38,7 +38,7 @@ class Clientes extends Controllers{
 					$btnView = '<button class="btn btn-secondary btn-sm me-1" onClick="fntViewInfo('.$arrData[$i]['idpersona'].')" title="Ver cliente"><i class="bi bi-person-vcard-fill me-0"></i></button>';
 				}
 				if($_SESSION['permisosMod']['u']){
-					$btnEdit = '<button class="btn btn-warning btn-sm me-1" onClick="fntEditInfo(this,'.$arrData[$i]['idpersona'].')" title="Editar cliente"><i class="bi bi-pencil-square me-0"></i></button>';
+					$btnEdit = '<button class="btn btn-warning btn-sm me-1" onClick="fntEditInfo('.$arrData[$i]['idpersona'].')" title="Editar cliente"><i class="bi bi-pencil-square me-0"></i></button>';
 				}
 				if($_SESSION['permisosMod']['d']){
 					$btnDelete = '<button class="btn btn-danger btn-sm" onClick="fntDelInfo('.$arrData[$i]['idpersona'].')" title="Eliminar cliente"><i class="bi bi-trash3-fill me-0"></i></button>';
@@ -51,11 +51,30 @@ class Clientes extends Controllers{
 		die();
 	}
 
+	public function getCliente()
+	{
+		if($_SESSION['permisosMod']['r']){
+			$idusuario = intval($_POST['idPersona']);
+			if($idusuario > 0)
+			{
+				$arrData = $this->model->selectCliente($idusuario);
+				if(empty($arrData))
+				{
+					$arrResponse = array('status' => false, 'msg' => 'Datos no encontrados.');
+				}else{
+					$arrResponse = array('status' => true, 'data' => $arrData);
+				}
+				echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+			}
+		}
+		die();
+	}
+
 	public function setCliente()
 	{
 		if($_POST)
 		{
-			if(empty($_POST['txtIdentificacion']) || empty($_POST['txtNombre']) || empty($_POST['txtApellido']) || empty($_POST['txtTelefono']) || empty($_POST['txtDireccion1']) || empty($_POST['txtDireccion2']))
+			if(empty($_POST['txtIdentificacion']) || empty($_POST['txtNombre']) || empty($_POST['txtApellido']) || empty($_POST['txtTelefono']) || empty($_POST['txtDireccion1']))
 			{
 				$arrRespose = array("status" => false, "msg" => "Datos incorrectos.");
 			}else{
@@ -111,6 +130,25 @@ class Clientes extends Controllers{
 				}
 			}	
 			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+		}
+		die();
+	}
+
+	public function delCliente()
+	{
+		if($_POST)
+		{
+			if($_SESSION['permisosMod']['d']){
+				$intIdpersona = intval($_POST['idPersona']);
+				$requestDelete = $this->model->deleteCliente($intIdpersona);
+				if($requestDelete)
+				{
+					$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el Cliente.');
+				}else{
+					$arrResponse = array('status' => false, 'msg' => 'El cliente tiene préstamos vinculados.');
+				}
+				echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);	
+			}
 		}
 		die();
 	}

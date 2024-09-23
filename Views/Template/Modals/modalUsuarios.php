@@ -68,7 +68,7 @@
       <div class="modal-body">
         <div class="tile my-2">
           <div class="tile-body">
-            <table class="table table-bordered">
+            <table class="table table-bordered align-middle">
               <tbody>
                 <tr>
                   <td>NOMBRE:</td>
