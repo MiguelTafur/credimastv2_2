@@ -3,7 +3,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title h4">Permisos Roles de Usuario</h5>
-            <div data-bs-theme="dark">
+            <div>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
         </div>
@@ -16,7 +16,7 @@
                 <form action="" id="formPermisos" name="formPermisos">
                   <input type="hidden" id="idrol" name="idrol" value="<?= $data['idrol']; ?>" required="">
                   <div class="table-responsive">
-                    <table class="table table-dark text-center">
+                    <table class="table text-center">
                       <thead>
                         <tr>
                           <th>#</th>

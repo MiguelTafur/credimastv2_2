@@ -26,7 +26,7 @@
       <div class="tile">
         <div class="tile-body">
           <div class="table-responsive">
-            <table class="table table-hover table-striped table-dark align-middle" id="tableUsuarios">
+            <table class="table table-hover table-striped align-middle" id="tableUsuarios">
               <thead>
                 <tr>
                   <th>ROL</th>

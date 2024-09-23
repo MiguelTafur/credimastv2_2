@@ -17,7 +17,7 @@
     <link rel="stylesheet" type="text/css" href="<?= media();?>/css/style.css">
     <title><?= $data['page_tag']; ?></title>
   </head>
-  <body>
+  <body >
 
     <section class="material-half-bg">
       <div class="cover"></div>
@@ -35,7 +35,7 @@
           </div>
         </div>
         <form class="login-form" id="formLogin" name="formLogin">
-          <h3 class="login-head text-white">
+          <h3 class="login-head">
             <i class="bi bi-person me-2"></i>INICIAR SESIÓN
           </h3>
           <div class="mb-3">

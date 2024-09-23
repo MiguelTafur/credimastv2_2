@@ -4,7 +4,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="titleModal">Nuevo Usuario</h1>
-        <div data-bs-theme="dark">
+        <div>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
       </div>
@@ -61,14 +61,14 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="titleModal">Datos de Usuario</h1>
-        <div data-bs-theme="dark">
+        <div>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
       </div>
       <div class="modal-body">
         <div class="tile my-2">
           <div class="tile-body">
-            <table class="table table-bordered table-dark">
+            <table class="table table-bordered">
               <tbody>
                 <tr>
                   <td>NOMBRE:</td>
