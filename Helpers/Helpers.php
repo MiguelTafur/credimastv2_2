@@ -97,6 +97,13 @@
         }
     }
 
+    //UNIR NOMBRES Y APELLIDOS
+    function nombresApellidos(string $nombre, string $apellido) 
+    {
+        $cliente = '<strong>'.strtok(strtoupper($nombre), " ").'</strong> <i>'.$apellido.'</i>';
+        return $cliente;
+    }
+
     function forClientesPagos(string $fecha)
     {
         require_once("Models/PrestamosModel.php");

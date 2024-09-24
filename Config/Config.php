@@ -43,4 +43,7 @@
 	const RCLIENTES = 7;
 	const RADMINISTRADOR = 1;
 
+	//Fecha Actual
+	define('NOWDATE', date("Y-m-d"));
+
  ?>

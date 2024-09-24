@@ -107,7 +107,13 @@ svg.bi {
     --bs-btn-disabled-border-color: #d9a300;
 }
 
+.nav {
+    --bs-nav-link-color: #d9a300bf;   
+}
 
+.app-title .nav-link:hover {
+    color: var(--bs-warning);
+}
 /****** PLUGUIN SELECT2 ******/
 .select2-container--default .select2-selection--single {
     background-color: var(--bs-body-bg);
