@@ -34,6 +34,7 @@
                 <table class="table table-hover table-striped align-middle" id="tablePrestamos">
                   <thead>
                     <tr>
+                      <th></th>
                       <th>CLIENTE</th>
                       <th>ABONO</th>
                       <th>DETALLES</th>

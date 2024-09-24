@@ -45,7 +45,7 @@ class Prestamos extends Controllers{
 
 				$arrData[$i]['cliente'] = nombresApellidos($arrData[$i]['nombres'], $arrData[$i]['apellidos']);
 
-				$btnAbono = '
+				/*$btnAbono = '
 					<div class="text-center divPagoPrestamo">
 						<input 
 							type="tel" 
@@ -58,15 +58,25 @@ class Prestamos extends Controllers{
 						<button id="btn-'.$arrData[$i]['idprestamo'].'" class="btn btn-secondary btn-sm pagoPrestamo" title="Agregar Pago" onclick="fntPagoPrestamo('.$arrData[$i]['idprestamo'].')">
 							<i class="bi bi-cash-stack"></i> Pagar
 						</button>
-					</div>';
+					</div>';*/
+
+				$btnAbono = '
+					<div class="input-group">
+						<input type="text" class="form-control" placeholder="100" aria-label="100" aria-describedby="button-addon2">
+						<button class="btn btn-outline-warning" type="button" id="button-addon2">Pagar</button>
+					</div>
+				';
 
 				$arrData[$i]['pagamento'] = '
-					<div id="div-'.$arrData[$i]['idprestamo'].'">
-						'.$btnAbono.' 
-						<button class="btn btn-success btn-sm d-none" onclick="fntDelPago('.$arrData[$i]['pagoid'].')" id="btn2-'.$arrData[$i]['idprestamo'].'" title="Eliminar pago">
-							'.$arrData[$i]['pago'].';
-						</button>
-					</div>';
+					<form>
+						
+						<div id="div-'.$arrData[$i]['idprestamo'].'">
+							'.$btnAbono.' 
+							<button class="btn btn-success btn-sm d-none" onclick="fntDelPago('.$arrData[$i]['pagoid'].')" id="btn2-'.$arrData[$i]['idprestamo'].'" title="Eliminar pago">
+								'.$arrData[$i]['pago'].';
+							</button>
+						</div>
+					</form>';
 
 				if($_SESSION['permisosMod']['r']){
 					$btnView = '<button class="btn btn-secondary btn-sm" onClick="fntViewInfo('.$arrData[$i]['idprestamo'].')" title="Ver Préstamo"><i class="bi bi-person-vcard-fill me-0"></i></button>';
@@ -78,7 +88,7 @@ class Prestamos extends Controllers{
 					$btnDelete = '<button class="btn btn-danger btn-sm" onClick="fntDelInfo('.$arrData[$i]['idprestamo'].')" title="Eliminar Préstamo"><i class="bi bi-trash3-fill me-0"></i></button>';
 				}
 
-				$arrData[$i]['options'] = '<div class="text-center d-flex gap-1">'.$btnView.' '.$btnEdit.' '.$btnDelete.'</div>';
+				$arrData[$i]['options'] = '<div class="text-center d-flex justify-content-center gap-1">'.$btnView.' '.$btnEdit.' '.$btnDelete.'</div>';
 			}
 
 			/*for ($i=0; $i < count($arrData); $i++)

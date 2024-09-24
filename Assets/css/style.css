@@ -108,7 +108,7 @@ svg.bi {
 }
 
 .nav {
-    --bs-nav-link-color: #d9a300bf;   
+    --bs-nav-link-color: #d9a300bf;
 }
 
 .app-title .nav-link:hover {
@@ -181,6 +181,7 @@ svg.bi {
     display: none;
 }
 
+/*** PAGINACION ***/
 .pagination {
     --bs-pagination-bg: #495057;
     --bs-pagination-color: var(--bs-white);
@@ -199,3 +200,37 @@ svg.bi {
     background-color: var(--bs-pagination-hover-bg);
     border-color: #d9a300;
 }
+
+/*** DATATABLES ***/
+/*table.dataTable td.dt-control-billingInfo {
+    text-align: center;
+    cursor:pointer;
+}
+
+table.dataTable td.dt-control-billingInfo:before {
+    display: inline-block;
+    box-sizing: border-box;
+    content: "";
+    border-top: 5px solid transparent;
+    border-left: 10px solid rgba(0, 0, 0, 0.5);
+    border-bottom: 5px solid transparent;
+    border-right: 0px solid transparent
+}
+
+table.dataTable tr.dt-hasChild2 td.dt-control-billingInfo:before {
+    border-top: 10px solid rgba(0, 0, 0, 0.5);
+    border-left: 5px solid transparent;
+    border-bottom: 0px solid transparent;
+    border-right: 5px solid transparent
+}
+
+html.dark table.dataTable td.dt-control-billingInfo:before, 
+:root[data-bs-theme=dark] table.dataTable td.dt-control-billingInfo:before {
+    border-left-color: rgba(255, 255, 255, 0.5)
+}
+
+html.dark table.dataTable tr.dt-hasChild2 td.dt-control-billingInfo:before, 
+:root[data-bs-theme=dark] table.dataTable tr.dt-hasChild td.dt-control-billingInfo:before {
+    border-top-color: rgba(255, 255, 255, 0.5);
+    border-left-color: transparent
+}*/
