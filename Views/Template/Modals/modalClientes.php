@@ -11,7 +11,7 @@
         <div class="tile">
           <div class="tile-body">
             <form class="row g-3" id="formCliente" name="formCliente">
-              <input type="hidden" id="idUsuario" name="idUsuario" value="">
+              <input type="hidden" id="idCliente" name="idCliente" value="">
               <p class="text-warning fst-italic">Todos los campos son obligatorios.</p>
               <div class="col-md-6">
                 <label class="form-label" for="txtIdentificacion">Identificación</label>

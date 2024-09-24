@@ -186,7 +186,7 @@ async function fntEditInfo(idpersona)
     
         if(json.status)
         {
-            document.querySelector("#idUsuario").value = json.data.idpersona;
+            document.querySelector("#idCliente").value = json.data.idpersona;
             document.querySelector("#txtIdentificacion").value = json.data.identificacion;
             document.querySelector("#txtNombre").value = json.data.nombres;
             document.querySelector("#txtApellido").value = json.data.apellidos;
