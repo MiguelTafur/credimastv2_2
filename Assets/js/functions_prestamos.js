@@ -18,8 +18,8 @@ function fntTablePrestamos()
         "aProcessing":true,
         "aServerSide":true,
         "language": {
-            "url": "https://cdn.datatables.net/plug-ins/2.1.7/i18n/es-CO.json"
-            // "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+            // "url": "https://cdn.datatables.net/plug-ins/2.1.7/i18n/es-CO.json"
+            "url": "https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
         },
         "ajax":{
             "url": " "+base_url+"/Prestamos/getPrestamos",
@@ -27,7 +27,7 @@ function fntTablePrestamos()
         },
         "columns":[
             {
-                "className": "dt-center",
+                "className": "dt-start",
                 "orderable": "false",
                 "data": "null",
                 "defaultContent": "",
@@ -46,7 +46,7 @@ function fntTablePrestamos()
         "responsive":"true",
         "bDestroy": true,
         "iDisplayLength": 20,
-        "order":[[0,"desc"]]  
+        "order":[[1,"asc"]]  
     });
 
     function format(d)
@@ -57,7 +57,7 @@ function fntTablePrestamos()
                 '<td>' + d.cliente + '<td>';
     }
 
-    tablePrestamos.on('click', 'td.dt-center', function () {
+    tablePrestamos.on('click', 'td.dt-start', function () {
         var tr = $(this).parents('tr');
         var tdi = tr.find("i.bi");
         var row = tablePrestamos.row(tr);
@@ -77,5 +77,65 @@ function fntTablePrestamos()
             tdi.first().addClass("bi-eye-slash");
         }
     });
+}
 
+function fntClientesPrestamo()
+{
+    if(document.querySelector("#listClientes")){
+        let request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+        let ajaxUrl = base_url+'/Clientes/getSelectClientes';
+        request.open("POST",ajaxUrl,true);
+        request.send();
+
+        request.onreadystatechange = function(){
+            if(request.readyState == 4 && request.status == 200){
+                document.querySelector('#listClientes').innerHTML = request.responseText;
+                $('#listClientes').select2({
+                    dropdownParent: $('#modalFormPrestamo'),
+                    placeholder: 'Seleccione un Cliente',
+                    language: {
+                        noResults: function() {
+                            return "No hay resultado";        
+                        },
+                        searching: function() {
+                            return "Buscando...";
+                        }
+                    }
+                });
+            }
+        }
+    }
+}
+
+function openModal()
+{
+    //document.querySelector("#divPrestamosFinalizados").classList.add("d-none");
+    //document.querySelector("#divNuevoPrestamo").classList.remove("d-none"); 
+    //document.querySelector("#divViewResumen").classList.add('d-none');
+    //document.querySelector("#btnPayAll").classList.add('d-none');
+    /*if(document.querySelector("#divTablasPrestamos"))
+    {
+        document.querySelector("#divTablasPrestamos").classList.add('d-none');
+    }
+    if(document.querySelector("#resumenPendiente"))
+    {
+        document.querySelector("#resumenPendiente").classList.add('d-none');   
+    }*/
+
+    fntClientesPrestamo();
+
+    $('#listFormato').select2({
+        dropdownParent: $('#modalFormPrestamo'),
+        placeholder: 'Seleccione un Formato',
+        language: {
+            noResults: function() {
+                return "No hay resultado";        
+            },
+            searching: function() {
+                return "Buscando...";
+            }
+        }
+    });
+
+    $('#modalFormPrestamo').modal('show');
 }

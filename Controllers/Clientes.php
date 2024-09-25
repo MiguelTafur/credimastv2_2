@@ -70,6 +70,23 @@ class Clientes extends Controllers{
 		die();
 	}
 
+	public function getSelectClientes()
+	{
+		$htmlOptions = "";
+		$arrData = $this->model->selectClientes();
+
+		if(count($arrData) > 0){
+			for ($i=0; $i < count($arrData); $i++) { 
+				if($arrData[$i]['status'] == 1){
+					$htmlOptions .= '<option></option>';
+					$htmlOptions .= '<option value="'.$arrData[$i]['idpersona'].'">'.strtoupper($arrData[$i]['nombres']).' - '.$arrData[$i]['apellidos'].'</option>';
+				}
+			}
+		}
+		echo $htmlOptions;
+		die();
+	}
+
 	public function setCliente()
 	{
 		if($_POST)

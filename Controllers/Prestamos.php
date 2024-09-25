@@ -61,15 +61,14 @@ class Prestamos extends Controllers{
 					</div>';*/
 
 				$btnAbono = '
-					<div class="input-group">
+					<div class="input-group w-75">
 						<input type="text" class="form-control" placeholder="100" aria-label="100" aria-describedby="button-addon2">
-						<button class="btn btn-outline-warning" type="button" id="button-addon2">Pagar</button>
+						<button class="btn btn-warning" type="button" id="button-addon2">Pagar</button>
 					</div>
 				';
 
 				$arrData[$i]['pagamento'] = '
 					<form>
-						
 						<div id="div-'.$arrData[$i]['idprestamo'].'">
 							'.$btnAbono.' 
 							<button class="btn btn-success btn-sm d-none" onclick="fntDelPago('.$arrData[$i]['pagoid'].')" id="btn2-'.$arrData[$i]['idprestamo'].'" title="Eliminar pago">
@@ -88,7 +87,7 @@ class Prestamos extends Controllers{
 					$btnDelete = '<button class="btn btn-danger btn-sm" onClick="fntDelInfo('.$arrData[$i]['idprestamo'].')" title="Eliminar Préstamo"><i class="bi bi-trash3-fill me-0"></i></button>';
 				}
 
-				$arrData[$i]['options'] = '<div class="text-center d-flex justify-content-center gap-1">'.$btnView.' '.$btnEdit.' '.$btnDelete.'</div>';
+				$arrData[$i]['options'] = '<div class="text-center d-flex gap-1">'.$btnView.' '.$btnEdit.' '.$btnDelete.'</div>';
 			}
 
 			/*for ($i=0; $i < count($arrData); $i++)
@@ -217,6 +216,23 @@ class Prestamos extends Controllers{
 			}*/
 
 			echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
+		}
+		die();
+	}
+
+	public function getListPrestamosClientes()
+	{
+		if($_SESSION['permisosMod']['r'])
+		{
+			$arrData = $this->model->selectPrestamos();
+			$nombres = "";
+			for ($i=0; $i < count($arrData); $i++)
+			{ 
+				$nombres .= '<li class="list-group-item list-group-item-info item cursor" id="'.$arrData[$i]['idprestamo'].'">'.$arrData[$i]['nombres'].' - '.$arrData[$i]['apellidos'].'</li>';
+			}
+			$arrResponse = array('nombres' => $nombres);
+
+			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		}
 		die();
 	}
