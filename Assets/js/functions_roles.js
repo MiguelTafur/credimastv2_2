@@ -65,7 +65,7 @@ async function fntGurdarRol()
 
     let ElementsValid = document.getElementsByClassName("valid");
     for (let i = 0; i < ElementsValid.length; i++) 
-        {
+    {
         if(ElementsValid[i].classList.contains('is-invalid'))
         {
             Swal.fire("Atencion!", "Por favor verifique los campos en rojo.", "error");
@@ -96,12 +96,12 @@ async function fntGurdarRol()
                 title: json.msg
             });
         } else {
-            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            Swal.fire("Error", json.msg, "error");
             /*Toast.fire({
                 icon: "error",
                 title: json.msg
             });*/
-            console.log(error);
+            console.log(json.msg);
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
@@ -164,12 +164,12 @@ async function fntEditRol(idrol)
             
             $('#modalFormRol').modal('show');
         }else{
-            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            Swal.fire("Error", json.msg, "error");
             /*Toast.fire({
                 icon: "error",
                 title: "Ocurrió un error interno"
             });*/
-            console.log(error);
+            console.log(json.msg);
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
@@ -227,12 +227,12 @@ async function fntDeleteRol(idrol)
                 title: json.msg
             });
         }else{
-            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            Swal.fire("Error", json.msg, "error");
             /*Toast.fire({
                 icon: "error",
                 title: "Ocurrió un error"
             });*/
-            console.log(error);
+            console.log(json.msg);
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
@@ -302,12 +302,12 @@ async function fntGuardarPermiso(formElement)
                     title: json.msg
                 });
             } else {
-                Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+                Swal.fire("Error", json.msg, "error");
                 /*Toast.fire({
                     icon: "error",
                     title: objData.msg
                 });*/
-                console.log(error);
+                console.log(json.msg);
             }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");

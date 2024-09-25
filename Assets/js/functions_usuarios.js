@@ -102,12 +102,12 @@ async function fntViewUsuario(idpersona)
             
             $('#modalViewUser').modal('show');
         }else{
-            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            Swal.fire("Error", json.msg, "error");
             /*Toast.fire({
                 icon: "error",
                 title: "Ocurrió un error interno"
             });*/
-            console.log(error);
+            console.log(json.msg);
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
@@ -191,12 +191,12 @@ async function fntEditUsuario(idpersona)
             });
             $('#modalFormUsuario').modal('show');
         }else{
-            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            Swal.fire("Error", json.msg, "error");
             /*Toast.fire({
                 icon: "error",
                 title: "Ocurrió un error interno"
             });*/
-            console.log(error);
+            console.log(json.msg);
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
@@ -276,7 +276,8 @@ async function fntGurdarUsuario()
             body: data
         });
         json = await resp.json();
-        if(json.status) {
+        if(json.status) 
+        {
             tableUsuarios.ajax.reload(null, false);
             $('#modalFormUsuario').modal("hide");
             formUsuario.reset();
@@ -286,12 +287,12 @@ async function fntGurdarUsuario()
                 title: json.msg
             });
         } else {
-            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            Swal.fire("Error", json.msg, "error");
             /*Toast.fire({
                 icon: "warning",
                 title: json.msg
             });*/
-            console.log(error);
+            console.log(json.msg);
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
@@ -347,12 +348,12 @@ async function fntDeleteUsuario(idpersona)
                 title: json.msg
             });
         }else{
-            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            Swal.fire("Error", json.msg, "error");
             /*Toast.fire({
                 icon: "error",
                 title: "Ocurrió un error"
             });*/
-            console.log(error);
+            console.log(json.msg);
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");

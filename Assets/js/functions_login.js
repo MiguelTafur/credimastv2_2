@@ -72,11 +72,12 @@ async function fntLoginUsuario() {
             });*/
         }
     } catch (error) {
-        Swal.fire("Atención", "Ocurrió un error: " + error, "error");
+        Swal.fire("Atención", "Ocurrió un error interno", "error");
         /*Toast.fire({
             icon: "error",
             title: "Ocurrió un error: " + error
         });*/
+        console.log(error);
     }
     divLoading.style.display = "none";
     return false;
