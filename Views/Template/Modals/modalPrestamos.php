@@ -18,7 +18,7 @@
         </div>
         <div class="tile">
           <div class="tile-body">
-            <form class="row g-3" id="formPrestamo" name="formPrestamo">
+            <form class="row g-3" id="formPrestamos" name="formPrestamos">
               <input type="hidden" id="idCliente" name="idCliente" value="">
               <div class="col-12">
                 <label for="listClientes" class="form-label">Cliente</label>
@@ -44,6 +44,10 @@
               <div class="col-md-6" id="divListStatus">
                 <label for="txtPlazo" class="form-label">Plazo</label>
                 <input type="tel" class="form-control valid validNumber" id="txtPlazo" name="txtPlazo" required placeholder="Plazo" onkeypress="return controlTag(event)">
+              </div>
+              <div class="col-12" id="divListStatus">
+                <label for="txtObservacion" class="form-label">Observación</label>
+                <textarea class="form-control" id="txtObservacion" name="txtObservacion"></textarea>
               </div>
               <div class="tile-footer mt-4">
                 <button class="btn btn-warning" type="submit">

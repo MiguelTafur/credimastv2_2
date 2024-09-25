@@ -7,7 +7,7 @@
 	//Zona horaria
 	date_default_timezone_set('Brazil/East');
 
-	const DB_HOST = "localhost:3307";
+	const DB_HOST = "localhost";
 	const DB_NAME = "qahi319";
 	const DB_USER = "root";
 	const DB_PASSWORD = "";

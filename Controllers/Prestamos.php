@@ -29,6 +29,7 @@ class Prestamos extends Controllers{
 		$this->views->getView($this,"prestamos",$data);
 	}
 
+	//TRAE TODOS LOS PRÉSTASMOS
 	public function getPrestamos()
 	{
 		if($_SESSION['permisosMod']['r'])
@@ -67,12 +68,16 @@ class Prestamos extends Controllers{
 					</div>
 				';
 
+				//información de el botón de eliminar pago
+				/*onclick="fntDelPago('.$arrData[$i]['pagoid'].')"
+				'.$arrData[$i]['pago'].';*/
+
 				$arrData[$i]['pagamento'] = '
 					<form>
 						<div id="div-'.$arrData[$i]['idprestamo'].'">
 							'.$btnAbono.' 
-							<button class="btn btn-success btn-sm d-none" onclick="fntDelPago('.$arrData[$i]['pagoid'].')" id="btn2-'.$arrData[$i]['idprestamo'].'" title="Eliminar pago">
-								'.$arrData[$i]['pago'].';
+							<button class="btn btn-success btn-sm d-none"  id="btn2-'.$arrData[$i]['idprestamo'].'" title="Eliminar pago">
+								
 							</button>
 						</div>
 					</form>';
@@ -220,18 +225,126 @@ class Prestamos extends Controllers{
 		die();
 	}
 
-	public function getListPrestamosClientes()
-	{
-		if($_SESSION['permisosMod']['r'])
-		{
-			$arrData = $this->model->selectPrestamos();
-			$nombres = "";
-			for ($i=0; $i < count($arrData); $i++)
-			{ 
-				$nombres .= '<li class="list-group-item list-group-item-info item cursor" id="'.$arrData[$i]['idprestamo'].'">'.$arrData[$i]['nombres'].' - '.$arrData[$i]['apellidos'].'</li>';
-			}
-			$arrResponse = array('nombres' => $nombres);
 
+	//REGISTRAR PRÉSTAMO
+	public function setPrestamo()
+	{
+		if($_POST){
+			if(empty($_POST['txtMonto']) || empty($_POST['txtPlazo']) || empty($_POST['listFormato']))
+			{
+				$arrResponse = array("status" => false, "msg" => "Datos incorrectos.");
+			}else{
+				/*if(!empty($_POST['inputClienteRenovar'])){
+					$intClienteId = intval($_POST['inputClienteRenovar']);
+				}
+				if(!empty($_POST['listClientId'])){
+					$intClienteId = intval($_POST['listClientes']);
+				}*/
+				$intClienteId = intval($_POST['listClientes']);
+				$intMonto = intval($_POST['txtMonto']);
+				$intTaza = intval($_POST['txtTaza']);
+				$intPlazo = intval($_POST['txtPlazo']);
+				$intFormato = intval($_POST['listFormato']);
+				$strObservacion = strClean($_POST['txtObservacion']);
+				$fecha_actual = NOWDATE;
+				/*$cheked = isset($_POST['pagamentoSabado']) ?  1 : 0;
+				$contadorPlazo = 0;
+				$contador = 0;*/
+
+				/*
+				if(!empty($_POST['fechaAnterior']))
+				{
+					$fecha_actual = $_POST['fechaAnterior'];
+				}else{
+					$fecha_actual = NOWDATE;
+				}
+
+				//Calculando el vencimiento del crédito
+				$fechaEnSegundos = strtotime($fecha_actual);
+				$dia = 86400;
+
+
+				//DIARIO
+				if($intFormato == 1)
+				{
+					while($contador < $intPlazo)
+					{
+						if(date("N", $fechaEnSegundos) == 6)// VALIDANDO EL DIA DOMINGO
+						{
+							$fechaEnSegundos += $dia;
+						}
+						if(date("N", $fechaEnSegundos) == 5 AND $cheked == 1)// VALIDANDO EL DIA SÁBADO
+						{
+							$fechaEnSegundos += $dia;
+							if(date("N", $fechaEnSegundos) == 6)// VALIDANDO EL DIA DOMINGO
+							{
+								$fechaEnSegundos += $dia;
+							}
+						}
+							$fechaEnSegundos += $dia;
+							$contador += 1;
+	
+						$fechaFinal = date('Y-m-d' , ($fechaEnSegundos));
+					}	
+				//SEMANAL
+				}
+
+				if($intFormato == 2)
+				{
+					$contadorPlazo = $intPlazo * 6;
+					
+					while($contador <= $contadorPlazo)
+					{
+						if(date("N", $fechaEnSegundos) == 7)
+						{
+							$fechaEnSegundos += $dia;
+						}else{
+							$fechaEnSegundos += $dia;
+							$contador += 1;
+						}
+					}
+				//MES		
+				}
+				if($intFormato == 3){
+					$contadorPlazo = $intPlazo * 30;
+					while($contador <= $contadorPlazo)
+					{
+						$fechaEnSegundos += $dia;
+						$contador += 1;
+					}	
+				}	
+				
+				$fechaFinal = date('Y-m-d' , ($fechaEnSegundos));
+				*/
+
+				$request_prestamo = "";
+
+				if($_SESSION['permisosMod']['w']){
+					//Calculando el valor sumado con los intereses
+					$intTazaTemporal = ($intTaza * 0.01);
+					$subtotal = ($intMonto * $intTazaTemporal);
+					$intTotal = ($intMonto + $subtotal);
+					$intParcela = ($intTotal / $intPlazo);
+					$request_prestamo = $this->model->insertPrestamo($intClienteId, 
+																		$intMonto,
+																		$intTaza,
+																		$intPlazo,
+																		$intFormato,
+																		$strObservacion,
+																		$fecha_actual/*,
+																		$fechaFinal*/);
+				}
+				if($request_prestamo > 0)
+				{
+					$arrResponse = array('status' => true, 'msg' => 'Préstamo registrado.');
+				}else if($request_prestamo == '0')
+				{
+					$arrResponse = array('status' => false, 'msg' => 'Atencion! Error al registrar el préstamo.');
+				}else
+				{
+					$arrResponse = array("status" => false, "msg" => 'No es posible almacenar los datos.');
+				}	
+			}	
 			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		}
 		die();

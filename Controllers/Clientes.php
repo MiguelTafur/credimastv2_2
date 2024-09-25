@@ -78,7 +78,7 @@ class Clientes extends Controllers{
 		if(count($arrData) > 0){
 			for ($i=0; $i < count($arrData); $i++) { 
 				if($arrData[$i]['status'] == 1){
-					$htmlOptions .= '<option></option>';
+					$htmlOptions .= '<option value=""></option>';
 					$htmlOptions .= '<option value="'.$arrData[$i]['idpersona'].'">'.strtoupper($arrData[$i]['nombres']).' - '.$arrData[$i]['apellidos'].'</option>';
 				}
 			}
