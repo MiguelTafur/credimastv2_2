@@ -95,7 +95,7 @@ class Clientes extends Controllers{
 			{
 				$arrRespose = array("status" => false, "msg" => "Datos incorrectos.");
 			}else{
-				$idUsuario = intval($_POST['idUsuario']);
+				$idCliente = intval($_POST['idCliente']);
 				$strIdentificacion = strClean($_POST['txtIdentificacion']);
 				$strNombre =  ucwords(strClean($_POST['txtNombre']));
 				$strApellido =  ucwords(strClean($_POST['txtApellido']));
@@ -106,7 +106,7 @@ class Clientes extends Controllers{
 				$request_user = "";
 				$intIdRuta = $_SESSION['idRuta'];
 
-				if($idUsuario == 0)
+				if($idCliente == 0)
 				{
 					$option = 1;
 					if($_SESSION['permisosMod']['w']){
@@ -122,7 +122,7 @@ class Clientes extends Controllers{
 				}else{
 					$option = 2;
 					if($_SESSION['permisosMod']['u']){
-						$request_user = $this->model->updateCliente($idUsuario,
+						$request_user = $this->model->updateCliente($idCliente,
 																	$strIdentificacion,
 																	$strNombre,
 																	$strApellido,

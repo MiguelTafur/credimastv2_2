@@ -31,7 +31,7 @@
           <div class="tile">
             <div class="tile-body">
               <div class="table-responsive">
-                <table class="table table-hover table-striped align-middle" id="tablePrestamos">
+                <table class="table table-striped align-middle" id="tablePrestamos">
                   <thead>
                     <tr>
                       <th></th>

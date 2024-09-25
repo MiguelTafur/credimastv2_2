@@ -123,14 +123,14 @@ function fntNewPrestamo()
             let intFormato = document.querySelector('#listFormato').value;
     
             if(intCliente == "" || intMonto == "" || intTaza == "" || intPlazo == "" || intFormato == ""){
-                swal("Atención", "Todos los campos son obligatorios.", "error");
+                Swal.fire("Atención", "Todos los campos son obligatorios.", "error");
                 return false;
             }
     
             let ElementsValid = document.getElementsByClassName("valid");
             for (let i = 0; i < ElementsValid.length; i++) {
                 if(ElementsValid[i].classList.contains('is-invalid')){
-                    swal("Atencion!", "Por favor verifique los campos en rojo.", "error");
+                    Swal.fire("Atencion!", "Por favor verifique los campos en rojo.", "error");
                     return false;
                 }
             }
@@ -164,12 +164,90 @@ async function fntRegistrarPrestamo()
                 title: json.msg
             });
         } else {
-            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            Swal.fire("Error", json.msg , "error");
             /*Toast.fire({
                 icon: "warning",
                 title: json.msg
             });*/
-            console.log(error);
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+//REGISTRAR CLIENTE EN LA SECCIÓN PRESTAMOS
+function fntNewClientePrestamo()
+{
+    if(document.querySelector("#formCliente"))
+    {
+        $('#modalFormCliente').modal('show');
+        let formCliente = document.querySelector("#formCliente");
+        formCliente.onsubmit = function(e)
+        {
+            e.preventDefault();
+            let strIdentificacion = document.querySelector('#txtIdentificacion').value;
+            let strNombre = document.querySelector('#txtNombre').value;
+            let strApellido = document.querySelector('#txtApellido').value;
+            let intTelefono = document.querySelector('#txtTelefono').value;
+            let strDireccion1 = document.querySelector('#txtDireccion1').value;
+            let strDireccion2 = document.querySelector('#txtDireccion2').value;
+
+            if(strIdentificacion == '' || strNombre == '' || strApellido == '' || intTelefono == '' || strDireccion1 == '')
+            {
+                Swal.fire("Atención", "Todos los campos son obligatorios.", "error");
+                return false;
+            }
+
+            let ElementsValid = document.getElementsByClassName("valid");
+            for (let i = 0; i < ElementsValid.length; i++) {
+                if(ElementsValid[i].classList.contains('is-invalid')){
+                    Swal.fire("Atencion!", "Por favor verifique los campos en rojo.", "error");
+                    return false;
+                }
+            }
+
+            fntRegistrarClientePrestamo();
+        }
+    }
+}
+
+async function fntRegistrarClientePrestamo()
+{
+    divLoading.style.display = "flex";
+    try {
+        const data = new FormData(formCliente);
+        let resp = await fetch(base_url + '/Clientes/setCliente', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: data
+        });
+        json = await resp.json();
+        if(json.status) {
+            $('#modalFormCliente').modal("hide");
+            formCliente.reset();
+            fntClientesPrestamo();
+
+            //Swal.fire("Roles de usuario", json.msg ,"success");
+            Toast.fire({
+                icon: "success",
+                title: json.msg
+            });
+        } else {
+            Swal.fire("Error", json.msg , "error");
+            /*Toast.fire({
+                icon: "warning",
+                title: json.msg
+            });*/
+            console.log(json.msg);
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
