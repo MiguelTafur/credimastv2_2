@@ -31,6 +31,7 @@ class PrestamosModel extends Mysql
                     pr.plazo,
                     pr.datecreated,
                     pr.fechavence,
+                    pr.datefinal,
                     pr.status
                 FROM prestamos pr 
                 INNER JOIN persona pe 
@@ -40,7 +41,7 @@ class PrestamosModel extends Mysql
         return $request;
     }
 
-    public function insertPrestamo(int $cliente,int $monto, int $taza, int $plazo, int $formato, string $observacion, string $fecha/*, string $vence*/)
+    public function insertPrestamo(int $cliente,int $monto, int $taza, int $plazo, int $formato, string $observacion, string $fecha, string $vence)
 		{
             $this->intIdCliente = $cliente;
 			$this->intMonto = $monto;
@@ -49,7 +50,7 @@ class PrestamosModel extends Mysql
             $this->intPlazo = $plazo;
 			$this->strObservacion = $observacion;
 			$this->strFecha = $fecha;
-			//$this->strVence = $vence;
+			$this->strVence = $vence;
 			$ruta = $_SESSION['idRuta'];
 			$return = 0;
 
@@ -57,15 +58,15 @@ class PrestamosModel extends Mysql
 			$requestR = $this->select($sql);
 			if(empty($requestR))
 			{
-				$query_insert = "INSERT INTO prestamos(personaid,monto,formato,plazo,taza,observacion,datecreated) VALUES(?,?,?,?,?,?,?)";
+				$query_insert = "INSERT INTO prestamos(personaid,monto,formato,plazo,taza,observacion,datecreated,datefinal) VALUES(?,?,?,?,?,?,?,?)";
 				$arrData = array($this->intIdCliente,
 								$this->intMonto,
 								$this->intFormato,
 								$this->intPlazo,
 								$this->intTaza,
 								$this->strObservacion,
-								$this->strFecha/*,
-								$this->strVence*/);
+								$this->strFecha,
+								$this->strVence);
 				$request_insert = $this->insert($query_insert,$arrData);
 
 				$return = $request_insert;

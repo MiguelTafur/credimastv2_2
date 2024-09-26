@@ -45,9 +45,15 @@
                 <label for="txtPlazo" class="form-label">Plazo</label>
                 <input type="tel" class="form-control valid validNumber" id="txtPlazo" name="txtPlazo" required placeholder="Plazo" onkeypress="return controlTag(event)">
               </div>
-              <div class="col-12" id="divListStatus">
+              <div class="col-12">
                 <label for="txtObservacion" class="form-label">Observación</label>
                 <textarea class="form-control" id="txtObservacion" name="txtObservacion"></textarea>
+              </div>
+              <div class="col-12 form-check">
+                <input class="form-check-input" type="checkbox" name="diasSemanales" id="diasSemanales">
+                <label class="form-check-label" for="diasSemanales">
+                  Paga 5 días semanales
+                </label>
               </div>
               <div class="tile-footer mt-4">
                 <button class="btn btn-warning" type="submit">

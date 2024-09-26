@@ -44,7 +44,49 @@ class Prestamos extends Controllers{
 				$btnEdit = '';
 				$btnDelete = '';
 
+				//JUNTANDO EL NOMBRE Y EL NEGOCIO DEL CLIENTE
 				$arrData[$i]['cliente'] = nombresApellidos($arrData[$i]['nombres'], $arrData[$i]['apellidos']);
+				$arrData[$i]['intPlazo'] = $arrData[$i]['plazo'];
+
+				/*** FORMATO ***/
+				// DIARIO
+				if($arrData[$i]['formato'] == 1)
+				{
+					$arrData[$i]['formato'] = 'Diário';
+					if($arrData[$i]['plazo'] == 1)
+					{
+						$arrData[$i]['plazo'] = $arrData[$i]['plazo'].' '.'Día';
+					}else
+					{
+						$arrData[$i]['plazo'] = $arrData[$i]['plazo'].' '.'Días';
+					}
+				}
+				
+				// SEMANAL
+				//$diaPagamento = $dias[date("w", strtotime($arrData[$i]['datecreated']))];
+				if($arrData[$i]['formato'] == 2)
+				{
+					//$arrData[$i]['formato'] = '<h6>Semanal <span class="badge text-bg-secondary">'.$diaPagamento.'</span></h6>';
+					if($arrData[$i]['plazo'] == 1){
+						$arrData[$i]['plazo'] = $arrData[$i]['plazo'].' '.'Semana';
+					}else
+					{
+						$arrData[$i]['plazo'] = $arrData[$i]['plazo'].' '.'Semanas';
+					}
+				}
+
+				// MENSUAL
+				if($arrData[$i]['formato'] == 3)
+				{
+					$arrData[$i]['formato'] = 'Mensual';
+					if($arrData[$i]['plazo'] == 1)
+					{
+						$arrData[$i]['plazo'] = $arrData[$i]['plazo'].' '.'Mes';
+					}else
+					{
+						$arrData[$i]['plazo'] = $arrData[$i]['plazo'].' '.'Meses';
+					}
+				}
 
 				/*$btnAbono = '
 					<div class="text-center divPagoPrestamo">
@@ -139,40 +181,7 @@ class Prestamos extends Controllers{
 												</button>
 											</div>';
 
-				if($arrData[$i]['formato'] == 1)
-				{
-					$arrData[$i]['formato'] = 'Diário';
-					if($arrData[$i]['plazo'] == 1)
-					{
-						$arrData[$i]['plazo'] = $arrData[$i]['plazo'].' '.'Día';
-					}else
-					{
-						$arrData[$i]['plazo'] = $arrData[$i]['plazo'].' '.'Días';
-					}
-				}
 				
-				$diaPagamento = $dias[date("w", strtotime($arrData[$i]['datecreated']))];
-				if($arrData[$i]['formato'] == 2)
-				{
-					$arrData[$i]['formato'] = '<h6>Semanal <span class="badge badge-secondary">'.$diaPagamento.'</span></h6>';
-					if($arrData[$i]['plazo'] == 1){
-						$arrData[$i]['plazo'] = $arrData[$i]['plazo'].' '.'Semana';
-					}else
-					{
-						$arrData[$i]['plazo'] = $arrData[$i]['plazo'].' '.'Semanas';
-					}
-				}
-				if($arrData[$i]['formato'] == 3)
-				{
-					$arrData[$i]['formato'] = 'Mensual';
-					if($arrData[$i]['plazo'] == 1)
-					{
-						$arrData[$i]['plazo'] = $arrData[$i]['plazo'].' '.'Mes';
-					}else
-					{
-						$arrData[$i]['plazo'] = $arrData[$i]['plazo'].' '.'Meses';
-					}
-				}
 
 				$arrData[$i]['nombres'] = '<strong>'.strtok(strtoupper($arrData[$i]['nombres']), " ").'</strong> <i>'.$arrData[$i]['apellidos'].'</i>';
 
@@ -247,9 +256,9 @@ class Prestamos extends Controllers{
 				$intFormato = intval($_POST['listFormato']);
 				$strObservacion = strClean($_POST['txtObservacion']);
 				$fecha_actual = NOWDATE;
-				/*$cheked = isset($_POST['pagamentoSabado']) ?  1 : 0;
+				$cheked = isset($_POST['diasSemanales']) ?  1 : 0;
 				$contadorPlazo = 0;
-				$contador = 0;*/
+				$contador = 0;
 
 				/*
 				if(!empty($_POST['fechaAnterior']))
@@ -258,11 +267,11 @@ class Prestamos extends Controllers{
 				}else{
 					$fecha_actual = NOWDATE;
 				}
+				*/
 
 				//Calculando el vencimiento del crédito
 				$fechaEnSegundos = strtotime($fecha_actual);
 				$dia = 86400;
-
 
 				//DIARIO
 				if($intFormato == 1)
@@ -286,9 +295,9 @@ class Prestamos extends Controllers{
 	
 						$fechaFinal = date('Y-m-d' , ($fechaEnSegundos));
 					}	
-				//SEMANAL
 				}
 
+				//SEMANAL
 				if($intFormato == 2)
 				{
 					$contadorPlazo = $intPlazo * 6;
@@ -302,9 +311,12 @@ class Prestamos extends Controllers{
 							$fechaEnSegundos += $dia;
 							$contador += 1;
 						}
+						$fechaFinal = date('Y-m-d', ($fechaEnSegundos));
 					}
-				//MES		
+					$fechaFinal = date("Y-m-d", strtotime($fechaFinal."- 1 days"));
 				}
+
+				//MES		
 				if($intFormato == 3){
 					$contadorPlazo = $intPlazo * 30;
 					while($contador <= $contadorPlazo)
@@ -312,10 +324,8 @@ class Prestamos extends Controllers{
 						$fechaEnSegundos += $dia;
 						$contador += 1;
 					}	
+					$fechaFinal = date('Y-m-d' , ($fechaEnSegundos));
 				}	
-				
-				$fechaFinal = date('Y-m-d' , ($fechaEnSegundos));
-				*/
 
 				$request_prestamo = "";
 
@@ -331,8 +341,8 @@ class Prestamos extends Controllers{
 																		$intPlazo,
 																		$intFormato,
 																		$strObservacion,
-																		$fecha_actual/*,
-																		$fechaFinal*/);
+																		$fecha_actual,
+																		$fechaFinal);
 				}
 				if($request_prestamo > 0)
 				{

@@ -50,10 +50,68 @@ function fntTablePrestamos()
 
     function format(d)
     {
-        return '<table>' +
-            '<tr>' +
-                '<td>Cliente:<td>' +
-                '<td>' + d.cliente + '<td>';
+        let inicio = d.datecreated;
+        let final = d.fechavence;
+        let monto = d.monto;
+        let taza = d.taza;
+        let plazo = d.plazo;
+        let total = monto+(monto*(taza*0.01));
+        let parcela = (total / d.intPlazo);
+        let formato = d.formato;
+
+        return '<ul class="list-group">'+
+            '<li class="list-group-item d-flex justify-content-center align-items-center active">'+
+                'INFORMACIÓN DEL PRÉSTAMO'+
+            '</li>'+
+            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
+                'FECHA INICIO'+
+                '<span class="badge text-bg-secondary rounded-pill">' + inicio + '</span>'+
+            '</li>'+
+            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
+                'FECHA VENCIMIENTO'+
+                '<span class="badge text-bg-secondary rounded-pill">' + final + '</span>'+
+            '</li>'+
+            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
+                'CRÉDITO'+
+                '<span class="badge text-bg-secondary rounded-pill">' + monto + '</span>'+
+            '</li>'+
+            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
+                'TASA DE INTERÉS'+
+                '<span class="badge text-bg-secondary rounded-pill">' + taza + '%</span>'+
+            '</li>'+
+            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
+                'TOTAL A PAGAR'+
+                '<span class="badge text-bg-secondary rounded-pill">' + total + '</span>'+
+            '</li>'+
+            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
+                'FORMATO'+
+                '<span class="badge text-bg-secondary rounded-pill">' + formato + '</span>'+
+            '</li>'+
+            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
+                'PLAZO'+
+                '<span class="badge text-bg-secondary rounded-pill">' + plazo + '</span>'+
+            '</li>'+
+            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
+                'VALOR PARCELA'+
+                '<span class="badge text-bg-secondary rounded-pill">' + parcela + '</span>'+
+            '</li>'+
+            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
+                'SALDO'+
+                '<span class="badge text-bg-secondary rounded-pill">pendente</span>'+
+            '</li>'+
+            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
+                'PAGADO'+
+                '<span class="badge text-bg-secondary rounded-pill">pendente</span>'+
+            '</li>'+
+            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
+                'PARCELAS PENDIENTES'+
+                '<span class="badge text-bg-secondary rounded-pill">pendente</span>'+
+            '</li>'+
+            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
+                'PARCELAS CANCELADAS'+
+                '<span class="badge text-bg-secondary rounded-pill">pendente</span>'+
+            '</li>'+
+        '</ul>';
     }
 
     tablePrestamos.on('click', 'td.dt-start', function () {
