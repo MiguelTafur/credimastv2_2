@@ -246,7 +246,9 @@ function fntNewClientePrestamo()
 {
     if(document.querySelector("#formCliente"))
     {
+        
         $('#modalFormCliente').modal('show');
+
         let formCliente = document.querySelector("#formCliente");
         formCliente.onsubmit = function(e)
         {
@@ -319,6 +321,8 @@ async function fntRegistrarClientePrestamo()
     return false;
 }
 
+
+
 function openModal()
 {
     //document.querySelector("#divPrestamosFinalizados").classList.add("d-none");
@@ -346,6 +350,16 @@ function openModal()
             searching: function() {
                 return "Buscando...";
             }
+        }
+    });
+
+    $('#listFormato').on("change", function(e) {
+        const options = e.target.value;
+        let checkbox = document.querySelector("#diasSemanales");
+        if(options == 1) {
+            checkbox.disabled = false;
+        } else if(options == 2 || options == 3) {
+            checkbox.disabled = true;
         }
     });
 
