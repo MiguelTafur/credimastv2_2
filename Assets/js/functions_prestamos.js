@@ -1,6 +1,7 @@
 
 let tablePrestamos;
 let divLoading = document.querySelector("#divLoading");
+let checkbox = document.querySelector("#diasSemanales");
 
 document.addEventListener('DOMContentLoaded', function(){
     iniciarApp();
@@ -15,8 +16,8 @@ function fntTablePrestamos()
 {
     tablePrestamos = $('#tablePrestamos').DataTable( 
     {
-        "aProcessing":true,
-        "aServerSide":true,
+        "aProcessing":"true",
+        "aServerSide":"true",
         "language": {
             // "url": "https://cdn.datatables.net/plug-ins/2.1.7/i18n/es-CO.json"
             "url": "https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
@@ -44,8 +45,9 @@ function fntTablePrestamos()
         ],*/
         
         "responsive":"true",
-        "bDestroy": true,
-        "iDisplayLength": 20 
+        "bDestroy": "true",
+        "iDisplayLength": 20,
+        "order":[[2,"desc"]] 
     });
 
     function format(d)
@@ -84,16 +86,15 @@ function fntTablePrestamos()
                 '<span class="badge text-bg-secondary rounded-pill">' + total + '</span>'+
             '</li>'+
             '<li class="list-group-item d-flex justify-content-between align-items-center">'+
-                'FORMATO'+
-                '<span class="badge text-bg-secondary rounded-pill">' + formato + '</span>'+
-            '</li>'+
-            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
                 'PLAZO'+
                 '<span class="badge text-bg-secondary rounded-pill">' + plazo + '</span>'+
             '</li>'+
             '<li class="list-group-item d-flex justify-content-between align-items-center">'+
                 'VALOR PARCELA'+
                 '<span class="badge text-bg-secondary rounded-pill">' + parcela + '</span>'+
+            '</li>'+
+            '<li">'+
+                '<hr class="border border-secondary border-2 opacity-75">'+
             '</li>'+
             '<li class="list-group-item d-flex justify-content-between align-items-center">'+
                 'SALDO'+
@@ -136,7 +137,7 @@ function fntTablePrestamos()
     });
 }
 
-//TRAER  TODOS LOS CLIENTES EN EL SELECT
+//TRAER TODOS LOS CLIENTES EN EL SELECT
 function fntClientesPrestamo()
 {
     if(document.querySelector("#listClientes")){
@@ -158,7 +159,8 @@ function fntClientesPrestamo()
                         searching: function() {
                             return "Buscando...";
                         }
-                    }
+                    },
+                    disabled: false
                 });
             }
         }
@@ -170,6 +172,14 @@ function fntNewPrestamo()
 {
     if(document.querySelector("#formPrestamos"))
     {
+        $('#listFormato').on("change", function(e) {
+            const options = e.target.value;
+            if(options == 1) {
+                checkbox.disabled = false;
+            } else if(options == 2 || options == 3) {
+                checkbox.disabled = true;
+            }
+        });
         let formPrestamos = document.querySelector("#formPrestamos");
         formPrestamos.onsubmit = function(e){
             e.preventDefault();
@@ -193,6 +203,9 @@ function fntNewPrestamo()
                 }
             }
     
+            $('#listClientes').select2({
+                disabled: false
+            });
             fntRegistrarPrestamo();
         }
     }
@@ -226,6 +239,91 @@ async function fntRegistrarPrestamo()
             /*Toast.fire({
                 icon: "warning",
                 title: json.msg
+            });*/
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+// EDITAR EL PRÉSTAMO
+async function fntEditInfo(idprestamo)
+{
+    document.querySelector('#titleModal').innerHTML = "Actualizar Préstamo";
+    document.querySelector('#btnText').innerHTML = "Actualizar";
+
+    const formData = new FormData();
+    formData.append('idPrestamo', idprestamo);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url + '/Prestamos/getPrestamo', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status)
+        {
+            let cliente = json.data.nombres.toUpperCase() + ' - ' + json.data.apellidos;
+            let optionCliente = '<option value="' + json.data.personaid + '">' + cliente + '</option>';
+
+            document.querySelector("#idPrestamo").value = json.data.idprestamo;
+            document.querySelector("#listClientes").innerHTML = optionCliente;
+            document.querySelector('#txtMonto').value = json.data.monto;
+            document.querySelector('#txtTaza').value = json.data.taza;
+            document.querySelector('#txtPlazo').value = json.data.plazo;
+            document.querySelector('#listFormato').value = json.data.formato;
+
+            if(json.data.formato == 1) {
+                checkbox.disabled = false;
+            } else if(json.data.formato == 2 || json.data.formato == 3) {
+                checkbox.disabled = true;
+            }
+
+            $('#listClientes').select2({
+                dropdownParent: $('#modalFormPrestamo'),
+                placeholder: 'Seleccione un Formato',
+                language: {
+                    noResults: function() {
+                        return "No hay resultado";        
+                    },
+                    searching: function() {
+                        return "Buscando...";
+                    }
+                },
+                disabled: true
+            });
+
+            $('#listFormato').select2({
+                dropdownParent: $('#modalFormPrestamo'),
+                language: {
+                    noResults: function() {
+                        return "No hay resultado";        
+                    },
+                    searching: function() {
+                        return "Buscando...";
+                    }
+                }
+            });
+            
+            $('#modalFormPrestamo').modal('show');
+        }else{
+            Swal.fire("Error", json.msg, "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error interno"
             });*/
             console.log(json.msg);
         }
@@ -321,8 +419,6 @@ async function fntRegistrarClientePrestamo()
     return false;
 }
 
-
-
 function openModal()
 {
     //document.querySelector("#divPrestamosFinalizados").classList.add("d-none");
@@ -338,6 +434,11 @@ function openModal()
         document.querySelector("#resumenPendiente").classList.add('d-none');   
     }*/
 
+    document.querySelector('#idPrestamo').value ="";  
+    document.querySelector('#titleModal').innerHTML = "Nuevo Préstamo";
+    document.querySelector('#btnText').innerHTML = "Registrar"; 
+    document.querySelector("#formPrestamos").reset();
+
     fntClientesPrestamo();
 
     $('#listFormato').select2({
@@ -350,16 +451,6 @@ function openModal()
             searching: function() {
                 return "Buscando...";
             }
-        }
-    });
-
-    $('#listFormato').on("change", function(e) {
-        const options = e.target.value;
-        let checkbox = document.querySelector("#diasSemanales");
-        if(options == 1) {
-            checkbox.disabled = false;
-        } else if(options == 2 || options == 3) {
-            checkbox.disabled = true;
         }
     });
 

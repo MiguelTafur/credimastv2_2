@@ -41,38 +41,74 @@ class PrestamosModel extends Mysql
         return $request;
     }
 
-    public function insertPrestamo(int $cliente,int $monto, int $taza, int $plazo, int $formato, string $observacion, string $fecha, string $vence)
-		{
-            $this->intIdCliente = $cliente;
-			$this->intMonto = $monto;
-			$this->intTaza = $taza;
-			$this->intFormato = $formato;
-            $this->intPlazo = $plazo;
-			$this->strObservacion = $observacion;
-			$this->strFecha = $fecha;
-			$this->strVence = $vence;
-			$ruta = $_SESSION['idRuta'];
-			$return = 0;
+    public function selectPrestamo(int $idprestamo)
+    {
+        $this->intIdPrestamo = $idprestamo;
 
-			$sql = "SELECT idresumen FROM resumen WHERE codigoruta = $ruta AND datecreated = '{$this->strFecha}'";
-			$requestR = $this->select($sql);
-			if(empty($requestR))
-			{
-				$query_insert = "INSERT INTO prestamos(personaid,monto,formato,plazo,taza,observacion,datecreated,datefinal) VALUES(?,?,?,?,?,?,?,?)";
-				$arrData = array($this->intIdCliente,
-								$this->intMonto,
-								$this->intFormato,
-								$this->intPlazo,
-								$this->intTaza,
-								$this->strObservacion,
-								$this->strFecha,
-								$this->strVence);
-				$request_insert = $this->insert($query_insert,$arrData);
+        $sql = "SELECT pr.idprestamo, 
+                        pr.personaid,
+                        pr.monto,
+                        pr.formato,
+                        pr.plazo,
+                        pr.taza,
+                        pr.observacion,
+                        pe.nombres,
+                        pe.apellidos
+                FROM prestamos pr LEFT OUTER JOIN persona pe ON(pr.personaid = pe.idpersona) 
+                WHERE pr.idprestamo = $this->intIdPrestamo";
+        $request = $this->select($sql);
+        return $request;
+    }
 
-				$return = $request_insert;
-			}else{
-				$return = "0";
-			}
-			return $return;
-		}
+    public function insertPrestamo(int $cliente, int $monto, int $taza, int $plazo, int $formato, string $observacion, string $fecha, string $vence)
+    {
+        $this->intIdCliente = $cliente;
+        $this->intMonto = $monto;
+        $this->intTaza = $taza;
+        $this->intFormato = $formato;
+        $this->intPlazo = $plazo;
+        $this->strObservacion = $observacion;
+        $this->strFecha = $fecha;
+        $this->strVence = $vence;
+        $ruta = $_SESSION['idRuta'];
+        $return = 0;
+
+        $sql = "SELECT idresumen FROM resumen WHERE codigoruta = $ruta AND datecreated = '{$this->strFecha}'";
+        $requestR = $this->select($sql);
+        if(empty($requestR))
+        {
+            $query_insert = "INSERT INTO prestamos(personaid,monto,formato,plazo,taza,observacion,datecreated,fechavence) VALUES(?,?,?,?,?,?,?,?)";
+            $arrData = array($this->intIdCliente,
+                            $this->intMonto,
+                            $this->intFormato,
+                            $this->intPlazo,
+                            $this->intTaza,
+                            $this->strObservacion,
+                            $this->strFecha,
+                            $this->strVence);
+            $request_insert = $this->insert($query_insert,$arrData);
+
+            $return = $request_insert;
+        }else{
+            $return = "0";
+        }
+        return $return;
+    }
+
+    public function updatePrestamo(int $idprestamo ,int $monto, int $taza, int $plazo, int $formato, string $observacion, string $vence)
+    {
+        $this->intIdPrestamo = $idprestamo;
+        $this->intMonto = $monto;
+        $this->intTaza = $taza;
+        $this->intFormato = $formato;
+        $this->intPlazo = $plazo;
+        $this->strObservacion = $observacion;
+        $this->strFecha = $vence;
+
+        $sql = "UPDATE prestamos SET monto = ?, taza = ?, plazo = ?, formato = ?, observacion = ?, fechavence = ? WHERE idprestamo = $this->intIdPrestamo";
+        $arrData = array($this->intMonto,$this->intTaza,$this->intPlazo,$this->intFormato,$this->strObservacion,$this->strFecha);
+        $request = $this->update($sql, $arrData);
+
+        return $request;
+    }
 }

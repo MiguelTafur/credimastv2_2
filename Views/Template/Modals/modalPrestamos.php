@@ -19,7 +19,7 @@
         <div class="tile">
           <div class="tile-body">
             <form class="row g-3" id="formPrestamos" name="formPrestamos">
-              <input type="hidden" id="idCliente" name="idCliente" value="">
+              <input type="hidden" id="idPrestamo" name="idPrestamo" value="">
               <div class="col-12">
                 <label for="listClientes" class="form-label">Cliente</label>
                 <select class="form-select listClientes" id="listClientes" name="listClientes" required style="width: 100%;"></select>
@@ -98,7 +98,7 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label" for="txtNegocio">Negocio</label>
-                <input class="form-control valid validText" id="txtApellido" name="txtApellido" type="text" required placeholder="Negocio del Cliente" >
+                <input class="form-control valid validText" id="txtNegocio" name="txtNegocio" type="text" required placeholder="Negocio del Cliente" >
               </div>
               <div class="col-md-6">
                 <label class="form-label" for="txtTelefono">Teléfono</label>

@@ -234,6 +234,26 @@ class Prestamos extends Controllers{
 		die();
 	}
 
+	public function getPrestamo()
+	{
+		if($_SESSION['permisosMod']['r'])
+		{
+			$idprestamo = intval($_POST['idPrestamo']);
+
+			if($idprestamo > 0)
+			{
+				$arrData = $this->model->selectPrestamo($idprestamo);
+				if(empty($arrData))
+				{
+					$arrResponse = array('status' => false, 'msg' => 'Datos no encontrados.');
+				}else{
+					$arrResponse = array('status' => true, 'data' => $arrData);
+				}
+				echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+			}
+		}
+	}
+
 
 	//REGISTRAR PRÉSTAMO
 	public function setPrestamo()
@@ -249,6 +269,7 @@ class Prestamos extends Controllers{
 				if(!empty($_POST['listClientId'])){
 					$intClienteId = intval($_POST['listClientes']);
 				}*/
+				$idPrestamo = intval($_POST['idPrestamo']);
 				$intClienteId = intval($_POST['listClientes']);
 				$intMonto = intval($_POST['txtMonto']);
 				$intTaza = intval($_POST['txtTaza']);
@@ -329,13 +350,13 @@ class Prestamos extends Controllers{
 
 				$request_prestamo = "";
 
-				if($_SESSION['permisosMod']['w']){
-					//Calculando el valor sumado con los intereses
-					$intTazaTemporal = ($intTaza * 0.01);
-					$subtotal = ($intMonto * $intTazaTemporal);
-					$intTotal = ($intMonto + $subtotal);
-					$intParcela = ($intTotal / $intPlazo);
-					$request_prestamo = $this->model->insertPrestamo($intClienteId, 
+				//dep($fechaFinal);exit;
+
+				if($idPrestamo == 0)
+				{
+					$option = 1;
+					if($_SESSION['permisosMod']['w']){
+						$request_prestamo = $this->model->insertPrestamo($intClienteId, 
 																		$intMonto,
 																		$intTaza,
 																		$intPlazo,
@@ -343,7 +364,18 @@ class Prestamos extends Controllers{
 																		$strObservacion,
 																		$fecha_actual,
 																		$fechaFinal);
+					}
+				} else {
+					$option = 2;
+					$request_prestamo = $this->model->updatePrestamo($idPrestamo,
+																	$intMonto,
+																	$intTaza,
+																	$intPlazo,
+																	$intFormato,
+																	$strObservacion,
+																	$fechaFinal);
 				}
+				
 				if($request_prestamo > 0)
 				{
 					$arrResponse = array('status' => true, 'msg' => 'Préstamo registrado.');
