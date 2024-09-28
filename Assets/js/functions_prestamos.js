@@ -12,6 +12,7 @@ function iniciarApp() {
     fntNewPrestamo();
 }
 
+//TABLA DE LOS PRESTAMOS
 function fntTablePrestamos()
 {
     tablePrestamos = $('#tablePrestamos').DataTable( 
@@ -52,8 +53,8 @@ function fntTablePrestamos()
 
     function format(d)
     {
-        let inicio = d.datecreated;
-        let final = d.fechavence;
+        let inicio = d.datecreatedFormat;
+        let final = d.fechavenceFormat;
         let monto = d.monto;
         let taza = d.taza;
         let plazo = d.plazo;
@@ -210,7 +211,6 @@ function fntNewPrestamo()
         }
     }
 }
-
 async function fntRegistrarPrestamo()
 {
     divLoading.style.display = "flex";
@@ -376,7 +376,6 @@ function fntNewClientePrestamo()
         }
     }
 }
-
 async function fntRegistrarClientePrestamo()
 {
     divLoading.style.display = "flex";
@@ -404,6 +403,68 @@ async function fntRegistrarClientePrestamo()
             /*Toast.fire({
                 icon: "warning",
                 title: json.msg
+            });*/
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+//ELIMINAR PRÉSTAMOS
+function fntDelInfo(idpersona)
+{
+    Swal.fire({
+        title: "Eliminar Préstamo",
+        text: "¿Realmente quiere eliminar el Préstamo?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d9a300",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminar!",
+        cancelButtonText: "No, cancelar!",
+    }).then((result) => {
+    if (result.isConfirmed) {
+        fntDeletePrestamo(idpersona);
+    }
+    });
+}
+
+async function fntDeletePrestamo(idprestamo)
+{
+    const formData = new FormData();
+    formData.append('idPrestamo', idprestamo);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Prestamos/delPrestamo', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            //Swal.fire("Eliminar!", json.msg , "success");
+            tablePrestamos.ajax.reload(null, false);
+            Toast.fire({
+                icon: "success",
+                title: json.msg
+            });
+        }else{
+            Swal.fire("Error", json.msg, "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error"
             });*/
             console.log(json.msg);
         }

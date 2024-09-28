@@ -48,6 +48,10 @@ class Prestamos extends Controllers{
 				$arrData[$i]['cliente'] = nombresApellidos($arrData[$i]['nombres'], $arrData[$i]['apellidos']);
 				$arrData[$i]['intPlazo'] = $arrData[$i]['plazo'];
 
+				//FORMATEANDO FECHA
+				$arrData[$i]['datecreatedFormat'] = date("d/m/Y", strtotime($arrData[$i]['datecreated']));
+				$arrData[$i]['fechavenceFormat'] = date("d/m/Y", strtotime($arrData[$i]['fechavence']));
+
 				/*** FORMATO ***/
 				// DIARIO
 				if($arrData[$i]['formato'] == 1)
@@ -127,11 +131,19 @@ class Prestamos extends Controllers{
 				if($_SESSION['permisosMod']['r']){
 					$btnView = '<button class="btn btn-secondary btn-sm" onClick="fntViewInfo('.$arrData[$i]['idprestamo'].')" title="Ver Préstamo"><i class="bi bi-person-vcard-fill me-0"></i></button>';
 				}
-				if($_SESSION['permisosMod']['u']){
-					$btnEdit = '<button class="btn btn-warning btn-sm" onClick="fntEditInfo('.$arrData[$i]['idprestamo'].')" title="Editar Préstamo"><i class="bi bi-pencil-square me-0"></i></button>';
+				if($_SESSION['permisosMod']['u'])
+				{
+					if($arrData[$i]['datecreated'] == NOWDATE)
+					{
+						$btnEdit = '<button class="btn btn-warning btn-sm" onClick="fntEditInfo('.$arrData[$i]['idprestamo'].')" title="Editar Préstamo"><i class="bi bi-pencil-square me-0"></i></button>';
+					}
 				}
-				if($_SESSION['permisosMod']['d']){
-					$btnDelete = '<button class="btn btn-danger btn-sm" onClick="fntDelInfo('.$arrData[$i]['idprestamo'].')" title="Eliminar Préstamo"><i class="bi bi-trash3-fill me-0"></i></button>';
+				if($_SESSION['permisosMod']['d'])
+				{
+					if($arrData[$i]['datecreated'] == NOWDATE)
+					{
+						$btnDelete = '<button class="btn btn-danger btn-sm" onClick="fntDelInfo('.$arrData[$i]['idprestamo'].')" title="Eliminar Préstamo"><i class="bi bi-trash3-fill me-0"></i></button>';
+					}
 				}
 
 				$arrData[$i]['options'] = '<div class="text-center d-flex gap-1">'.$btnView.' '.$btnEdit.' '.$btnDelete.'</div>';
@@ -234,6 +246,7 @@ class Prestamos extends Controllers{
 		die();
 	}
 
+	//TRAE PRÉSTASMOS ESPECÍFICO
 	public function getPrestamo()
 	{
 		if($_SESSION['permisosMod']['r'])
@@ -253,7 +266,6 @@ class Prestamos extends Controllers{
 			}
 		}
 	}
-
 
 	//REGISTRAR PRÉSTAMO
 	public function setPrestamo()
@@ -388,6 +400,40 @@ class Prestamos extends Controllers{
 				}	
 			}	
 			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+		}
+		die();
+	}
+
+	//ELIMINAR PRÉSTAMO
+	public function delPrestamo()
+	{
+		if($_POST)
+		{
+			if($_SESSION['permisosMod']['d']){
+
+				$intIdprestamo = intval($_POST['idPrestamo']);
+
+				/*
+				$arrDataP = $this->model->selectDatePagoPrestamo();
+
+				$fecha = "";
+
+				if($arrDataP == 2){
+					$fecha = date("Y-m-d");
+				}else{
+					$fecha = $arrDataP;					
+				}
+				*/
+
+				$requestDelete = $this->model->deletePrestamo($intIdprestamo);
+				if($requestDelete)
+				{
+					$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el Préstamo.');
+				}else{
+					$arrResponse = array('status' => false, 'msg' => 'Error al eliminar el Préstamo.');
+				}
+				echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);	
+			}
 		}
 		die();
 	}
