@@ -108,7 +108,7 @@ class Prestamos extends Controllers{
 					</div>';*/
 
 				$btnAbono = '
-					<div class="input-group w-75">
+					<div class="input-group">
 						<input type="text" class="form-control" placeholder="100" aria-label="100" aria-describedby="button-addon2">
 						<button class="btn btn-warning" type="button" id="button-addon2">Pagar</button>
 					</div>
@@ -120,7 +120,7 @@ class Prestamos extends Controllers{
 
 				$arrData[$i]['pagamento'] = '
 					<form>
-						<div id="div-'.$arrData[$i]['idprestamo'].'">
+						<div id="div-'.$arrData[$i]['idprestamo'].'" style="width: 130px">
 							'.$btnAbono.' 
 							<button class="btn btn-success btn-sm d-none"  id="btn2-'.$arrData[$i]['idprestamo'].'" title="Eliminar pago">
 								
