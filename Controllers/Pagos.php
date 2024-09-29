@@ -75,7 +75,7 @@ class Pagos extends Controllers{
 						<tr class="text-center">';
 							$arrPagos .= '<td>'.$fechaF.'</td>';
 							if($arrData[$i]['hora'] != '00:00:00') {
-								$arrPagos .= '<td>'.$arrData[$i]['hora'].'</td>';
+								$arrPagos .= '<td>'.date('H:i', strtotime($arrData[$i]['hora'])).'</td>';
 							} else {
 								$arrPagos .= '<td></td>';
 							}

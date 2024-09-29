@@ -56,7 +56,7 @@ class Prestamos extends Controllers{
 
 				//FORMATEANDO FECHA
 				if($arrData[$i]['hora']){
-					$arrData[$i]['datecreatedFormat'] = date("d/m/Y", strtotime($arrData[$i]['datecreated'])) . ' - ' . $arrData[$i]['hora'];	
+					$arrData[$i]['datecreatedFormat'] = date("d/m/Y", strtotime($arrData[$i]['datecreated'])) . ' - ' . date("H:i", strtotime($arrData[$i]['hora']));	
 				} else {
 					$arrData[$i]['datecreatedFormat'] = date("d/m/Y", strtotime($arrData[$i]['datecreated']));
 				}

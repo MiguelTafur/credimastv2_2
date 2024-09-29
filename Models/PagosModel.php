@@ -18,6 +18,14 @@ class PagosModel extends Mysql
         return $request;
     }
 
+    public function selectPagamentos($idprestamo) 
+    {
+        $this->intIdPrestamo = $idprestamo;
+        $sql = "SELECT idpago, abono, hora, datecreated FROM pagos WHERE prestamoid = $this->intIdPrestamo ORDER BY datecreated DESC";
+        $request = $this->select_all($sql);
+        return $request;
+    }
+
     public function selectUltimoPagamento(int $idprestamo)
     {
         $this->intIdPrestamo = $idprestamo;
