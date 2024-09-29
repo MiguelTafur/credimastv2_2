@@ -46,7 +46,15 @@ class Prestamos extends Controllers{
 
 				//JUNTANDO EL NOMBRE Y EL NEGOCIO DEL CLIENTE
 				$arrData[$i]['cliente'] = nombresApellidos($arrData[$i]['nombres'], $arrData[$i]['apellidos']);
+
+				//CREANDO Y ASIGNANDO A UNA VARIABLE EL PLAZO
 				$arrData[$i]['intPlazo'] = $arrData[$i]['plazo'];
+
+				//PAGADO
+				$arrData[$i]['pagado'] = sumaPagamentosPrestamos($arrData[$i]['idprestamo']);
+
+				//SALDO
+				$arrData[$i]['saldo'] = saldoPrestamo($arrData[$i]['idprestamo']);
 
 				//FORMATEANDO FECHA
 				$arrData[$i]['datecreatedFormat'] = date("d/m/Y", strtotime($arrData[$i]['datecreated']));
@@ -55,6 +63,8 @@ class Prestamos extends Controllers{
 				//CALCULANDO LA PARCELA DEL PRESTAMO
 				$parcela = $arrData[$i]['monto'] + ($arrData[$i]['monto'] * ($arrData[$i]['taza'] * 0.01));
 				$parcela = $parcela / $arrData[$i]['plazo'];
+
+				//
 
 				/*** FORMATO ***/
 				// DIARIO

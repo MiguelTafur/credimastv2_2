@@ -35,7 +35,7 @@ class PagosModel extends Mysql
             //VALIDAR QUE EL PAGAMENTO NO SEA MAYOR AL TOTAL DEL PRESTAMO
             $saldo = saldoPrestamo($idprestamo);
 
-            if($saldo > $this->intPago)
+            if($saldo >= $this->intPago)
             {
                 //INSERTAR PAGAMENTO
                 $query_insert = "INSERT INTO pagos(prestamoid,abono,hora,datecreated) VALUES(?,?,?,?)";
@@ -51,7 +51,7 @@ class PagosModel extends Mysql
 
                     if($estado == 2){
                         $query_update = "UPDATE prestamos SET datefinal = ?, status = ? WHERE idprestamo = $this->intIdPrestamo";
-                        $arrData = array(NOWDATE, $this->intStatus);
+                        $arrData = array(NOWDATE, $estado);
                         $request = $this->update($query_update,$arrData);
                         $return = $request;
                     }

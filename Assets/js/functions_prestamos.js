@@ -61,7 +61,8 @@ function fntTablePrestamos()
         let plazo = d.plazo;
         let total = monto+(monto*(taza*0.01));
         let parcela = (total / d.intPlazo);
-        let formato = d.formato;
+        let pagado = d.pagado == null ? 0 : d.pagado;
+        let saldo = d.saldo;
 
         return '<ul class="list-group">'+
             '<li class="list-group-item d-flex justify-content-center align-items-center active">'+
@@ -100,11 +101,11 @@ function fntTablePrestamos()
             '</li>'+
             '<li class="list-group-item d-flex justify-content-between align-items-center">'+
                 'SALDO'+
-                '<span class="badge text-bg-secondary rounded-pill">pendente</span>'+
+                '<span class="badge text-bg-secondary rounded-pill">' + saldo + '</span>'+
             '</li>'+
             '<li class="list-group-item d-flex justify-content-between align-items-center">'+
                 'PAGADO'+
-                '<span class="badge text-bg-secondary rounded-pill">pendente</span>'+
+                '<span class="badge text-bg-secondary rounded-pill">' + pagado + '</span>'+
             '</li>'+
             '<li class="list-group-item d-flex justify-content-between align-items-center">'+
                 'PARCELAS PENDIENTES'+
