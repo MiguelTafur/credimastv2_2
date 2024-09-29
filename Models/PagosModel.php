@@ -15,8 +15,16 @@ class PagosModel extends Mysql
     public function sumaPagamentos(int $idprestamo)
     {
         $this->intIdPrestamo = $idprestamo;
-        $sql = "SELECT SUM(abono) as sumaPagos FROM pagos WHERE prestamoid = '{$this->intIdPrestamo}'";
+        $sql = "SELECT SUM(abono) as sumaPagos FROM pagos WHERE prestamoid = $this->intIdPrestamo";
         $request = $this->select($sql);
+        return $request;
+    }
+
+    public function selectPagamentos(int $idprestamo)
+    {
+        $this->intIdPrestamo = $idprestamo;
+        $sql = "SELECT abono, hora, datecreated FROM pagos WHERE prestamoid = $this->intIdPrestamo ORDER BY datecreated DESC";
+        $request = $this->select_all($sql);
         return $request;
     }
 

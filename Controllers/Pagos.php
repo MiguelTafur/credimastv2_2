@@ -53,4 +53,36 @@ class Pagos extends Controllers{
 		}
 		die();
     }
+
+	public function getPagos()
+	{
+		if($_SESSION['permisosMod']['r']){
+			$idprestamo = intval($_POST['idPrestamo']);
+			if($idprestamo > 0)
+			{
+				$arrData = $this->model->selectPagamentos($idprestamo);
+		
+				if(empty($arrData))
+				{
+					$arrResponse = array('status' => false, 'msg' => 'Sin pagamentos.');
+				}else{
+					$arrPagos = "";
+					for ($i=0; $i < count($arrData); $i++)
+					{ 
+						$fechaF = date("d-m-Y", strtotime($arrData[$i]['datecreated']));
+						/*$dia = $dias[date('w', strtotime($arrData[$i]['datecreated']))];*/
+						$arrPagos .= '
+						<tr class="text-center">';
+							$arrPagos .= '<td>'.$fechaF.'</td>';
+							$arrPagos .= '<td>'.$arrData[$i]['hora'].'</td>';
+							$arrPagos .= '<td>'.$arrData[$i]['abono'].'</td>';
+							$arrPagos .= '</tr>';
+					}
+					$arrResponse = array('status' => true, 'pagos' => $arrPagos);
+				}
+				echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+			}
+		}
+		die();
+	}
 }

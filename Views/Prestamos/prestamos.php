@@ -7,7 +7,7 @@
   <div class="app-title">
     <div>
       <h1>
-        <i class="bi bi-person-workspace"></i> 
+        <i class="bi bi-cash-coin"></i> 
         <?= $data['page_title'] ?> 
         <button class="btn btn-warning btn-sm ms-1" type="button" onclick="openModal();" >
             <i class="bi bi-plus-lg m-0"></i>
@@ -30,11 +30,23 @@
 
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
     <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasRightLabel">Editar Préstamo</h5>
+      <h5 class="offcanvas-title" id="offcanvasRightLabel">PAGAMENTOS</h5>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-      ...
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th class="text-center">Fecha</th>
+              <th class="text-center">Hora</th>
+              <th class="text-center">Abono</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyPagamentos">
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 

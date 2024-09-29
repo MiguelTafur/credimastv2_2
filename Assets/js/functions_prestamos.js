@@ -63,6 +63,8 @@ function fntTablePrestamos()
         let parcela = (total / d.intPlazo);
         let pagado = d.pagado == null ? 0 : d.pagado;
         let saldo = d.saldo;
+        let pendiente = d.pendiente;
+        let cancelado = d.cancelado;
 
         return '<ul class="list-group">'+
             '<li class="list-group-item d-flex justify-content-center align-items-center active">'+
@@ -109,11 +111,11 @@ function fntTablePrestamos()
             '</li>'+
             '<li class="list-group-item d-flex justify-content-between align-items-center">'+
                 'PARCELAS PENDIENTES'+
-                '<span class="badge text-bg-secondary rounded-pill">pendente</span>'+
+                '<span class="badge text-bg-secondary rounded-pill">' + pendiente + '</span>'+
             '</li>'+
             '<li class="list-group-item d-flex justify-content-between align-items-center">'+
                 'PARCELAS CANCELADAS'+
-                '<span class="badge text-bg-secondary rounded-pill">pendente</span>'+
+                '<span class="badge text-bg-secondary rounded-pill">' + cancelado + '</span>'+
             '</li>'+
         '</ul>';
     }
@@ -532,6 +534,39 @@ async function fntDeletePrestamo(idprestamo)
                 title: "Ocurrió un error"
             });*/
             console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+async function fntViewPagamentos(idprestamo)
+{
+    const formData = new FormData();
+    formData.append('idPrestamo', idprestamo);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Pagos/getPagos', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            document.querySelector("#tbodyPagamentos").innerHTML = json.pagos;
+        }else{
+            document.querySelector("#tbodyPagamentos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="3">Sin pagamentos</td><tr>';
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");

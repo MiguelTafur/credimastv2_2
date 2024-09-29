@@ -35,8 +35,6 @@ class Prestamos extends Controllers{
 		if($_SESSION['permisosMod']['r'])
 		{
 			$arrData = $this->model->selectPrestamos();
-			//dep($arrData);exit;
-			//$arrDataR = $this->model->selectResumen();
 
 			for ($i=0; $i < count($arrData); $i++) {
 				
@@ -64,7 +62,11 @@ class Prestamos extends Controllers{
 				$parcela = $arrData[$i]['monto'] + ($arrData[$i]['monto'] * ($arrData[$i]['taza'] * 0.01));
 				$parcela = $parcela / $arrData[$i]['plazo'];
 
-				//
+				//CALCULANDO LAS PARCELAS PENDIENTES Y CANCELADAS
+
+
+				$arrData[$i]['pendiente'] = round(($arrData[$i]['saldo']/$parcela), 0, PHP_ROUND_HALF_UP);
+				$arrData[$i]['cancelado'] = round(($arrData[$i]['pagado']/$parcela), 0, PHP_ROUND_HALF_DOWN);
 
 				/*** FORMATO ***/
 				// DIARIO
@@ -140,7 +142,7 @@ class Prestamos extends Controllers{
 					</form>';
 
 				if($_SESSION['permisosMod']['r']){
-					$btnView = '<button class="btn btn-secondary btn-sm" onClick="fntViewInfo('.$arrData[$i]['idprestamo'].')" title="Ver Préstamo"><i class="bi bi-person-vcard-fill me-0"></i></button>';
+					$btnView = '<button class="btn btn-secondary btn-sm" onClick="fntViewPagamentos('.$arrData[$i]['idprestamo'].')" title="Ver Pagamentos" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="bi bi-cash-stack me-0"></i></button>';
 				}
 				if($_SESSION['permisosMod']['u'])
 				{
