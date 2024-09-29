@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function(){
 function iniciarApp() {
     fntTablePrestamos();
     fntNewPrestamo();
+    //fntNewPagoPrestamo();
 }
 
 //TABLA DE LOS PRESTAMOS
@@ -403,6 +404,69 @@ async function fntRegistrarClientePrestamo()
             /*Toast.fire({
                 icon: "warning",
                 title: json.msg
+            });*/
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+function fntNewPagoPrestamo(idprestamo)
+{
+    let pagoPrestamo = document.querySelector('#txtPagoPrestamo-'+idprestamo).value;
+
+    if(pagoPrestamo == ""){
+        Swal.fire("Atención!", "Debes ingresar un valor.", "error");
+        return false;
+    }
+
+    let ElementsValid = document.getElementsByClassName("valid");
+    for (let i = 0; i < ElementsValid.length; i++) {
+        if(ElementsValid[i].classList.contains('is-invalid')){
+            Swal.fire("Atencion!", "Por favor verifique los campos en rojo.", "error");
+            return false;
+        }
+    }
+
+    fntRegistrarPagoPrestamo(idprestamo, pagoPrestamo);    
+}
+async function fntRegistrarPagoPrestamo(idprestamo, pagoprestamo)
+{
+    const formData = new FormData();
+    formData.append('idPrestamo', idprestamo);
+    formData.append('pagoPrestamo', pagoprestamo);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Pagos/setPago', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            //Swal.fire("Eliminar!", json.msg , "success");
+            tablePrestamos.ajax.reload(null, false);
+            Toast.fire({
+                icon: "success",
+                title: json.msg
+            });
+        }else{
+            Swal.fire("Error", json.msg, "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error"
             });*/
             console.log(json.msg);
         }

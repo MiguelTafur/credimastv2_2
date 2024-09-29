@@ -37,7 +37,7 @@ class PrestamosModel extends Mysql
                 FROM prestamos pr 
                 INNER JOIN persona pe 
                 ON (pr.personaid = pe.idpersona)
-                WHERE (pe.codigoruta = $ruta and pr.status = 1) or (pe.codigoruta = $ruta AND pr.status = 2 and pr.datefinal = " . NOWDATE . ") ORDER BY pr.datecreated ASC";
+                WHERE (pe.codigoruta = $ruta and pr.status = 1) or (pe.codigoruta = $ruta AND pr.status = 2 and pr.datefinal = '" . NOWDATE . "') ORDER BY pr.datecreated ASC";
         $request = $this->select_all($sql);
         return $request;
     }

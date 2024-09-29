@@ -52,6 +52,10 @@ class Prestamos extends Controllers{
 				$arrData[$i]['datecreatedFormat'] = date("d/m/Y", strtotime($arrData[$i]['datecreated']));
 				$arrData[$i]['fechavenceFormat'] = date("d/m/Y", strtotime($arrData[$i]['fechavence']));
 
+				//CALCULANDO LA PARCELA DEL PRESTAMO
+				$parcela = $arrData[$i]['monto'] + ($arrData[$i]['monto'] * ($arrData[$i]['taza'] * 0.01));
+				$parcela = $parcela / $arrData[$i]['plazo'];
+
 				/*** FORMATO ***/
 				// DIARIO
 				if($arrData[$i]['formato'] == 1)
@@ -109,8 +113,8 @@ class Prestamos extends Controllers{
 
 				$btnAbono = '
 					<div class="input-group">
-						<input type="text" class="form-control" placeholder="100" aria-label="100" aria-describedby="button-addon2">
-						<button class="btn btn-warning" type="button" id="button-addon2">Pagar</button>
+						<input type="text" class="form-control valid validNumber" name="txtPagoPrestamo" id="txtPagoPrestamo-'.$arrData[$i]['idprestamo'].'" placeholder="'.$parcela.'" aria-label="100" aria-describedby="button-addon2" onkeypress="return controlTag(event)">
+						<button type="submit" class="btn btn-warning" type="button" id="button-addon2" onclick="fntNewPagoPrestamo('.$arrData[$i]['idprestamo'].')">Pagar</button>
 					</div>
 				';
 
@@ -119,12 +123,9 @@ class Prestamos extends Controllers{
 				'.$arrData[$i]['pago'].';*/
 
 				$arrData[$i]['pagamento'] = '
-					<form>
-						<div id="div-'.$arrData[$i]['idprestamo'].'" style="width: 130px">
-							'.$btnAbono.' 
-							<button class="btn btn-success btn-sm d-none"  id="btn2-'.$arrData[$i]['idprestamo'].'" title="Eliminar pago">
-								
-							</button>
+					<form onsubmit="return false;">
+						<div style="width: 130px">
+						'.$btnAbono.'	
 						</div>
 					</form>';
 
@@ -402,6 +403,11 @@ class Prestamos extends Controllers{
 			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		}
 		die();
+	}
+
+	public function setPago()
+	{
+		dep($_POST);exit;
 	}
 
 	//ELIMINAR PRÉSTAMO

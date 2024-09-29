@@ -45,5 +45,6 @@
 
 	//Fecha Actual
 	define('NOWDATE', date("Y-m-d"));
+	define('NOWTIME', date("H:i:s"));
 
  ?>

@@ -104,6 +104,32 @@
         return $cliente;
     }
 
+    //CALCULAR EL TOTAL DEL PRESTAMO
+    function valorTotalPrestamo(int $idprestamo)
+    {
+        require_once("Models/PrestamosModel.php");
+        $objPrestamos = new PrestamosModel();
+        $request = $objPrestamos->selectPrestamo($idprestamo);
+        $total = $request['monto'] + ($request['monto'] * ($request['taza'] * 0.01));
+        return $total;
+    }
+
+    function sumaPagamentosPrestamos(int $idprestamo)
+    {
+        require_once("Models/PagosModel.php");
+        $objPrestamos = new PagosModel();
+        $request = $objPrestamos->sumaPagamentos($idprestamo);
+        return $request['sumaPagos'];
+    }
+
+    function saldoPrestamo(int $idprestamo)
+    {
+        $pagamentos = sumaPagamentosPrestamos($idprestamo);
+        $totalPrestamo = valorTotalPrestamo($idprestamo);
+        $saldo = $totalPrestamo - $pagamentos;
+        return $saldo;
+    }
+
     function forClientesPagos(string $fecha)
     {
         require_once("Models/PrestamosModel.php");
