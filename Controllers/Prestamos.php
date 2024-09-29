@@ -112,39 +112,46 @@ class Prestamos extends Controllers{
 					}
 				}
 
-				/*$btnAbono = '
-					<div class="text-center divPagoPrestamo">
-						<input 
-							type="tel" 
-							class="inpPago '.$arrData[$i]['idprestamo'].' my-1" 
-							id="'.$arrData[$i]['idprestamo'].'" 
-							style="width: 73px; height: 35px; padding: 5px" 
-							placeholder="'.$arrData[$i]['parcela'].'" 
-							onkeypress="return controlTag(event)"
-						>
-						<button id="btn-'.$arrData[$i]['idprestamo'].'" class="btn btn-secondary btn-sm pagoPrestamo" title="Agregar Pago" onclick="fntPagoPrestamo('.$arrData[$i]['idprestamo'].')">
-							<i class="bi bi-cash-stack"></i> Pagar
-						</button>
-					</div>';*/
+				//TRAYENDO TODOS LOS PAGAMENTOS
+				$arrPagos = getUltimoPagamento($arrData[$i]['idprestamo']);
+				$arrPagos = explode("|", $arrPagos);
 
-				$btnAbono = '
-					<div class="input-group">
-						<input type="text" class="form-control valid validNumber" name="txtPagoPrestamo" id="txtPagoPrestamo-'.$arrData[$i]['idprestamo'].'" placeholder="'.$parcela.'" aria-label="100" aria-describedby="button-addon2" onkeypress="return controlTag(event)">
-						<button type="submit" class="btn btn-warning" type="button" id="button-addon2" onclick="fntNewPagoPrestamo('.$arrData[$i]['idprestamo'].')">Pagar</button>
-					</div>
-				';
-
-				//información de el botón de eliminar pago
-				/*onclick="fntDelPago('.$arrData[$i]['pagoid'].')"
-				'.$arrData[$i]['pago'].';*/
-
+				//MOSTRANDO LOS BOTONES SEGÚN LOS PARÁMETROS
+				if($arrPagos[0] == NOWDATE )
+				{
+					$btnAbono = '<div class="d-grid gap-2 d-block">
+							<button class="btn btn-success btn-sm btn-block" onclick="fntDelInfoPago('.$arrPagos[1].', '.$arrData[$i]['idprestamo'].')" title="Eliminar pago">
+							<p class="m-0 fs-6 font-monospace">'.$arrPagos[2].'</p>
+							</button>
+						</div>';
+					if($arrData[$i]['saldo'] == 0)
+					{
+						$btnAbono = '<div class="d-flex gap-2">
+								<button class="btn btn-warning btn-sm" onclick="fntRenovar('.$arrPagos[1].')" title="Eliminar pago">
+									RENOVAR
+								</button>
+								<button class="btn btn-success btn-sm" onclick="fntDelInfoPago('.$arrPagos[1].', '.$arrData[$i]['idprestamo'].')" title="Eliminar pago">
+									<p class="m-0 fs-6 font-monospace">'.$arrPagos[2].'</p>
+								</button>
+							</div>
+						';	
+					}
+				} else {
+					$btnAbono = '
+						<div class="input-group">
+							<input type="text" class="form-control valid validNumber" name="txtPagoPrestamo" id="txtPagoPrestamo-'.$arrData[$i]['idprestamo'].'" placeholder="'.$parcela.'" aria-label="100" aria-describedby="button-addon2" onkeypress="return controlTag(event)">
+							<button type="submit" class="btn btn-warning btn-sm" type="button" id="button-addon2" onclick="fntNewPagoPrestamo('.$arrData[$i]['idprestamo'].')">Pagar</button>
+						</div>';
+				}
 				$arrData[$i]['pagamento'] = '
-					<form onsubmit="return false;">
-						<div style="width: 130px">
-						'.$btnAbono.'	
-						</div>
-					</form>';
+							<form onsubmit="return false;">
+								<div style="width: 130px">
+								'.$btnAbono.'	
+								</div>
+							</form>';
 
+
+				//BOTONES DE ACCIÓN
 				if($_SESSION['permisosMod']['r']){
 					$btnView = '<button class="btn btn-secondary btn-sm" onClick="fntViewPagamentos('.$arrData[$i]['idprestamo'].')" title="Ver Pagamentos" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="bi bi-cash-stack me-0"></i></button>';
 				}
@@ -419,11 +426,6 @@ class Prestamos extends Controllers{
 			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		}
 		die();
-	}
-
-	public function setPago()
-	{
-		dep($_POST);exit;
 	}
 
 	//ELIMINAR PRÉSTAMO

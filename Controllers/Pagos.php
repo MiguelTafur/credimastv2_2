@@ -89,4 +89,39 @@ class Pagos extends Controllers{
 		}
 		die();
 	}
+
+	//ELIMINAR PAGO
+	public function delPago()
+	{
+		if($_POST)
+		{
+			if($_SESSION['permisosMod']['d']){
+
+				$intIdprestamo = intval($_POST['idPrestamo']);
+				$intIdPago = intval($_POST['idPago']);
+				/*
+				$arrDataP = $this->model->selectDatePagoPrestamo();
+
+				$fecha = "";
+
+				if($arrDataP == 2){
+					$fecha = date("Y-m-d");
+				}else{
+					$fecha = $arrDataP;					
+				}
+				*/
+
+				$requestDelete = $this->model->deletePago($intIdprestamo, $intIdPago);
+				
+				if($requestDelete)
+				{
+					$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el pago.');
+				}else{
+					$arrResponse = array('status' => false, 'msg' => 'Error al eliminar el Pago.');
+				}
+				echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);	
+			}
+		}
+		die();
+	}
 }

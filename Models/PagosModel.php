@@ -3,9 +3,7 @@
 class PagosModel extends Mysql
 {
     PRIVATE $intIdPrestamo;
-    PRIVATE $intPago;
-    PRIVATE $intStatus;
-    
+    PRIVATE $intIdPago;
 
     public function __construct()
     {
@@ -20,11 +18,11 @@ class PagosModel extends Mysql
         return $request;
     }
 
-    public function selectPagamentos(int $idprestamo)
+    public function selectUltimoPagamento(int $idprestamo)
     {
         $this->intIdPrestamo = $idprestamo;
-        $sql = "SELECT abono, hora, datecreated FROM pagos WHERE prestamoid = $this->intIdPrestamo ORDER BY datecreated DESC";
-        $request = $this->select_all($sql);
+        $sql = "SELECT idpago, abono, hora, datecreated FROM pagos WHERE prestamoid = $this->intIdPrestamo ORDER BY datecreated DESC";
+        $request = $this->select($sql);
         return $request;
     }
 
@@ -70,6 +68,34 @@ class PagosModel extends Mysql
         }else {
             $return = '0';
         }
+        return $return;
+    }
+
+    public function deletePago(int $idprestamo, int $idpago)
+    {
+        $this->intIdPrestamo = $idprestamo;
+        $this->intIdPago = $idpago;
+        $ruta = $_SESSION['idRuta'];
+        $fecha_actual = date("Y-m-d");
+
+        $sqlR = "SELECT * FROM resumen WHERE codigoruta = $ruta AND datecreated = '{$fecha_actual}'";
+        $request = $this->select_all($sqlR);
+        if(empty($request))
+        {
+            $sql = "DELETE FROM pagos WHERE idpago = $this->intIdPago";
+            $request = $this->delete($sql);
+            if(!empty($request)){
+                $sqlU = "UPDATE prestamos SET datefinal = ?, status = ? WHERE idprestamo = $this->intIdPrestamo";
+                $arrData = array(NULL,1);
+                $requestU = $this->update($sqlU, $arrData);
+                $return = $requestU;
+            }else{
+                $return = "0";
+            }
+        }else{
+            $return = "0";
+        }
+        
         return $return;
     }
 }

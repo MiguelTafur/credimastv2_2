@@ -104,7 +104,7 @@
         return $cliente;
     }
 
-    //CALCULAR EL TOTAL DEL PRESTAMO
+    //CALCULA EL TOTAL DEL PRESTAMO
     function valorTotalPrestamo(int $idprestamo)
     {
         require_once("Models/PrestamosModel.php");
@@ -114,6 +114,7 @@
         return $total;
     }
 
+    //TRAE LA SUMA DE TODOS LOS PAGAMENTOS DEPENDIENDO DEL PRÉSTAMO
     function sumaPagamentosPrestamos(int $idprestamo)
     {
         require_once("Models/PagosModel.php");
@@ -122,12 +123,30 @@
         return $request['sumaPagos'];
     }
 
+    //CALCULA EL SALDO DEL PRÉSTAMO
     function saldoPrestamo(int $idprestamo)
     {
         $pagamentos = sumaPagamentosPrestamos($idprestamo);
         $totalPrestamo = valorTotalPrestamo($idprestamo);
         $saldo = $totalPrestamo - $pagamentos;
         return $saldo;
+    }
+
+    //TRAE UN ARRAY CON TODOS LOS PAGAMENTOS DEPENDIENDO DEL PRÉSTAMO
+    function getUltimoPagamento(int $idprestamo)
+    {
+        require_once("Models/PagosModel.php");
+        $objPrestamos = new PagosModel();
+        $request = $objPrestamos->selectUltimoPagamento($idprestamo);
+        $fechaPago = '';
+        $idPago = '';
+        $abono = '';
+        if(!empty($request)) {
+            $fechaPago = $request['datecreated'];
+            $idPago = $request['idpago'];
+            $abono = $request['abono'];
+        }
+        return $fechaPago.'|'.$idPago.'|'.$abono;
     }
 
     function forClientesPagos(string $fecha)
@@ -154,6 +173,7 @@
         return $ventas;
     }
 
+    /*
     function forVentasResumen(string $fecha)
     {
         require_once("Models/PrestamosModel.php");
@@ -163,7 +183,7 @@
         $ventas = "";
         for ($i=0; $i < count($request); $i++) { 
             if($request[$i]['datecreated'] == $fecha){
-                $ventas .= strtoupper($request[$i]['nombres']).' = '/*.SMONEY*/.$request[$i]['monto'].'<br>';
+                $ventas .= strtoupper($request[$i]['nombres']).' = '.$request[$i]['monto'].'<br>';
             }
         }
         return $ventas;
@@ -180,7 +200,7 @@
             for ($i=0; $i < count($request); $i++) {
                 if($request[$i]['nombre'] != "")
                 {       
-                    $gasto .= strtoupper($request[$i]['nombre']).' = '/*.SMONEY*/.$request[$i]['monto'].'<br>';
+                    $gasto .= strtoupper($request[$i]['nombre']).' = '$request[$i]['monto'].'<br>';
                 }
             }
             return $gasto;
@@ -196,6 +216,7 @@
         
         
     }
+    */
 
     function generar_codigo_aleatorio(string $letra, int $longitud, int $numero)
     {

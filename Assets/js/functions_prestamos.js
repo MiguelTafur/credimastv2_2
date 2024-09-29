@@ -547,6 +547,7 @@ async function fntDeletePrestamo(idprestamo)
     return false;
 }
 
+//MUESTRA UN ARRAY DE PAGAMENTOS 
 async function fntViewPagamentos(idprestamo)
 {
     const formData = new FormData();
@@ -567,6 +568,68 @@ async function fntViewPagamentos(idprestamo)
             document.querySelector("#tbodyPagamentos").innerHTML = json.pagos;
         }else{
             document.querySelector("#tbodyPagamentos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="3">Sin pagamentos</td><tr>';
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+//ELIMINAR PAGAMENTO
+function fntDelInfoPago(idpago, idprestamo)
+{
+    Swal.fire({
+        title: "Eliminar pago",
+        text: "¿Realmente quiere eliminar el pago?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d9a300",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminar!",
+        cancelButtonText: "No, cancelar!",
+    }).then((result) => {
+    if (result.isConfirmed) {
+        fntDeletePago(idpago, idprestamo);
+    }
+    });
+}
+async function fntDeletePago(idpago, idprestamo)
+{
+    const formData = new FormData();
+    formData.append('idPago', idpago);
+    formData.append('idPrestamo', idprestamo);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Pagos/delPago', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            //Swal.fire("Eliminar!", json.msg , "success");
+            tablePrestamos.ajax.reload(null, false);
+            Toast.fire({
+                icon: "success",
+                title: json.msg
+            });
+        }else{
+            Swal.fire("Error", json.msg, "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error"
+            });*/
+            console.log(json.msg);
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
