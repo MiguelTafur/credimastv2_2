@@ -74,7 +74,11 @@ class Pagos extends Controllers{
 						$arrPagos .= '
 						<tr class="text-center">';
 							$arrPagos .= '<td>'.$fechaF.'</td>';
-							$arrPagos .= '<td>'.$arrData[$i]['hora'].'</td>';
+							if($arrData[$i]['hora'] != '00:00:00') {
+								$arrPagos .= '<td>'.$arrData[$i]['hora'].'</td>';
+							} else {
+								$arrPagos .= '<td></td>';
+							}
 							$arrPagos .= '<td>'.$arrData[$i]['abono'].'</td>';
 							$arrPagos .= '</tr>';
 					}

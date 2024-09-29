@@ -55,7 +55,11 @@ class Prestamos extends Controllers{
 				$arrData[$i]['saldo'] = saldoPrestamo($arrData[$i]['idprestamo']);
 
 				//FORMATEANDO FECHA
-				$arrData[$i]['datecreatedFormat'] = date("d/m/Y", strtotime($arrData[$i]['datecreated']));
+				if($arrData[$i]['hora']){
+					$arrData[$i]['datecreatedFormat'] = date("d/m/Y", strtotime($arrData[$i]['datecreated'])) . ' - ' . $arrData[$i]['hora'];	
+				} else {
+					$arrData[$i]['datecreatedFormat'] = date("d/m/Y", strtotime($arrData[$i]['datecreated']));
+				}
 				$arrData[$i]['fechavenceFormat'] = date("d/m/Y", strtotime($arrData[$i]['fechavence']));
 
 				//CALCULANDO LA PARCELA DEL PRESTAMO

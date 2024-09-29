@@ -11,6 +11,7 @@ class PrestamosModel extends Mysql
     PRIVATE $strObservacion;
     PRIVATE $intStatus;
     PRIVATE $strFecha;
+    PRIVATE $strVence;
 
     public function __construct()
     {
@@ -30,6 +31,7 @@ class PrestamosModel extends Mysql
                     pr.formato,
                     pr.taza,
                     pr.plazo,
+                    pr.hora,
                     pr.datecreated,
                     pr.fechavence,
                     pr.datefinal,
@@ -80,13 +82,14 @@ class PrestamosModel extends Mysql
         $requestR = $this->select($sql);
         if(empty($requestR))
         {
-            $query_insert = "INSERT INTO prestamos(personaid,monto,formato,plazo,taza,observacion,datecreated,fechavence) VALUES(?,?,?,?,?,?,?,?)";
+            $query_insert = "INSERT INTO prestamos(personaid,monto,formato,plazo,taza,observacion,hora,datecreated,fechavence) VALUES(?,?,?,?,?,?,?,?,?)";
             $arrData = array($this->intIdCliente,
                             $this->intMonto,
                             $this->intFormato,
                             $this->intPlazo,
                             $this->intTaza,
                             $this->strObservacion,
+                            NOWTIME,
                             $this->strFecha,
                             $this->strVence);
             $request_insert = $this->insert($query_insert,$arrData);
