@@ -9,7 +9,6 @@ class PrestamosModel extends Mysql
     PRIVATE $intPlazo;
     PRIVATE $intTaza;
     PRIVATE $strObservacion;
-    PRIVATE $intStatus;
     PRIVATE $strFecha;
     PRIVATE $strVence;
 

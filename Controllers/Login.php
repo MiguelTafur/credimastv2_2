@@ -41,7 +41,7 @@ class Login extends Controllers{
                         $_SESSION['login'] = true;
                         $_SESSION['idRol'] = $arrData['rolid'];
                         $_SESSION['ruta'] = $arrData['nombre'];
-                        $_SESSION['idRuta'] = $arrData['codigo'];
+                        $_SESSION['idRuta'] = $arrData['idruta'];
                         $_SESSION['timeout'] = true;
                         $_SESSION['inicio'] = time();
 

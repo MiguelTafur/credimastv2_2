@@ -86,7 +86,7 @@ class PagosModel extends Mysql
         $ruta = $_SESSION['idRuta'];
         $fecha_actual = date("Y-m-d");
 
-        $sqlR = "SELECT * FROM resumen WHERE codigoruta = $ruta AND datecreated = '{$fecha_actual}'";
+        $sqlR = "SELECT * FROM resumen WHERE idruta = $ruta AND datecreated = '{$fecha_actual}'";
         $request = $this->select_all($sqlR);
         if(empty($request))
         {
