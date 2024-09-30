@@ -178,6 +178,10 @@ svg.bi {
     font-style: italic;
 }
 
+.login-content .login-box .login-head {
+    color: #ccc;
+}
+
 /***** LOADING SVG *****/
 #divLoading {
     position: fixed;

@@ -20,6 +20,7 @@
 			$sql = "SELECT pe.idpersona, 
                             pe.rolid,
                             pe.status, 
+							ru.idruta,
                             ru.codigo, 
                             ru.nombre 
 					FROM persona pe INNER JOIN ruta ru ON(pe.codigoruta = ru.idruta) 
