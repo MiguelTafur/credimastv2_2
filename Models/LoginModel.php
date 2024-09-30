@@ -24,7 +24,7 @@
                             ru.codigo, 
                             ru.nombre 
 					FROM persona pe INNER JOIN ruta ru ON(pe.codigoruta = ru.idruta) 
-					WHERE ru.nombre = '$this->strRuta' AND pe.email_user = '$this->strUsuario' AND pe.codigoruta = $this->intCodigo AND pe.status != 0";
+					WHERE ru.nombre = '$this->strRuta' AND pe.email_user = '$this->strUsuario' AND ru.codigo = $this->intCodigo AND pe.status != 0";
 			$request = $this->select($sql);
 			return $request;
 		}

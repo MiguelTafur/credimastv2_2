@@ -2,6 +2,8 @@
 
 class PrestamosModel extends Mysql
 {
+    PRIVATE $intIdRuta;
+    PRIVATE $intIdUsuario;
     PRIVATE $intIdPrestamo;
     PRIVATE $intIdCliente;
     PRIVATE $intMonto;
@@ -63,8 +65,18 @@ class PrestamosModel extends Mysql
         return $request;
     }
 
-    //REGISTRA UN PRÉSTAMO
-    public function insertPrestamo(int $cliente, int $monto, int $taza, int $plazo, int $formato, string $observacion, string $fecha, string $vence)
+    //TRAE LA SUMA DE LOS PRÉSTAMOS
+    public function sumaPrestamos(int $ruta)
+    {
+        $this->intIdRuta = $ruta;
+        $sql = "SELECT SUM(pr.monto) as sumaPrestamos FROM prestamos pr LEFT OUTER JOIN persona pe ON(pr.personaid = pe.idpersona) 
+                WHERE pe.codigoruta = $this->intIdRuta AND pr.status != 0 AND pr.datecreated = '" . NOWDATE . "'";
+        $request = $this->select($sql);
+        return $request;
+    }
+
+    //REGISTRA EL PRÉSTAMO
+    public function insertPrestamo(int $cliente, int $monto, int $taza, int $plazo, int $formato, string $observacion, string $fecha, string $vence, int $usuario, int $ruta)
     {
         $this->intIdCliente = $cliente;
         $this->intMonto = $monto;
@@ -74,34 +86,49 @@ class PrestamosModel extends Mysql
         $this->strObservacion = $observacion;
         $this->strFecha = $fecha;
         $this->strVence = $vence;
-        $ruta = $_SESSION['idRuta'];
+        
         $return = 0;
 
-        $sql = "SELECT idresumen FROM resumen WHERE codigoruta = $ruta AND datecreated = '{$this->strFecha}'";
-        $requestR = $this->select($sql);
-        if(empty($requestR))
+        //TRAE LOS DATOS DEL RESUMEN ACTUAL
+        $selectResumen = getResumenActual($ruta);
+        if(empty($selectResumen))
         {
-            $query_insert = "INSERT INTO prestamos(personaid,monto,formato,plazo,taza,observacion,hora,datecreated,fechavence) VALUES(?,?,?,?,?,?,?,?,?)";
-            $arrData = array($this->intIdCliente,
-                            $this->intMonto,
-                            $this->intFormato,
-                            $this->intPlazo,
-                            $this->intTaza,
-                            $this->strObservacion,
-                            NOWTIME,
-                            $this->strFecha,
-                            $this->strVence);
-            $request_insert = $this->insert($query_insert,$arrData);
-
-            $return = $request_insert;
-        }else{
-            $return = "0";
+            //INSERTA EL RESUMEN
+            setResumen($usuario);
         }
+
+        //INSERTA EL PRESTAMO
+        $query_insert = "INSERT INTO prestamos(personaid,monto,formato,plazo,taza,observacion,hora,datecreated,fechavence) VALUES(?,?,?,?,?,?,?,?,?)";
+        $arrData = array($this->intIdCliente,
+                        $this->intMonto,
+                        $this->intFormato,
+                        $this->intPlazo,
+                        $this->intTaza,
+                        $this->strObservacion,
+                        NOWTIME,
+                        $this->strFecha,
+                        $this->strVence);
+        $request_insert = $this->insert($query_insert,$arrData);
+
+        if(!empty($request_insert))
+        {
+            //TRAE LA SUMA DE LOS PRESTAMOS
+            $sumaPrestamos = $this->sumaPrestamos($ruta)['sumaPrestamos'];
+
+            //ACTUALIZA LA COLUMNA "VENTAS" DE LA TABLA RESUMEN
+            $updateResumen = setUpdateResumen($usuario, $sumaPrestamos, 3);
+
+            $return = $updateResumen;
+
+        }else {
+            $return = "0";    
+        }
+
         return $return;
     }
 
     //ACTUALIZA UN PRÉSTAMOS
-    public function updatePrestamo(int $idprestamo ,int $monto, int $taza, int $plazo, int $formato, string $observacion, string $vence)
+    public function updatePrestamo(int $idprestamo ,int $monto, int $taza, int $plazo, int $formato, string $observacion, string $vence, int $usuario, int $ruta)      
     {
         $this->intIdPrestamo = $idprestamo;
         $this->intMonto = $monto;
@@ -115,32 +142,56 @@ class PrestamosModel extends Mysql
         $arrData = array($this->intMonto,$this->intTaza,$this->intPlazo,$this->intFormato,$this->strObservacion,$this->strFecha);
         $request = $this->update($sql, $arrData);
 
+        if(!empty($request))
+        {
+            //TRAE LA SUMA DE LOS PRESTAMOS
+            $sumaPrestamos = $this->sumaPrestamos($ruta)['sumaPrestamos'];
+
+            //ACTUALIZA LA COLUMNA "VENTAS" DE LA TABLA RESUMEN
+            setUpdateResumen($usuario, $sumaPrestamos, 3);
+        }
+
         return $request;
     }
 
-    //ELIMINA UN PRÉSTAMOS
-    public function deletePrestamo(int $idprestamo)
+    //ELIMINA EL PRÉSTAMO
+    public function deletePrestamo(int $idprestamo, int $usuario, int $ruta)
     {
         $this->intIdPrestamo = $idprestamo;
+        $return = 0;
 
-        $sql = "UPDATE prestamos SET status = ? WHERE idprestamo = $this->intIdPrestamo";
-        $arrData = array(0);
-        $request = $this->update($sql, $arrData);
+        $pagamento = getUltimoPagamento($idprestamo);
+        $pagamento = explode("|", $pagamento);
 
-        /*
-        $sqlP = "SELECT * FROM pagos WHERE prestamoid = $this->intIdPrestamo";
-        $requestP = $this->select($sqlP);
-        if(!empty($requestP))
+        if(empty($pagamento[1]))
         {
-            $sqlPD = "DELETE FROM pagos where prestamoid = $this->intIdPrestamo";
-            $requestPD = $this->delete($sqlPD);
-        }else{
-            $requestPD = true;
-        }
-        
-        $return = $requestPD;
-        */
+            $sql = "UPDATE prestamos SET status = ? WHERE idprestamo = $this->intIdPrestamo";
+            $arrData = array(0);
+            $request = $this->update($sql, $arrData);
 
-        return $request;
+            if(!empty($request))
+            {
+                //TRAE LA SUMA DE LOS PRESTAMOS
+                $sumaPrestamos = $this->sumaPrestamos($ruta)['sumaPrestamos'];
+
+                //ACTUALIZA LA COLUMNA "VENTAS" DE LA TABLA RESUMEN
+                setUpdateResumen($usuario, $sumaPrestamos, 3);
+
+                //TRAE LOS DATOS DEL RESUMEN ACTUAL
+                $resumen = getResumenActual($ruta);
+
+                // VERIFICA SI LA BASE, EL COBRADO, LAS VENTAS Y LOS GASTOS ESTÁN VACÍOS
+                if($resumen['base'] == NULL AND $resumen['cobrado'] == NULL AND $resumen['ventas'] == NULL AND $resumen['gastos'] == NULL)
+                {
+                    //ELIMINA EL RESUMEN
+                    deleteResumenActual($resumen['idresumen']);
+                }
+            }
+
+            $return = $request;
+        } else {
+            $return = '0';
+        }
+        return $return;
     }
 }

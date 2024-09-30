@@ -422,6 +422,7 @@ async function fntRegistrarClientePrestamo()
     return false;
 }
 
+//CREA EL PAGO
 function fntNewPagoPrestamo(idprestamo)
 {
     let pagoPrestamo = document.querySelector('#txtPagoPrestamo-'+idprestamo).value;
@@ -645,19 +646,6 @@ async function fntDeletePago(idpago, idprestamo)
 
 function openModal()
 {
-    //document.querySelector("#divPrestamosFinalizados").classList.add("d-none");
-    //document.querySelector("#divNuevoPrestamo").classList.remove("d-none"); 
-    //document.querySelector("#divViewResumen").classList.add('d-none');
-    //document.querySelector("#btnPayAll").classList.add('d-none');
-    /*if(document.querySelector("#divTablasPrestamos"))
-    {
-        document.querySelector("#divTablasPrestamos").classList.add('d-none');
-    }
-    if(document.querySelector("#resumenPendiente"))
-    {
-        document.querySelector("#resumenPendiente").classList.add('d-none');   
-    }*/
-
     document.querySelector('#idPrestamo').value ="";  
     document.querySelector('#titleModal').innerHTML = "Nuevo Préstamo";
     document.querySelector('#btnText').innerHTML = "Registrar"; 

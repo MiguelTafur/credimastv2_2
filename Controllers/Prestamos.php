@@ -16,15 +16,6 @@ class Prestamos extends Controllers{
 		$data['page_tag'] = "Prestamos";
 		$data['page_title'] = "PRESTAMOS";
 		$data['page_name'] = "prestamos";
-		/*$data['resumen'] = $this->model->selectResumen();
-		$data['pagamentos'] = $this->model->selectDatePagoPrestamo();
-		$fechaPagamento = $data['pagamentos'] == 2 ? NULL : $data['pagamentos'];
-		
-		if($data['pagamentos'] != 2)
-		{
-			$data['prestamos'] = $this->model->selectPrestamos2($fechaPagamento);
-			//dep($data['prestamos']);exit();
-		}*/
 		$data['page_functions_js'] = "functions_prestamos.js";
 		$this->views->getView($this,"prestamos",$data);
 	}
@@ -173,98 +164,6 @@ class Prestamos extends Controllers{
 				$arrData[$i]['options'] = '<div class="text-center d-flex gap-1">'.$btnView.' '.$btnEdit.' '.$btnDelete.'</div>';
 			}
 
-			/*for ($i=0; $i < count($arrData); $i++)
-			{ 
-				//dep($arrData);exit;
-				$fecha_actual = date('Y-m-d');
-				$btnView = '';
-				$btnDelete = '';
-				$btnAbono = '';
-				$taza = ($arrData[$i]['taza'] * 0.01);
-				$subtotal = ($arrData[$i]['monto'] * $taza);
-				$total = ($arrData[$i]['monto'] + $subtotal);
-				$parcela = ($total/$arrData[$i]['plazo']);
-				$dias = array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
-
-				$arrData[$i]['monto'] = '<strong>'.$arrData[$i]['monto'].'</strong>';
-				$arrData[$i]['pa'] = (' <strong>'.$parcela.' x '.$arrData[$i]['plazo'].'</strong>');
-
-				if($arrData[$i]['pago'] != 0 && $arrData[$i]['datepago'] == $fecha_actual && $arrData[$i]['status'] == 2)
-				{
-					$btnAbono = '<p class="text-danger h5">
-									<button class="btn btn-success btn-sm" onclick="fntRenovarPrestamo('.$arrData[$i]['idprestamo'].', '."".')">RENOVAR</button> &nbsp;&nbsp;
-									<button class="btn btn-danger btn-sm" onclick="fntDelPago('.$arrData[$i]['pagoid'].')" title="Eliminar pago">
-									'.$arrData[$i]['pago'].'
-									</button>
-								</p>';
-
-				}else if($arrData[$i]['pago'] != 0 && $arrData[$i]['datepago'] == $fecha_actual && $arrData[$i]['pagoid'] != NULL){
-					$btnAbono = '<button class="btn btn-success btn-sm" onclick="fntDelPago('.$arrData[$i]['pagoid'].')" title="Eliminar pago">
-									'.$arrData[$i]['pago'].'
-								</button>';
-				}else{
-					$btnAbono = '<div class="text-center divPagoPrestamo">
-									<input type="tel" class="inpPago '.$arrData[$i]['idprestamo'].' my-1" id="'.$arrData[$i]['idprestamo'].'" style="width: 73px; height: 35px; padding: 5px" placeholder="'.$arrData[$i]['parcela'].'" onkeypress="return controlTag(event)">
-									<button id="btn-'.$arrData[$i]['idprestamo'].'" class="btn btn-secondary btn-sm pagoPrestamo" title="Agregar Pago" onclick="fntPagoPrestamo('.$arrData[$i]['idprestamo'].')"><i class="fas fa-hand-holding-usd"></i> Pagar
-									</button>
-								</div>';
-				}
-
-				$arrData[$i]['pagamento'] = '<div id="div-'.$arrData[$i]['idprestamo'].'" class="text-center">
-												'.$btnAbono.' 
-												<button class="btn btn-success btn-sm d-none" onclick="fntDelPago('.$arrData[$i]['pagoid'].')" id="btn2-'.$arrData[$i]['idprestamo'].'" title="Eliminar pago">
-													'.$arrData[$i]['pago'].';
-												</button>
-											</div>';
-
-				
-
-				$arrData[$i]['nombres'] = '<strong>'.strtok(strtoupper($arrData[$i]['nombres']), " ").'</strong> <i>'.$arrData[$i]['apellidos'].'</i>';
-
-				$arrData[$i]['taza'] = $arrData[$i]['taza'].' '.'%';
-
-				$arrData[$i]['total'] = '<span id="tot-'.$arrData[$i]['idprestamo'].'" class="font-weight-bold font-italic text-danger">'.$arrData[$i]['total'].'</span>';				
-
-				if($_SESSION['permisosMod']['w'])
-				{
-					$btnView = '<button class="btn btn-info " onclick="fntViewPrestamo('.$arrData[$i]['idprestamo'].')" title="Ver Prestamo"><i class="far fa-eye"></i></button>&nbsp;&nbsp;';
-				}
-
-				if($_SESSION['permisosMod']['d'])
-				{
-					if($arrData[$i]['datecreated'] == $fecha_actual)
-					{
-						$btnDelete = '<button class="btn btn-danger " onclick="fntDelPrestamo('.$arrData[$i]['idprestamo'].')" title="Eliminar Prestamo"><i class="far fa-trash-alt"></i></button>';
-					}
-				}
-
-				if($arrData[$i]['fechavence'] != NULL)
-				{
-					$diasVencimiento4 = date("Y-m-d", strtotime('-4 day', strtotime($arrData[$i]['fechavence'])));
-					$diasVencimiento3 = date("Y-m-d", strtotime('-3 day', strtotime($arrData[$i]['fechavence'])));
-					$diasVencimiento2 = date("Y-m-d", strtotime('-2 day', strtotime($arrData[$i]['fechavence'])));
-					$diasVencimiento1 = date("Y-m-d", strtotime('-1 day', strtotime($arrData[$i]['fechavence'])));
-
-					//$arrData[$i]['diasVence'] = $diasVencimiento4;
-					
-						if($diasVencimiento4 == $fecha_actual || 
-						$diasVencimiento3 == $fecha_actual || 
-						$diasVencimiento2 == $fecha_actual || 
-						$diasVencimiento1 == $fecha_actual || 
-						$arrData[$i]['fechavence'] == $fecha_actual)
-						{
-						$arrData[$i]['diasVence'] = false;
-						}else if($arrData[$i]['fechavence'] < $fecha_actual)
-						{
-						$arrData[$i]['diasVence'] = "vencido";
-						}else{
-						$arrData[$i]['diasVence'] = true;
-					}
-				}
-
-				$arrData[$i]['options'] = '<div class="text-center d-flex justify-content-center">'.$btnView.' '.$btnDelete.'</div>';
-			}*/
-
 			echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
 		}
 		die();
@@ -314,6 +213,8 @@ class Prestamos extends Controllers{
 				$strObservacion = strClean($_POST['txtObservacion']);
 				$fecha_actual = NOWDATE;
 				$cheked = isset($_POST['diasSemanales']) ?  1 : 0;
+				$ruta = $_SESSION['idRuta'];
+        		$usuario = $_SESSION['idUser'];
 				$contadorPlazo = 0;
 				$contador = 0;
 
@@ -399,7 +300,9 @@ class Prestamos extends Controllers{
 																		$intFormato,
 																		$strObservacion,
 																		$fecha_actual,
-																		$fechaFinal);
+																		$fechaFinal,
+																		$usuario,
+																		$ruta);
 					}
 				} else {
 					$option = 2;
@@ -409,7 +312,9 @@ class Prestamos extends Controllers{
 																	$intPlazo,
 																	$intFormato,
 																	$strObservacion,
-																	$fechaFinal);
+																	$fechaFinal,
+																	$usuario,
+																	$ruta);
 				}
 				
 				if($request_prestamo > 0)
@@ -417,7 +322,7 @@ class Prestamos extends Controllers{
 					$arrResponse = array('status' => true, 'msg' => 'Préstamo registrado.');
 				}else if($request_prestamo == '0')
 				{
-					$arrResponse = array('status' => false, 'msg' => 'Atencion! Error al registrar el préstamo.');
+					$arrResponse = array('status' => false, 'msg' => 'Atencion! No es posible registrar el préstamo.');
 				}else
 				{
 					$arrResponse = array("status" => false, "msg" => 'No es posible almacenar los datos.');
@@ -436,24 +341,18 @@ class Prestamos extends Controllers{
 			if($_SESSION['permisosMod']['d']){
 
 				$intIdprestamo = intval($_POST['idPrestamo']);
+				$ruta = $_SESSION['idRuta'];
+        		$usuario = $_SESSION['idUser'];
 
-				/*
-				$arrDataP = $this->model->selectDatePagoPrestamo();
-
-				$fecha = "";
-
-				if($arrDataP == 2){
-					$fecha = date("Y-m-d");
-				}else{
-					$fecha = $arrDataP;					
-				}
-				*/
-
-				$requestDelete = $this->model->deletePrestamo($intIdprestamo);
-				if($requestDelete)
+				$requestDelete = $this->model->deletePrestamo($intIdprestamo, $usuario, $ruta);
+				if($requestDelete > 0)
 				{
 					$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el Préstamo.');
-				}else{
+				} else if($requestDelete == '0')
+				{
+					$arrResponse = array('status' => false, 'msg' => 'El Préstamo tiene pagamentos asociados.');
+				}
+				else{
 					$arrResponse = array('status' => false, 'msg' => 'Error al eliminar el Préstamo.');
 				}
 				echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);	

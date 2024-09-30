@@ -84,9 +84,9 @@ class PagosModel extends Mysql
         $this->intIdPrestamo = $idprestamo;
         $this->intIdPago = $idpago;
         $ruta = $_SESSION['idRuta'];
-        $fecha_actual = date("Y-m-d");
 
-        $sqlR = "SELECT * FROM resumen WHERE idruta = $ruta AND datecreated = '{$fecha_actual}'";
+        $sqlR = "SELECT re.idresumen FROM resumen re LEFT OUTER JOIN persona pe ON(re.personaid = pe.idpersona) 
+                WHERE pe.codigoruta = $ruta AND re.datecreated = '" . NOWDATE . "'";
         $request = $this->select_all($sqlR);
         if(empty($request))
         {
