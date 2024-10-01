@@ -13,12 +13,27 @@ class ResumenModel extends Mysql
         parent::__construct();
     }
 
+
+    //TRAE EL RESUMEN DE LA FECHA ACTUAL
     public function selectResumenActual(int $ruta)
     {
         $this->intIdRuta = $ruta;
 
-        $sql = "SELECT re.idresumen, re.base, re.cobrado, re.ventas, re.gastos, re.datecreated FROM resumen re LEFT OUTER JOIN persona pe ON(re.personaid = pe.idpersona) 
+        $sql = "SELECT re.idresumen, re.base, re.cobrado, re.ventas, re.gastos, re.datecreated FROM resumen re
+                LEFT OUTER JOIN persona pe ON(re.personaid = pe.idpersona) 
                 WHERE pe.codigoruta = $this->intIdRuta AND re.datecreated = '".NOWDATE."'";
+        $request = $this->select($sql);
+        return $request;
+    }
+
+    //TRAE EL RESUMEN CON EL ESTADO 0 Y CON LA FECHA ACTUAL DIFERENTE
+    public function selectResumenAnterior(int $ruta)
+    {
+        $this->intIdRuta = $ruta;
+
+        $sql = "SELECT re.idresumen, re.base, re.cobrado, re.ventas, re.gastos, re.datecreated, re.status FROM resumen re
+                LEFT OUTER JOIN persona pe ON(re.personaid = pe.idpersona) 
+                WHERE pe.codigoruta = $this->intIdRuta AND re.status = 0 AND re.datecreated != '".NOWDATE."'";
         $request = $this->select($sql);
         return $request;
     }
@@ -33,6 +48,7 @@ class ResumenModel extends Mysql
         return $request;
     }
 
+    //ACTUALIZA EL RESUMEN SEGÚN EL TIPO(BASE, COBRADO, VENTAS, GASTOS)
     public function updateResumen(int $idpersona, $valor, int $tipo)
     {
         $this->intIdPersona = $idpersona;
@@ -55,6 +71,7 @@ class ResumenModel extends Mysql
         return $request;
     }
 
+    //ELIMINA EL RESUMEN
     public function deleteResumen($idresumen)
     {
         $this->intIdResumen = $idresumen;

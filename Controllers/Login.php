@@ -48,6 +48,8 @@ class Login extends Controllers{
                         $arrData = $this->model->sessionLogin($_SESSION['idUser']);
                         sessionUser($_SESSION['idUser']);
 
+                        
+
                         $arrResponse = array('status' => true, 'msg' => 'ok.');
                     }else{
                         $arrResponse = array('status' => false, 'msg' => 'Usuario inactivo.');

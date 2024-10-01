@@ -31,6 +31,7 @@ class PagosModel extends Mysql
         return $request;
     }
 
+    //TRAE TODOS LOS PAGAMENTOS DEL PRÉSTAMO
     public function selectPagamentos(int $idprestamo) 
     {
         $this->intIdPrestamo = $idprestamo;
@@ -39,6 +40,7 @@ class PagosModel extends Mysql
         return $request;
     }
 
+    //TRAE SOLO UN PAGAMENTO DEL PRÉSTAMO
     public function selectUltimoPagamento(int $idprestamo)
     {
         $this->intIdPrestamo = $idprestamo;
@@ -47,6 +49,7 @@ class PagosModel extends Mysql
         return $request;
     }
 
+    //REGSITRA UN PAGAMENTO
     public function insertPago(int $idprestamo, int $pago, int $usuario)
     {
         $this->intIdPrestamo = $idprestamo;
@@ -61,10 +64,10 @@ class PagosModel extends Mysql
             //TRAE EL SALDO DEL PRESTAMO
             $saldo = saldoPrestamo($idprestamo);
 
-            //VALIDAR QUE EL PAGAMENTO NO SEA MAYOR AL SALDO DEL PRESTAMO
+            //VALIDA QUE EL PAGAMENTO NO SEA MAYOR AL SALDO DEL PRESTAMO
             if($saldo >= $this->intPago)
             {
-                //INSERTAR PAGAMENTO
+                //INSERTA EL PAGAMENTO
                 $query_insert = "INSERT INTO pagos(prestamoid,abono,hora,datecreated) VALUES(?,?,?,?)";
                 $arrData = array($this->intIdPrestamo,$this->intPago,NOWTIME,NOWDATE);
                 $request_insert = $this->insert($query_insert,$arrData);
@@ -76,7 +79,7 @@ class PagosModel extends Mysql
                     $saldo = saldoPrestamo($idprestamo);
                     $estado = $saldo > 0 ? 1 : 2;
 
-                    //ACTUALIZA EL STATUS DEL PRÉSTAMO SI EL ES SALDO ES 0
+                    //ACTUALIZA EL STATUS DEL PRÉSTAMO SI EL SALDO ES 0
                     if($estado == 2){
                         $query_update = "UPDATE prestamos SET datefinal = ?, status = ? WHERE idprestamo = $this->intIdPrestamo";
                         $arrData = array(NOWDATE, $estado);
@@ -84,30 +87,35 @@ class PagosModel extends Mysql
                         $return = $request;
                     }
 
-                    //TRAE LA SUMA DE LOS PAGAMENTOS
+                    //TRAE LA SUMA DE LOS PAGAMENTOS DEL PRÉSTAMO
                     $sumaPagamentos = $this->sumaPagamentosFechaActual()['sumaPagos'];
 
                     //ACTUALIZA LA COLUMNA "COBRADO" DE LA TABLA RESUMEN
                     setUpdateResumen($usuario, $sumaPagamentos, 2);
                 }
             }else {
+                //PAGAMENTO REPETIDO
                 $return = '!';
             }
         }else {
+            //ERROR AL REGISTRAR PAGAMENTO
             $return = '0';
         }
         return $return;
     }
 
+    //ELIMINA EL PAGAMENTO
     public function deletePago(int $idprestamo, int $idpago)
     {
         $this->intIdPrestamo = $idprestamo;
         $this->intIdPago = $idpago;
         $ruta = $_SESSION['idRuta'];
 
+        //ELIMINA EL PAGAMENTO
         $sql = "DELETE FROM pagos WHERE idpago = $this->intIdPago";
         $request = $this->delete($sql);
         if(!empty($request)){
+            //ACTUALIZA EL PRÉSTAMO
             $sqlU = "UPDATE prestamos SET datefinal = ?, status = ? WHERE idprestamo = $this->intIdPrestamo";
             $arrData = array(NULL,1);
             $requestU = $this->update($sqlU, $arrData);
@@ -115,6 +123,7 @@ class PagosModel extends Mysql
 
 
         }else{
+            //ERROR AL REGISTRAR EL PAGAMENTO
             $return = "0";
         }
         

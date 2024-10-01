@@ -42,24 +42,6 @@
         return $file;
     }
 
-    //Envío de correos
-    function sendEmail($data,$template)
-    {
-        $asunto = $data['asunto'];
-        $emailDestino = $data['email'];
-        $empresa = NOMBRE_REMITENTE;
-        $remitente = EMAIL_REMITENTE;
-        //ENVÍO DE CORREO
-        $de = "MIME-Version: 1.0\r\n";
-        $de.= "Content-type: text/html; charset=UTF-8\r\n";
-        $de.= "From: {$empresa} <{$remitente}>\r\n";
-        ob_start();
-        require_once("Views/Template/Email/".$template.".php");
-        $mensaje = ob_get_clean();
-        $send = mail($emailDestino, $asunto, $mensaje, $de);
-        return $send;
-    }
-
     function getPermisos(int $idmodulo)
     {
         require_once("Models/PermisosModel.php");
@@ -91,23 +73,14 @@
         return $cliente;
     }
 
-    //CALCULA EL TOTAL DEL PRESTAMO
-    function valorTotalPrestamo(int $idprestamo)
+    /**** RESUMEN ****/
+    //TRAE EL RESUMEN CON EL ESTADO 0 Y CON LA FECHA ACTUAL DIFERENTE
+    function getResumenAnterior()
     {
-        require_once("Models/PrestamosModel.php");
-        $objPrestamos = new PrestamosModel();
-        $request = $objPrestamos->selectPrestamo($idprestamo);
-        $total = $request['monto'] + ($request['monto'] * ($request['taza'] * 0.01));
-        return $total;
-    }
-
-    //CALCULA EL SALDO DEL PRÉSTAMO
-    function saldoPrestamo(int $idprestamo)
-    {
-        $pagamentos = sumaPagamentosPrestamos($idprestamo);
-        $totalPrestamo = valorTotalPrestamo($idprestamo);
-        $saldo = $totalPrestamo - $pagamentos;
-        return $saldo;
+        require_once("Models/ResumenModel.php");
+        $objResumen = new ResumenModel();
+        $request = $objResumen->selectResumenAnterior($_SESSION['idRuta']);
+        return $request;
     }
 
     //INSERTA O ELIMINA EL RESUMEN
@@ -167,7 +140,18 @@
         return $request;
     }
 
-    //TRAE LA SUMA DE TODOS LOS PRÉSTAMO
+    /**** PRESTAMOS ****/
+    //CALCULA EL TOTAL DEL PRESTAMO
+    function valorTotalPrestamo(int $idprestamo)
+    {
+        require_once("Models/PrestamosModel.php");
+        $objPrestamos = new PrestamosModel();
+        $request = $objPrestamos->selectPrestamo($idprestamo);
+        $total = $request['monto'] + ($request['monto'] * ($request['taza'] * 0.01));
+        return $total;
+    }
+
+    //TRAE LA SUMA DE TODOS LOS PRÉSTAMOS
     function sumaPrestamos(int $idruta)
     {
         require_once("Models/PrestamosModel.php");
@@ -176,7 +160,17 @@
         return $request;
     }
 
-    //TRAE LA SUMA DE TODOS LOS PAGAMENTOS DEPENDIENDO DEL PRÉSTAMO
+    //CALCULA EL SALDO DEL PRÉSTAMO
+    function saldoPrestamo(int $idprestamo)
+    {
+        $pagamentos = sumaPagamentosPrestamos($idprestamo);
+        $totalPrestamo = valorTotalPrestamo($idprestamo);
+        $saldo = $totalPrestamo - $pagamentos;
+        return $saldo;
+    }
+
+    /**** PAGOS ****/
+    //TRAE LA SUMA DE TODOS LOS PAGAMENTOS DEL PRÉSTAMO
     function sumaPagamentosPrestamos(int $idprestamo)
     {
         require_once("Models/PagosModel.php");
@@ -185,7 +179,7 @@
         return $request['sumaPagos'];
     }
 
-    //TRAE UN ARRAY CON EL ÚLTIMO PAGAMENTO DEPENDIENDO DEL PRÉSTAMO
+    //TRAE UN ARRAY CON EL ÚLTIMO PAGAMENTO DEL PRÉSTAMO
     function getUltimoPagamento(int $idprestamo)
     {
         require_once("Models/PagosModel.php");

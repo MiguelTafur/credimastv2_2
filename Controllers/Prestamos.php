@@ -17,7 +17,18 @@ class Prestamos extends Controllers{
 		$data['page_title'] = "PRESTAMOS";
 		$data['page_name'] = "prestamos";
 		$data['page_functions_js'] = "functions_prestamos.js";
-		$this->views->getView($this,"prestamos",$data);
+
+		//TRAE EL RESUMEN CON ESTADO 0
+		$data['resumenAnterior'] = getResumenAnterior();
+
+		if(empty($data['resumenAnterior']))
+		{
+			$this->views->getView($this,"prestamos",$data);
+		} else {
+			$this->views->getView($this,"prestamosAnteriores",$data);
+		}
+
+		
 	}
 
 	//TRAE TODOS LOS PRÉSTASMOS
