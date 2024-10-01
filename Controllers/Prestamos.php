@@ -218,15 +218,6 @@ class Prestamos extends Controllers{
 				$contadorPlazo = 0;
 				$contador = 0;
 
-				/*
-				if(!empty($_POST['fechaAnterior']))
-				{
-					$fecha_actual = $_POST['fechaAnterior'];
-				}else{
-					$fecha_actual = NOWDATE;
-				}
-				*/
-
 				//Calculando el vencimiento del crédito
 				$fechaEnSegundos = strtotime($fecha_actual);
 				$dia = 86400;
@@ -322,7 +313,8 @@ class Prestamos extends Controllers{
 				
 				if($request_prestamo > 0)
 				{
-					$arrResponse = array('status' => true, 'msg' => 'Préstamo registrado.');
+					$arrResponse = $option == 1 ? array('status' => true, 'msg' => 'Préstamo registrado.')
+												: array('status' => true, 'msg' => 'Préstamo actualizado.');
 				}else if($request_prestamo == '0')
 				{
 					$arrResponse = array('status' => false, 'msg' => 'Atencion! No es posible registrar el préstamo.');

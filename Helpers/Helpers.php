@@ -115,6 +115,7 @@
     {
         require_once("Models/ResumenModel.php");
         $objResumen = new ResumenModel();
+        //TRAE EL RESUMEN CON LA FECHA ACTUAL
         $request = $objResumen->selectResumenActual($_SESSION['idRuta']);
         if($tipo == 'set')
         {
@@ -137,8 +138,6 @@
                 return false;
             }
         }
-        
-        
     }
 
     //INSERTA EL RESUMEN
@@ -186,7 +185,7 @@
         return $request['sumaPagos'];
     }
 
-    //TRAE UN ARRAY CON TODOS LOS PAGAMENTOS DEPENDIENDO DEL PRÉSTAMO
+    //TRAE UN ARRAY CON EL ÚLTIMO PAGAMENTO DEPENDIENDO DEL PRÉSTAMO
     function getUltimoPagamento(int $idprestamo)
     {
         require_once("Models/PagosModel.php");

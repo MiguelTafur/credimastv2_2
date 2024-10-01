@@ -11,6 +11,7 @@ class Pagos extends Controllers{
 		getPermisos(MPRESTAMOS);
 	}
 
+	//INSERTA EL PAGAMENTO
     public function setPago()
     {
         if($_POST)
@@ -22,16 +23,11 @@ class Pagos extends Controllers{
 			{
 				$idPrestamo = intval(($_POST['idPrestamo']));
 				$intMonto = intval($_POST['pagoPrestamo']);
-                /*
-				if(!empty($_POST['fechaAnterior']))
-				{
-					$fecha_actual = $_POST['fechaAnterior'];
-				}else{
-					$fecha_actual = date("Y-m-d");
-				}
-                */
+				$usuario = $_SESSION['idUser'];
 
-				$request_pago = $this->model->insertPago($idPrestamo,$intMonto);
+				//VALIDA SI HAY UN RESUMEN, Si NO, LO CREA.
+				setDelResumenActual('set');
+				$request_pago = $this->model->insertPago($idPrestamo,$intMonto, $usuario);
 
                 if($request_pago > 0)
                 {
@@ -54,6 +50,7 @@ class Pagos extends Controllers{
 		die();
     }
 
+	//TRAE LOS TODOS LOS PAGAMENTOS Y LOS DEVUELVE EN UNA ETIQUETA "<tr>"
 	public function getPagos()
 	{
 		if($_SESSION['permisosMod']['r']){
@@ -99,22 +96,21 @@ class Pagos extends Controllers{
 
 				$intIdprestamo = intval($_POST['idPrestamo']);
 				$intIdPago = intval($_POST['idPago']);
-				/*
-				$arrDataP = $this->model->selectDatePagoPrestamo();
-
-				$fecha = "";
-
-				if($arrDataP == 2){
-					$fecha = date("Y-m-d");
-				}else{
-					$fecha = $arrDataP;					
-				}
-				*/
+				$usuario = $_SESSION['idUser'];
 
 				$requestDelete = $this->model->deletePago($intIdprestamo, $intIdPago);
 				
 				if($requestDelete)
 				{
+					//TRAE LA SUMA DE LOS PAGAMENTOS
+                    $sumaPagamentos = $this->model->sumaPagamentosFechaActual()['sumaPagos'];
+
+                    //ACTUALIZA LA COLUMNA "COBRADO" DE LA TABLA RESUMEN
+                    setUpdateResumen($usuario, $sumaPagamentos, 2);
+
+					//ELIMINA EL RESUMEN SI LA BASE, EL COBRADO, LAS VENTAS, Y LOS GASTOS ESTÁN NULLOS
+					setDelResumenActual('del');
+
 					$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el pago.');
 				}else{
 					$arrResponse = array('status' => false, 'msg' => 'Error al eliminar el Pago.');

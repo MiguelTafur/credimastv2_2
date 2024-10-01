@@ -152,6 +152,7 @@ class PrestamosModel extends Mysql
         $this->intIdPrestamo = $idprestamo;
         $return = 0;
 
+        //VERIFICA SI HAY PAGAMENTOS ASOCIADOS AL PRÉSTAMO
         $pagamento = getUltimoPagamento($idprestamo);
         $pagamento = explode("|", $pagamento);
 
