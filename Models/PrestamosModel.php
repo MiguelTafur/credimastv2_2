@@ -89,14 +89,6 @@ class PrestamosModel extends Mysql
         
         $return = 0;
 
-        //TRAE LOS DATOS DEL RESUMEN ACTUAL
-        $selectResumen = getResumenActual($ruta);
-        if(empty($selectResumen))
-        {
-            //INSERTA EL RESUMEN
-            setResumen($usuario);
-        }
-
         //INSERTA EL PRESTAMO
         $query_insert = "INSERT INTO prestamos(personaid,monto,formato,plazo,taza,observacion,hora,datecreated,fechavence) VALUES(?,?,?,?,?,?,?,?,?)";
         $arrData = array($this->intIdCliente,
@@ -176,16 +168,6 @@ class PrestamosModel extends Mysql
 
                 //ACTUALIZA LA COLUMNA "VENTAS" DE LA TABLA RESUMEN
                 setUpdateResumen($usuario, $sumaPrestamos, 3);
-
-                //TRAE LOS DATOS DEL RESUMEN ACTUAL
-                $resumen = getResumenActual($ruta);
-
-                // VERIFICA SI LA BASE, EL COBRADO, LAS VENTAS Y LOS GASTOS ESTÁN VACÍOS
-                if($resumen['base'] == NULL AND $resumen['cobrado'] == NULL AND $resumen['ventas'] == NULL AND $resumen['gastos'] == NULL)
-                {
-                    //ELIMINA EL RESUMEN
-                    deleteResumenActual($resumen['idresumen']);
-                }
             }
 
             $return = $request;

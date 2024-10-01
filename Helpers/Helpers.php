@@ -84,19 +84,6 @@
         return $request;
     }
 
-    function sessionStart(){
-        session_start();
-        $inactive = 300;
-        if(isset($_SESSION['timeout'])){
-            $session_in = time() - $_SESSION['inicio'];
-            if($session_in > $inactive){
-                header("Location: ".BASE_URL."/logout");
-            }
-        }else{
-            header("Location: ".BASE_URL."/logout");
-        }
-    }
-
     //UNIR NOMBRES Y APELLIDOS
     function nombresApellidos(string $nombre, string $apellido) 
     {
@@ -123,13 +110,35 @@
         return $saldo;
     }
 
-    //VERIFICA SE HAY UN RESUMEN CON LA FECHA ACTUAL
-    function getResumenActual(int $ruta)
+    //INSERTA O ELIMINA EL RESUMEN
+    function setDelResumenActual(string $tipo)
     {
         require_once("Models/ResumenModel.php");
         $objResumen = new ResumenModel();
-        $request = $objResumen->selectResumenActual($ruta);
-        return $request;
+        $request = $objResumen->selectResumenActual($_SESSION['idRuta']);
+        if($tipo == 'set')
+        {
+            if(empty($request))
+            {
+                //INSERTA EL RESUMEN
+                setResumen($_SESSION['idUser']);
+                return true;
+            } else {
+                return false;
+            }
+        } else if($tipo == 'del') {
+            // VERIFICA SI LA BASE, EL COBRADO, LAS VENTAS Y LOS GASTOS ESTÁN VACÍOS
+            if($request['base'] == NULL AND $request['cobrado'] == NULL AND $request['ventas'] == NULL AND $request['gastos'] == NULL)
+            {
+                //ELIMINA EL RESUMEN
+                deleteResumenActual($request['idresumen']);
+                return true;
+            } else {
+                return false;
+            }
+        }
+        
+        
     }
 
     //INSERTA EL RESUMEN

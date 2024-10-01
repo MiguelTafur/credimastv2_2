@@ -18,7 +18,7 @@ class ResumenModel extends Mysql
         $this->intIdRuta = $ruta;
 
         $sql = "SELECT re.idresumen, re.base, re.cobrado, re.ventas, re.gastos, re.datecreated FROM resumen re LEFT OUTER JOIN persona pe ON(re.personaid = pe.idpersona) 
-                WHERE pe.codigoruta = $ruta AND re.datecreated = '".NOWDATE."'";
+                WHERE pe.codigoruta = $this->intIdRuta AND re.datecreated = '".NOWDATE."'";
         $request = $this->select($sql);
         return $request;
     }
@@ -41,13 +41,13 @@ class ResumenModel extends Mysql
 
         if($this->intTipo == 1)
         {
-            $query_update = "UPDATE resumen SET base = ? WHERE personaid = $this->intIdPersona";
+            $query_update = "UPDATE resumen SET base = ? WHERE personaid = $this->intIdPersona AND datecreated = '".NOWDATE."'";
         } else if($this->intTipo == 2){
-            $query_update = "UPDATE resumen SET cobrado = ? WHERE personaid = $this->intIdPersona";
+            $query_update = "UPDATE resumen SET cobrado = ? WHERE personaid = $this->intIdPersona AND datecreated = '".NOWDATE."'";
         } else if($this->intTipo == 3){
-            $query_update = "UPDATE resumen SET ventas = ? WHERE personaid = $this->intIdPersona";
+            $query_update = "UPDATE resumen SET ventas = ? WHERE personaid = $this->intIdPersona AND datecreated = '".NOWDATE."'";
         } else if($this->intTipo == 4){
-            $query_update = "UPDATE resumen SET gastos = ? WHERE personaid = $this->intIdPersona";
+            $query_update = "UPDATE resumen SET gastos = ? WHERE personaid = $this->intIdPersona AND datecreated = '".NOWDATE."'";
         }
 
         $arrData = array($this->intValor);

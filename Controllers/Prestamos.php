@@ -293,6 +293,8 @@ class Prestamos extends Controllers{
 				{
 					$option = 1;
 					if($_SESSION['permisosMod']['w']){
+						//VALIDA SI HAY UN RESUMEN, Si NO, LO CREA.
+						setDelResumenActual('set');
 						$request_prestamo = $this->model->insertPrestamo($intClienteId, 
 																		$intMonto,
 																		$intTaza,
@@ -304,6 +306,7 @@ class Prestamos extends Controllers{
 																		$usuario,
 																		$ruta);
 					}
+
 				} else {
 					$option = 2;
 					$request_prestamo = $this->model->updatePrestamo($idPrestamo,
@@ -347,6 +350,7 @@ class Prestamos extends Controllers{
 				$requestDelete = $this->model->deletePrestamo($intIdprestamo, $usuario, $ruta);
 				if($requestDelete > 0)
 				{
+					setDelResumenActual('del');
 					$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el Préstamo.');
 				} else if($requestDelete == '0')
 				{
