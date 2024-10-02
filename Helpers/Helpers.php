@@ -20,6 +20,11 @@
         $view_footer = "Views/Template/footer_admin.php";
         require_once ($view_footer);        
     }
+    function resumenAnterior($data="")
+    {
+        $view_resumen = "Views/Template/alertaResumenAnterior.php";
+        require_once ($view_resumen);        
+    }
 	//Muestra información formateada
 	function dep($data)
     {
