@@ -103,9 +103,16 @@ class Pagos extends Controllers{
 				if($requestDelete)
 				{
 					//ELIMINA EL RESUMEN SI LA BASE, EL COBRADO, LAS VENTAS, Y LOS GASTOS ESTÁN NULLOS
-					setDelResumenActual('del');
+					$resumen = setDelResumenActual('del');
+					$status = is_array($resumen) ? false : true;
+					if($status == true AND $resumen != NOWDATE)
+					{
+						$status = true;
+					} else {
+						$status = false;
+					}	
 
-					$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el pago.');
+					$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el pago.', 'statusAnterior' => $status);
 				}else{
 					$arrResponse = array('status' => false, 'msg' => 'Error al eliminar el Pago.');
 				}

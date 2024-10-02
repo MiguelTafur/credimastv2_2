@@ -23,7 +23,7 @@ class ResumenModel extends Mysql
 
         $sql = "SELECT re.idresumen, re.base, re.cobrado, re.ventas, re.gastos, re.datecreated FROM resumen re
                 LEFT OUTER JOIN persona pe ON(re.personaid = pe.idpersona) 
-                WHERE pe.codigoruta = $this->intIdRuta AND re.datecreated = '{$this->strFecha}'";
+                WHERE pe.codigoruta = $this->intIdRuta AND re.status = 0 AND re.datecreated = '{$this->strFecha}'";
         $request = $this->select($sql);
         return $request;
     }

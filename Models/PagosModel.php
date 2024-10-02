@@ -109,7 +109,7 @@ class PagosModel extends Mysql
     }
 
     //ELIMINA EL PAGAMENTO
-    public function deletePago(int $idprestamo, int $idpago, int $usuarios)
+    public function deletePago(int $idprestamo, int $idpago, int $usuario)
     {
         $this->intIdPrestamo = $idprestamo;
         $this->intIdPago = $idpago;

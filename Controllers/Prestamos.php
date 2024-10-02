@@ -185,7 +185,7 @@ class Prestamos extends Controllers{
 		die();
 	}
 
-	//TRAE PRÉSTASMOS ESPECÍFICO
+	//TRAE UN PRÉSTASMO ESPECÍFICO
 	public function getPrestamo()
 	{
 		if($_SESSION['permisosMod']['r'])

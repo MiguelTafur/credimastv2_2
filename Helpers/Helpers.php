@@ -97,8 +97,10 @@
         //VERIFICA SI HAY UN RESUMEN ANTERIOR CREADO
         $request = $objResumen->selectResumenAnterior($_SESSION['idRuta']);
 
+        //SI HAY UN RESUMEN GUARDA LA FECHA EN LA VARIABLE
         $request = $request['datecreated'] ?? NULL;
-        //TRAE EL RESUMEN CON LA FECHA ACTUAL
+
+        //TRAE EL RESUMEN CON FECHA DETERMINADA
         $request = $objResumen->selectResumenActual($_SESSION['idRuta'], $request);
         if($tipo == 'set')
         {
