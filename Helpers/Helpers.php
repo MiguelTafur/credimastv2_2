@@ -111,7 +111,7 @@
             {
                 //ELIMINA EL RESUMEN
                 deleteResumenActual($request['idresumen']);
-                return true;
+                return $request['datecreated'];
             } else {
                 return $request;
             }
@@ -157,13 +157,13 @@
     }
 
     //TRAE LA SUMA DE TODOS LOS PRÉSTAMOS
-    function sumaPrestamos(int $idruta)
+    /*function sumaPrestamos(int $idruta)
     {
         require_once("Models/PrestamosModel.php");
         $objPrestamos = new PrestamosModel();
         $request = $objPrestamos->sumaPrestamos($idruta);
         return $request;
-    }
+    }*/
 
     //CALCULA EL SALDO DEL PRÉSTAMO
     function saldoPrestamo(int $idprestamo)

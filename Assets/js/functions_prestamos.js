@@ -522,12 +522,28 @@ async function fntDeletePrestamo(idprestamo)
         json = await resp.json();
     
         if(json.status){
-            //Swal.fire("Eliminar!", json.msg , "success");
-            tablePrestamos.ajax.reload(null, false);
-            Toast.fire({
-                icon: "success",
-                title: json.msg
-            });
+            if(json.statusAnterior)
+            {
+                Swal.fire({
+                    title: json.msg,
+                    text: 'El resumen ha sido eliminado debido a que no contiene más datos',
+                    icon: "warning",
+                    confirmButtonColor: "#d9a300",
+                    confirmButtonText: "Continuar",
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    location.reload();
+                }
+                });
+            } else {
+                //Swal.fire("Eliminar!", json.msg , "success");
+                tablePrestamos.ajax.reload(null, false);
+                Toast.fire({
+                    icon: "success",
+                    title: json.msg
+                });
+            }
+            
         }else{
             Swal.fire("Error", json.msg, "error");
             /*Toast.fire({

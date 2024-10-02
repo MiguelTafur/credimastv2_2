@@ -57,6 +57,7 @@ class PrestamosModel extends Mysql
                         pr.plazo,
                         pr.taza,
                         pr.observacion,
+                        pr.datecreated,
                         pe.nombres,
                         pe.apellidos
                 FROM prestamos pr LEFT OUTER JOIN persona pe ON(pr.personaid = pe.idpersona) 
@@ -65,12 +66,14 @@ class PrestamosModel extends Mysql
         return $request;
     }
 
-    //TRAE LA SUMA DE LOS PRÉSTAMOS
-    public function sumaPrestamos(int $ruta)
+    //TRAE LA SUMA DE LOS PRÉSTAMOS SEGÚN FECHA
+    public function sumaPrestamos(int $ruta, string $fecha)
     {
         $this->intIdRuta = $ruta;
+        $this->strFecha = $fecha;
+
         $sql = "SELECT SUM(pr.monto) as sumaPrestamos FROM prestamos pr LEFT OUTER JOIN persona pe ON(pr.personaid = pe.idpersona) 
-                WHERE pe.codigoruta = $this->intIdRuta AND pr.status != 0 AND pr.datecreated = '" . NOWDATE . "'";
+                WHERE pe.codigoruta = $this->intIdRuta AND pr.status != 0 AND pr.datecreated = '{$this->strFecha}'";
         $request = $this->select($sql);
         return $request;
     }
@@ -89,6 +92,8 @@ class PrestamosModel extends Mysql
         
         $return = 0;
 
+        $sumaPrestamos = $this->sumaPrestamos($ruta, $this->strFecha)['sumaPrestamos'];
+
         //INSERTA EL PRESTAMO
         $query_insert = "INSERT INTO prestamos(personaid,monto,formato,plazo,taza,observacion,hora,datecreated,fechavence) VALUES(?,?,?,?,?,?,?,?,?)";
         $arrData = array($this->intIdCliente,
@@ -105,10 +110,10 @@ class PrestamosModel extends Mysql
         if(!empty($request_insert))
         {
             //TRAE LA SUMA DE LOS PRESTAMOS
-            $sumaPrestamos = $this->sumaPrestamos($ruta)['sumaPrestamos'];
+            $sumaPrestamos = $this->sumaPrestamos($ruta, $this->strFecha)['sumaPrestamos'];
 
             //ACTUALIZA LA COLUMNA "VENTAS" DE LA TABLA RESUMEN
-            $updateResumen = setUpdateResumen($usuario, $sumaPrestamos, 3);
+            $updateResumen = setUpdateResumen($usuario, $sumaPrestamos, 3, $this->strFecha);
 
             $return = $updateResumen;
 
@@ -120,7 +125,7 @@ class PrestamosModel extends Mysql
     }
 
     //ACTUALIZA UN PRÉSTAMOS
-    public function updatePrestamo(int $idprestamo ,int $monto, int $taza, int $plazo, int $formato, string $observacion, string $vence, int $usuario, int $ruta)      
+    public function updatePrestamo(int $idprestamo ,int $monto, int $taza, int $plazo, int $formato, string $observacion, string $fechaprestamo, string $vence, int $usuario, int $ruta)      
     {
         $this->intIdPrestamo = $idprestamo;
         $this->intMonto = $monto;
@@ -128,19 +133,20 @@ class PrestamosModel extends Mysql
         $this->intFormato = $formato;
         $this->intPlazo = $plazo;
         $this->strObservacion = $observacion;
-        $this->strFecha = $vence;
+        $this->strFecha = $fechaprestamo;
+        $this->strVence = $vence;
 
         $sql = "UPDATE prestamos SET monto = ?, taza = ?, plazo = ?, formato = ?, observacion = ?, fechavence = ? WHERE idprestamo = $this->intIdPrestamo";
-        $arrData = array($this->intMonto,$this->intTaza,$this->intPlazo,$this->intFormato,$this->strObservacion,$this->strFecha);
+        $arrData = array($this->intMonto,$this->intTaza,$this->intPlazo,$this->intFormato,$this->strObservacion,$this->strVence);
         $request = $this->update($sql, $arrData);
 
         if(!empty($request))
         {
             //TRAE LA SUMA DE LOS PRESTAMOS
-            $sumaPrestamos = $this->sumaPrestamos($ruta)['sumaPrestamos'];
+            $sumaPrestamos = $this->sumaPrestamos($ruta, $this->strFecha)['sumaPrestamos'];
 
             //ACTUALIZA LA COLUMNA "VENTAS" DE LA TABLA RESUMEN
-            setUpdateResumen($usuario, $sumaPrestamos, 3);
+            setUpdateResumen($usuario, $sumaPrestamos, 3, $this->strFecha);
         }
 
         return $request;
@@ -151,6 +157,8 @@ class PrestamosModel extends Mysql
     {
         $this->intIdPrestamo = $idprestamo;
         $return = 0;
+
+        $fechaPrestamo = $this->selectPrestamo($this->intIdPrestamo)['datecreated'];
 
         //VERIFICA SI HAY PAGAMENTOS ASOCIADOS AL PRÉSTAMO
         $pagamento = getUltimoPagamento($idprestamo);
@@ -165,10 +173,10 @@ class PrestamosModel extends Mysql
             if(!empty($request))
             {
                 //TRAE LA SUMA DE LOS PRESTAMOS
-                $sumaPrestamos = $this->sumaPrestamos($ruta)['sumaPrestamos'];
+                $sumaPrestamos = $this->sumaPrestamos($ruta, $fechaPrestamo)['sumaPrestamos'];
 
                 //ACTUALIZA LA COLUMNA "VENTAS" DE LA TABLA RESUMEN
-                setUpdateResumen($usuario, $sumaPrestamos, 3);
+                setUpdateResumen($usuario, $sumaPrestamos, 3, $fechaPrestamo);
             }
 
             $return = $request;

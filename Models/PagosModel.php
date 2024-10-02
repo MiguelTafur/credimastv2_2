@@ -109,22 +109,31 @@ class PagosModel extends Mysql
     }
 
     //ELIMINA EL PAGAMENTO
-    public function deletePago(int $idprestamo, int $idpago)
+    public function deletePago(int $idprestamo, int $idpago, int $usuarios)
     {
         $this->intIdPrestamo = $idprestamo;
         $this->intIdPago = $idpago;
         $ruta = $_SESSION['idRuta'];
 
+        //TRAE LA FECHA DEL PAGAMENTO
+        $sql = "SELECT datecreated FROM pagos WHERE idpago = $this->intIdPago";
+        $requestDate = $this->select($sql);
+
         //ELIMINA EL PAGAMENTO
-        $sql = "DELETE FROM pagos WHERE idpago = $this->intIdPago";
-        $request = $this->delete($sql);
+        $query_delete = "DELETE FROM pagos WHERE idpago = $this->intIdPago";
+        $request = $this->delete($query_delete);
         if(!empty($request)){
             //ACTUALIZA EL PRÉSTAMO
-            $sqlU = "UPDATE prestamos SET datefinal = ?, status = ? WHERE idprestamo = $this->intIdPrestamo";
+            $query_update = "UPDATE prestamos SET datefinal = ?, status = ? WHERE idprestamo = $this->intIdPrestamo";
             $arrData = array(NULL,1);
-            $requestU = $this->update($sqlU, $arrData);
+            $requestU = $this->update($query_update, $arrData);
             $return = $requestU;
 
+            //TRAE LA SUMA DE LOS PAGAMENTOS DEL PRÉSTAMO
+            $sumaPagamentos = $this->sumaPagamentosFechaActual($requestDate['datecreated'])['sumaPagos'];
+
+            //ACTUALIZA LA COLUMNA "COBRADO" DE LA TABLA RESUMEN
+            setUpdateResumen($usuario, $sumaPagamentos, 2, $requestDate['datecreated']);
 
         }else{
             //ERROR AL REGISTRAR EL PAGAMENTO

@@ -38,6 +38,9 @@ class Prestamos extends Controllers{
 		{
 			$arrData = $this->model->selectPrestamos();
 
+			$resumenAnterior =getResumenAnterior();
+			$fecha = $resumenAnterior['datecreated'] ?? NOWDATE;
+
 			for ($i=0; $i < count($arrData); $i++) {
 				
 				$btnView = '';
@@ -118,14 +121,16 @@ class Prestamos extends Controllers{
 				$arrPagos = getUltimoPagamento($arrData[$i]['idprestamo']);
 				$arrPagos = explode("|", $arrPagos);
 
-				//MOSTRANDO LOS BOTONES SEGÚN LOS PARÁMETROS
-				if($arrPagos[0] == NOWDATE )
+				/**** MOSTRANDO LOS BOTONES SEGÚN LOS PARÁMETROS ****/
+				//BOTÓN DE ELIMINAR
+				if($arrPagos[0] == $fecha )
 				{
 					$btnAbono = '<div class="d-grid gap-2 d-block">
 							<button class="btn btn-success btn-sm btn-block" onclick="fntDelInfoPago('.$arrPagos[1].', '.$arrData[$i]['idprestamo'].')" title="Eliminar pago">
 							<p class="m-0 fs-6 font-monospace">'.$arrPagos[2].'</p>
 							</button>
 						</div>';
+					//BOTÓNES DE RENOVAR ELIMINAR						
 					if($arrData[$i]['saldo'] == 0)
 					{
 						$btnAbono = '<div class="d-flex gap-2">
@@ -138,6 +143,7 @@ class Prestamos extends Controllers{
 							</div>
 						';	
 					}
+				//INPUT DEL PAGAMENTO
 				} else {
 					$btnAbono = '
 						<div class="input-group">
@@ -152,21 +158,20 @@ class Prestamos extends Controllers{
 								</div>
 							</form>';
 
-
 				//BOTONES DE ACCIÓN
 				if($_SESSION['permisosMod']['r']){
 					$btnView = '<button class="btn btn-secondary btn-sm" onClick="fntViewPagamentos('.$arrData[$i]['idprestamo'].')" title="Ver Pagamentos" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="bi bi-cash-stack me-0"></i></button>';
 				}
 				if($_SESSION['permisosMod']['u'])
 				{
-					if($arrData[$i]['datecreated'] == NOWDATE)
+					if($arrData[$i]['datecreated'] == $fecha)
 					{
 						$btnEdit = '<button class="btn btn-warning btn-sm" onClick="fntEditInfo('.$arrData[$i]['idprestamo'].')" title="Editar Préstamo"><i class="bi bi-pencil-square me-0"></i></button>';
 					}
 				}
 				if($_SESSION['permisosMod']['d'])
 				{
-					if($arrData[$i]['datecreated'] == NOWDATE)
+					if($arrData[$i]['datecreated'] == $fecha)
 					{
 						$btnDelete = '<button class="btn btn-danger btn-sm" onClick="fntDelInfo('.$arrData[$i]['idprestamo'].')" title="Eliminar Préstamo"><i class="bi bi-trash3-fill me-0"></i></button>';
 					}
@@ -222,15 +227,17 @@ class Prestamos extends Controllers{
 				$intPlazo = intval($_POST['txtPlazo']);
 				$intFormato = intval($_POST['listFormato']);
 				$strObservacion = strClean($_POST['txtObservacion']);
-				$fecha_actual = NOWDATE;
 				$cheked = isset($_POST['diasSemanales']) ?  1 : 0;
 				$ruta = $_SESSION['idRuta'];
         		$usuario = $_SESSION['idUser'];
 				$contadorPlazo = 0;
 				$contador = 0;
 
+				//VALIDA SI HAY UN RESUMEN Y DEVUELVE LA FECHA, Si NO, LO CREA.
+				$fechaPrestamo = setDelResumenActual('set')['datecreated'] ?? NOWDATE;
+
 				//Calculando el vencimiento del crédito
-				$fechaEnSegundos = strtotime($fecha_actual);
+				$fechaEnSegundos = strtotime($fechaPrestamo);
 				$dia = 86400;
 
 				//DIARIO
@@ -289,21 +296,17 @@ class Prestamos extends Controllers{
 
 				$request_prestamo = "";
 
-				//dep($fechaFinal);exit;
-
 				if($idPrestamo == 0)
 				{
 					$option = 1;
 					if($_SESSION['permisosMod']['w']){
-						//VALIDA SI HAY UN RESUMEN, Si NO, LO CREA.
-						setDelResumenActual('set');
 						$request_prestamo = $this->model->insertPrestamo($intClienteId, 
 																		$intMonto,
 																		$intTaza,
 																		$intPlazo,
 																		$intFormato,
 																		$strObservacion,
-																		$fecha_actual,
+																		$fechaPrestamo,
 																		$fechaFinal,
 																		$usuario,
 																		$ruta);
@@ -317,6 +320,7 @@ class Prestamos extends Controllers{
 																	$intPlazo,
 																	$intFormato,
 																	$strObservacion,
+																	$fechaPrestamo,
 																	$fechaFinal,
 																	$usuario,
 																	$ruta);
@@ -353,8 +357,16 @@ class Prestamos extends Controllers{
 				$requestDelete = $this->model->deletePrestamo($intIdprestamo, $usuario, $ruta);
 				if($requestDelete > 0)
 				{
-					setDelResumenActual('del');
-					$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el Préstamo.');
+					$resumen = setDelResumenActual('del');
+					$status = is_array($resumen) ? false : true;
+					if($status == true AND $resumen != NOWDATE)
+					{
+						$status = true;
+					} else {
+						$status = false;
+					}	
+					
+					$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el Préstamo.', 'statusAnterior' => $status);
 				} else if($requestDelete == '0')
 				{
 					$arrResponse = array('status' => false, 'msg' => 'El Préstamo tiene pagamentos asociados.');
