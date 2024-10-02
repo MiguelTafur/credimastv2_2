@@ -26,8 +26,8 @@ class Pagos extends Controllers{
 				$usuario = $_SESSION['idUser'];
 
 				//VALIDA SI HAY UN RESUMEN, Si NO, LO CREA.
-				setDelResumenActual('set');
-				$request_pago = $this->model->insertPago($idPrestamo,$intMonto, $usuario);
+				$fechaResumen = setDelResumenActual('set')['datecreated'] ?? NULL;
+				$request_pago = $this->model->insertPago($idPrestamo, $intMonto, $usuario, $fechaResumen);
 
                 if($request_pago > 0)
                 {

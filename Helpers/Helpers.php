@@ -88,8 +88,13 @@
     {
         require_once("Models/ResumenModel.php");
         $objResumen = new ResumenModel();
+
+        //VERIFICA SI HAY UN RESUMEN ANTERIOR CREADO
+        $request = $objResumen->selectResumenAnterior($_SESSION['idRuta']);
+
+        $request = $request['datecreated'] ?? NULL;
         //TRAE EL RESUMEN CON LA FECHA ACTUAL
-        $request = $objResumen->selectResumenActual($_SESSION['idRuta']);
+        $request = $objResumen->selectResumenActual($_SESSION['idRuta'], $request);
         if($tipo == 'set')
         {
             if(empty($request))
@@ -98,7 +103,7 @@
                 setResumen($_SESSION['idUser']);
                 return true;
             } else {
-                return false;
+                return $request;
             }
         } else if($tipo == 'del') {
             // VERIFICA SI LA BASE, EL COBRADO, LAS VENTAS Y LOS GASTOS ESTÁN VACÍOS
@@ -108,7 +113,7 @@
                 deleteResumenActual($request['idresumen']);
                 return true;
             } else {
-                return false;
+                return $request;
             }
         }
     }
@@ -123,11 +128,11 @@
     }
 
     //ACTUALIZA EL RESUMEN
-    function setUpdateResumen(int $idpersona, $valor, int $tipo)
+    function setUpdateResumen(int $idpersona, $valor, int $tipo, string $fecha)
     {
         require_once("Models/ResumenModel.php");
         $objResumen = new ResumenModel();
-        $request = $objResumen->updateResumen($idpersona, $valor, $tipo);
+        $request = $objResumen->updateResumen($idpersona, $valor, $tipo, $fecha);
         return $request;
     }
 

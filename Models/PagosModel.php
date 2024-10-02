@@ -4,7 +4,8 @@ class PagosModel extends Mysql
 {
     PRIVATE $intIdPrestamo;
     PRIVATE $intIdPago;
-    PRIVATE $intIdRuta;
+    PRIVATE $intPago;
+    PRIVATE $strFecha;
 
     public function __construct()
     {
@@ -21,12 +22,14 @@ class PagosModel extends Mysql
     }
 
     //TRAE LA SUMA DE LOS TODOS PAGAMENTOS(CON LA FECHA ACTUAL) DEL PRÉSTAMO
-    public function sumaPagamentosFechaActual()
+    public function sumaPagamentosFechaActual(string $fecha)
     {
         $ruta = $_SESSION['idRuta'];
+        $this->strFecha = $fecha;
+
         $sql = "SELECT SUM(pa.abono) as sumaPagos FROM pagos pa LEFT OUTER JOIN prestamos pr ON(pa.prestamoid = pr.idprestamo)
                 LEFT OUTER JOIN persona pe ON(pr.personaid = pe.idpersona) 
-                WHERE pe.codigoruta = $ruta AND pr.status != 0 AND pa.datecreated = '" . NOWDATE . "'";
+                WHERE pe.codigoruta = $ruta AND pr.status != 0 AND pa.datecreated = '{$this->strFecha}'";
         $request = $this->select($sql);
         return $request;
     }
@@ -50,14 +53,15 @@ class PagosModel extends Mysql
     }
 
     //REGSITRA UN PAGAMENTO
-    public function insertPago(int $idprestamo, int $pago, int $usuario)
+    public function insertPago(int $idprestamo, int $pago, int $usuario, string $fecha = NULL)
     {
         $this->intIdPrestamo = $idprestamo;
         $this->intPago = $pago;
+        $this->strFecha = $fecha ?? NOWDATE;
         $return = 0;
 
         //VALIDAR PAGAMENTOS REPETIDOS
-        $sql = "SELECT * FROM pagos WHERE prestamoid = '{$this->intIdPrestamo}' AND datecreated = '" . NOWDATE . "'";
+        $sql = "SELECT * FROM pagos WHERE prestamoid = '{$this->intIdPrestamo}' AND datecreated = '{$this->strFecha}'";
         $request = $this->select_all($sql);
         if(empty($request))
         {
@@ -69,7 +73,7 @@ class PagosModel extends Mysql
             {
                 //INSERTA EL PAGAMENTO
                 $query_insert = "INSERT INTO pagos(prestamoid,abono,hora,datecreated) VALUES(?,?,?,?)";
-                $arrData = array($this->intIdPrestamo,$this->intPago,NOWTIME,NOWDATE);
+                $arrData = array($this->intIdPrestamo,$this->intPago,NOWTIME,$this->strFecha);
                 $request_insert = $this->insert($query_insert,$arrData);
                 $return = $request_insert;
 
@@ -88,10 +92,10 @@ class PagosModel extends Mysql
                     }
 
                     //TRAE LA SUMA DE LOS PAGAMENTOS DEL PRÉSTAMO
-                    $sumaPagamentos = $this->sumaPagamentosFechaActual()['sumaPagos'];
+                    $sumaPagamentos = $this->sumaPagamentosFechaActual($this->strFecha)['sumaPagos'];
 
                     //ACTUALIZA LA COLUMNA "COBRADO" DE LA TABLA RESUMEN
-                    setUpdateResumen($usuario, $sumaPagamentos, 2);
+                    setUpdateResumen($usuario, $sumaPagamentos, 2, $this->strFecha);
                 }
             }else {
                 //PAGAMENTO REPETIDO
