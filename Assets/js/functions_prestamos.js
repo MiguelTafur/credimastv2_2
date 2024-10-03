@@ -48,7 +48,7 @@ function fntTablePrestamos()
         
         "responsive":"true",
         "bDestroy": "true",
-        "iDisplayLength": 20,
+        "iDisplayLength": 50,
         "order":[[2,"desc"]] 
     });
 

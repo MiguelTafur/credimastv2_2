@@ -71,6 +71,19 @@ class ResumenModel extends Mysql
 
         $arrData = array($this->intValor);
         $request = $this->update($query_update, $arrData);
+
+        //TRAE LOS DATOS DEL RESUMEN
+        $sql = "SELECT base, cobrado, ventas, gastos, total FROM resumen WHERE personaid = $this->intIdPersona AND datecreated = '{$this->strFecha}'";
+        $request = $this->select($sql);
+
+        //CALCULA EL TOTAL DEL RESUMEN
+        $request['total'] = ($request['base'] + $request['cobrado']) - ($request['ventas'] + $request['gastos']);
+
+        //ACTUALIZA EL TOTAL DEL RESUMEN
+        $query_update = "UPDATE resumen SET total = ? WHERE personaid = $this->intIdPersona AND datecreated = '{$this->strFecha}'";
+        $arrData = array($request['total']);
+        $request = $this->update($query_update, $arrData);
+
         return $request;
     }
 
