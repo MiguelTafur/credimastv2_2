@@ -30,7 +30,7 @@
   <!-- TERMPLATE ALERTA -->
   <?php resumenAnterior($data); ?>
 
-  <!-- OFFCANVAS DE LOS PAGAMENTOS -->
+  <!-- LISTA DE LOS PAGAMENTOS -->
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
     <div class="offcanvas-header">
       <h5 class="offcanvas-title" id="offcanvasRightLabel">PAGAMENTOS</h5>
@@ -53,7 +53,7 @@
     </div>
   </div>
 
-  <!-- TABLA DE LOS PRESTAMOS -->
+    <!-- LISTA Y DASHBOARD -->
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="lista-tab-pane" role="tabpanel" aria-labelledby="lista-tab" tabindex="0">
       <div class="row">

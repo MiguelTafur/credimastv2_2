@@ -5,7 +5,6 @@
 
 
 <main class="app-content">
-  <?php //!empty($data['resumenAnterior'])  ? dep($data['resumenAnterior']) : dep('no hay resumen'); ?>
   <div class="app-title">
     <div>
       <h1>
@@ -16,6 +15,8 @@
         </button>
       </h1>
     </div>
+
+    <!-- UL DE LA LISTA Y EL DASHBOARD -->
     <ul class="nav nav-underline" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
         <button class="nav-link active" id="lista-tab" data-bs-toggle="tab" data-bs-target="#lista-tab-pane" type="button" role="tab" aria-controls="lista-tab-pane" aria-selected="true">LISTA</button>
@@ -26,6 +27,7 @@
     </ul>
   </div>
 
+  <!-- LISTA DE PAGAMENTOS -->
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
     <div class="offcanvas-header">
       <h5 class="offcanvas-title" id="offcanvasRightLabel">PAGAMENTOS</h5>
@@ -48,6 +50,7 @@
     </div>
   </div>
 
+  <!-- LISTA Y DASHBOARD -->
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="lista-tab-pane" role="tabpanel" aria-labelledby="lista-tab" tabindex="0">
       <div class="row">

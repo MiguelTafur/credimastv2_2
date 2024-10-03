@@ -27,12 +27,12 @@
         <div class="tile-body">
           <div class="row justify-content-center">
             <div class="col-6">
-              <div class="card">
-                <div class="card-header text-center h6">Información del Resumen</div>
+              <div class="card mb-4">
+                <div class="card-header text-center text-body-secondary h6">Información del Resumen</div>
                 <div class="card-body">
                   <div class="row justify-content-center">
                     <div class="col-12">
-                      <table class="table table-borderless text-center">
+                      <table class="table table-borderless text-center mb-0">
                         <tbody>
                           <tr>
                             <th class="w-50">BASE:</th>
@@ -54,6 +54,31 @@
                       </table>
                     </div>
                   </div>
+                </div>
+                <div class="card-footer">
+                  <div class="d-grid d-md-flex gap-2 justify-content-md-around">
+                    <button class="btn btn-secondary btn-sm">
+                      <i class="bi bi-plus-circle me-1"></i>
+                      Base
+                    </button>
+                    <button class="btn btn-secondary btn-sm">
+                      <i class="bi bi-plus-circle me-1"></i>
+                      Venta
+                    </button>
+                    <button class="btn btn-secondary btn-sm">
+                      <i class="bi bi-plus-circle me-1"></i>
+                      Gasto
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header text-center text-body-secondary h6">Finalizar Resumen</div>
+                <div class="card-body text-center">
+                  <button class="btn btn-warning">
+                    <i class="bi bi-check-circle-fill"></i>
+                    Registrar
+                  </button>
                 </div>
               </div>
             </div>
