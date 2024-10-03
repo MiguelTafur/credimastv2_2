@@ -23,11 +23,39 @@
 
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="resumen-tab-pane" role="tabpanel" aria-labelledby="resumen-tab" tabindex="0">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="tile">
-            <div class="tile-body">
-              
+      <div class="tile">
+        <div class="tile-body">
+          <div class="row justify-content-center">
+            <div class="col-6">
+              <div class="card">
+                <div class="card-header text-center h6">Información del Resumen</div>
+                <div class="card-body">
+                  <div class="row justify-content-center">
+                    <div class="col-12">
+                      <table class="table table-borderless text-center">
+                        <tbody>
+                          <tr>
+                            <th class="w-50">BASE:</th>
+                            <td>10</td>
+                          </tr>
+                          <tr>
+                            <th>COBRADO:</th>
+                            <td>10</td>
+                          </tr>
+                          <tr>
+                            <th>VENTAS:</th>
+                            <td>10</td>
+                          </tr>
+                          <tr>
+                            <th>GASTOS:</th>
+                            <td>10</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
