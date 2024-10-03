@@ -17,6 +17,15 @@ class Resumen extends Controllers{
 		$data['page_title'] = "RESUMEN";
 		$data['page_name'] = "Resumen";
 		$data['page_functions_js'] = "functions_resumen.js";
-		$this->views->getView($this,"resumen",$data);
+
+		//TRAE EL RESUMEN CON ESTADO 0
+		$data['resumenAnterior'] = $this->model->selectResumenAnterior($_SESSION['idRuta']);
+
+		if(empty($data['resumenAnterior']))
+		{
+			$this->views->getView($this,"resumen",$data);
+		} else {
+			$this->views->getView($this,"resumenAnterior",$data);
+		}
 	}
 }

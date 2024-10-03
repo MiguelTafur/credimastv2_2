@@ -27,6 +27,12 @@
     </ul>
   </div>
 
+  <?php 
+    if(!empty($data['resumenAnterior'])) {
+      resumenAnterior($data);
+    } 
+  ?>
+
   <!-- LISTA DE PAGAMENTOS -->
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
     <div class="offcanvas-header">
