@@ -58,9 +58,9 @@
         <!-- VENTAS -->
         <?php if(!empty($_SESSION['permisos'][MPRESTAMOS]['r'])) : ?>
         <li>
-          <a class="app-menu__item" href="<?= base_url(); ?>/ventas">
-            <i class="app-menu__icon bi bi-bank2"></i>
-            <span class="app-menu__label">Ventas</span>
+          <a class="app-menu__item" href="<?= base_url(); ?>/gastos">
+            <i class="app-menu__icon bi bi-clipboard2-pulse"></i>
+            <span class="app-menu__label">Gastos</span>
           </a>
         </li>
         <?php endif; ?>

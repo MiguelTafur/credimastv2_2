@@ -18,8 +18,8 @@ function fntTableClientes()
         "aProcessing":true,
         "aServerSide":true,
         "language": {
-            "url": "https://cdn.datatables.net/plug-ins/2.1.7/i18n/es-CO.json"
-            // "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+            //"url": "https://cdn.datatables.net/plug-ins/2.1.7/i18n/es-CO.json"
+            "url": "https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
         },
         "ajax":{
             "url": " "+base_url+"/Clientes/getClientes",
@@ -34,7 +34,7 @@ function fntTableClientes()
         
         "responsive":"true",
         "bDestroy": true,
-        "iDisplayLength": 20,
+        "iDisplayLength": 50,
         "order":[[0,"desc"]]  
     });
 }

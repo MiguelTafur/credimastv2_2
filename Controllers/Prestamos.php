@@ -20,16 +20,8 @@ class Prestamos extends Controllers{
 
 		//TRAE EL RESUMEN ANTERIOR CON ESTADO 0
 		$data['resumenAnterior'] = getResumenAnterior();
-		$this->views->getView($this,"prestamos",$data);
-
-		/*if(empty($data['resumenAnterior']))
-		{
-			$this->views->getView($this,"prestamos",$data);
-		} else {
-			$this->views->getView($this,"prestamosAnteriores",$data);
-		}*/
-
 		
+		$this->views->getView($this,"prestamos",$data);
 	}
 
 	//TRAE TODOS LOS PRÉSTASMOS
