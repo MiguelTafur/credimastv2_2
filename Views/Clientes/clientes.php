@@ -16,6 +16,8 @@
         <?php } ?>
       </h1>
     </div>
+
+    <!-- UL DE LA LISTA Y EL DASHBOARD -->
     <ul class="nav nav-underline" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
         <button class="nav-link active" id="lista-tab" data-bs-toggle="tab" data-bs-target="#lista-tab-pane" type="button" role="tab" aria-controls="lista-tab-pane" aria-selected="true">LISTA</button>
@@ -26,6 +28,14 @@
     </ul>
   </div>
 
+  <!-- ALERTAS DELR ESUMEN ANTERIOR -->
+  <?php 
+    if(!empty($data['resumenAnterior'])) {
+      resumenAnterior($data);
+    } 
+  ?>
+
+  <!-- LISTA Y DASHBOARD -->
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="lista-tab-pane" role="tabpanel" aria-labelledby="lista-tab" tabindex="0">
       <div class="row">

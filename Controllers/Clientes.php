@@ -19,7 +19,10 @@ class Clientes extends Controllers{
 		$data['page_tag'] = "Clientes";
 		$data['page_title'] = "CLIENTES";
 		$data['page_name'] = "clientes";
-		//$data['pagamentos'] = $this->model->selectDatePagoPrestamo();
+
+		//TRAE EL RESUMEN ANTERIOR CON ESTADO 0
+		$data['resumenAnterior'] = getResumenAnterior();
+
 		$data['page_functions_js'] = "functions_clientes.js";
 		$this->views->getView($this,"clientes",$data);
 	}

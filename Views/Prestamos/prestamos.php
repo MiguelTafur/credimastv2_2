@@ -1,6 +1,6 @@
-<?php 
+<?php
   headerAdmin($data);
-  getModal('modalPrestamos',$data); 
+  getModal('modalPrestamos',$data);
 ?>
 
 
@@ -8,8 +8,8 @@
   <div class="app-title">
     <div>
       <h1>
-        <i class="bi bi-cash-coin"></i> 
-        <?= $data['page_title'] ?> 
+        <i class="bi bi-cash-coin"></i>
+        <?= $data['page_title'] ?>
         <button class="btn btn-warning btn-sm ms-1" type="button" onclick="openModal();" >
             <i class="bi bi-plus-lg m-0"></i>
         </button>
@@ -27,10 +27,11 @@
     </ul>
   </div>
 
-  <?php 
+  <!-- ALERTAS DELR ESUMEN ANTERIOR -->
+  <?php
     if(!empty($data['resumenAnterior'])) {
       resumenAnterior($data);
-    } 
+    }
   ?>
 
   <!-- LISTA DE PAGAMENTOS -->
@@ -83,7 +84,7 @@
       </div>
     </div>
     <div class="tab-pane fade" id="dashboard-tab-pane" role="tabpanel" aria-labelledby="dashboard-tab" tabindex="0">
-      
+
     </div>
   </div>
 </main>
