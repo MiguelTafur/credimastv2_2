@@ -67,9 +67,74 @@ function fntNewVenta()
     });
     
     $('#modalFormPrestamo').modal('show');
+
+    let formPrestamos = document.querySelector("#formPrestamos");
+    formPrestamos.onsubmit = function(e){
+        e.preventDefault();
+
+        let intCliente = document.querySelector('#listClientes').value;
+        let intMonto = document.querySelector('#txtMonto').value;
+        let intTaza = document.querySelector('#txtTaza').value;
+        let intPlazo = document.querySelector('#txtPlazo').value;
+        let intFormato = document.querySelector('#listFormato').value;
+
+        if(intCliente == "" || intMonto == "" || intTaza == "" || intPlazo == "" || intFormato == ""){
+            Swal.fire("Atención", "Todos los campos son obligatorios.", "error");
+            return false;
+        }
+
+        let ElementsValid = document.getElementsByClassName("valid");
+        for (let i = 0; i < ElementsValid.length; i++) {
+            if(ElementsValid[i].classList.contains('is-invalid')){
+                Swal.fire("Atencion!", "Por favor verifique los campos en rojo.", "error");
+                return false;
+            }
+        }
+        fntRegistrarPrestamo();
+    }
 }
 //REGISTRAR PRÉSTAMO
-
+async function fntRegistrarPrestamo()
+{
+    divLoading.style.display = "flex";
+    try {
+        const data = new FormData(formPrestamos);
+        let resp = await fetch(base_url + '/Prestamos/setPrestamo', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: data
+        });
+        json = await resp.json();
+        if(json.status) {
+            $('#modalFormPrestamo').modal("hide");
+            formPrestamos.reset();
+            $('#listClientes').val(null).trigger('change');
+            $('#listFormato').val(null).trigger('change');
+            //Swal.fire("Roles de usuario", json.msg ,"success");
+            Toast.fire({
+                icon: "success",
+                title: json.msg
+            });
+        } else {
+            Swal.fire("Error", json.msg , "error");
+            /*Toast.fire({
+                icon: "warning",
+                title: json.msg
+            });*/
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
 
 //VISTA PARA CREAR UN CLIENTE EN LA SECCIÓN RESUMEN
 function fntNewClientePrestamo()

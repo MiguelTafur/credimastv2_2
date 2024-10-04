@@ -73,7 +73,7 @@
                     </button>
                     <button class="btn btn-secondary btn-sm" onclick="fntNewVenta()">
                       <i class="bi bi-plus-circle me-1"></i>
-                      Venta
+                      Préstamo
                     </button>
                     <button class="btn btn-secondary btn-sm" onclick="fntNewGasto()">
                       <i class="bi bi-plus-circle me-1"></i>
