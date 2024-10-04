@@ -28,6 +28,14 @@
     if(!empty($data['resumenAnterior'])) {
       resumenAnterior($data);
     } 
+
+    $baseResumen = $data['resumenActual']['base'] ?? 0;
+    $cobradoResumen = $data['resumenActual']['cobrado'] ?? 0;
+    $prestamoResumen = $data['resumenActual']['ventas'] ?? 0;
+    $gastosResumen = $data['resumenActual']['gastos'] ?? 0;
+    $totalResumen = $data['resumenActual']['total'] ?? 0;
+
+    $arrPrestamoTotal = array('prestamo' => $prestamoResumen, 'total' => $totalResumen);
   ?>
 
   <!-- LISTA Y DASHBOARD -->
@@ -46,36 +54,37 @@
                         <tbody>
                           <tr>
                             <th class="w-50">BASE:</th>
-                            <td>10</td>
+                            <td id="baseResumen"><?= $baseResumen; ?></td>
                           </tr>
                           <tr>
                             <th>COBRADO:</th>
-                            <td>10</td>
+                            <td><?= $cobradoResumen; ?></td>
                           </tr>
                           <tr>
                             <th>VENTAS:</th>
-                            <td>10</td>
+                            <td id="prestamoResumen"><?= $prestamoResumen; ?></td>
                           </tr>
                           <tr>
                             <th>GASTOS:</th>
-                            <td>10</td>
+                            <td id="gastosResumen"><?= $gastosResumen; ?></td>
                           </tr>
                         </tbody>
+                        <caption class="text-end mt-3">TOTAL :&nbsp;&nbsp;&nbsp;<span id="totalResumen"><?= $totalResumen; ?></span></caption>
                       </table>
                     </div>
                   </div>
                 </div>
                 <div class="card-footer">
                   <div class="d-grid d-md-flex gap-2 justify-content-md-around">
-                    <button class="btn btn-secondary btn-sm" onclick="fntNewBase()  ">
+                    <button class="btn btn-secondary btn-sm" onclick="fntNewBase(<?= $baseResumen; ?>, <?= $totalResumen; ?>)">
                       <i class="bi bi-plus-circle me-1"></i>
                       Base
                     </button>
-                    <button class="btn btn-secondary btn-sm" onclick="fntNewVenta()">
+                    <button class="btn btn-secondary btn-sm" onclick="fntNewVenta(<?= $prestamoResumen; ?>, <?= $totalResumen; ?>)">
                       <i class="bi bi-plus-circle me-1"></i>
                       Préstamo
                     </button>
-                    <button class="btn btn-secondary btn-sm" onclick="fntNewGasto()">
+                    <button class="btn btn-secondary btn-sm" onclick="fntNewGasto(<?= $gastosResumen; ?>, <?= $totalResumen; ?>)">
                       <i class="bi bi-plus-circle me-1"></i>
                       Gasto
                     </button>

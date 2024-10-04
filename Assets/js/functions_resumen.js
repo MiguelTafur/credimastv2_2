@@ -40,7 +40,7 @@ function fntClientesPrestamo()
 }
 
 //VISTA PARA CREAR UN PRÉSTAMO
-function fntNewVenta()
+function fntNewVenta(prestamo, total)
 {
     $('#listFormato').select2({
         dropdownParent: $('#modalFormPrestamo'),
@@ -90,11 +90,11 @@ function fntNewVenta()
                 return false;
             }
         }
-        fntRegistrarPrestamo();
+        fntRegistrarPrestamo(prestamo, total);
     }
 }
 //REGISTRAR PRÉSTAMO
-async function fntRegistrarPrestamo()
+async function fntRegistrarPrestamo(prestamo, total)
 {
     divLoading.style.display = "flex";
     try {
@@ -107,11 +107,13 @@ async function fntRegistrarPrestamo()
         });
         json = await resp.json();
         if(json.status) {
+            let monto = parseInt(formPrestamos.children[2].children[1].value);
+            document.querySelector('#prestamoResumen').textContent = prestamo + monto;
+            document.querySelector('#totalResumen').textContent = total - monto;
             $('#modalFormPrestamo').modal("hide");
             formPrestamos.reset();
             $('#listClientes').val(null).trigger('change');
             $('#listFormato').val(null).trigger('change');
-            //Swal.fire("Roles de usuario", json.msg ,"success");
             Toast.fire({
                 icon: "success",
                 title: json.msg

@@ -21,6 +21,9 @@ class Resumen extends Controllers{
 		//TRAE EL RESUMEN ANTERIOR CON ESTADO 0
 		$data['resumenAnterior'] = $this->model->selectResumenAnterior($_SESSION['idRuta']);
 
+		//TRAE EL RESUMEN ANTERIOR CON ESTADO 0 Y LA FECHA ACTUAL
+		$data['resumenActual'] = $this->model->selectResumenAnterior($_SESSION['idRuta']);
+
 		$this->views->getView($this,"resumen",$data);
 	}
 }

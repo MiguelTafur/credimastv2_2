@@ -21,7 +21,7 @@ class ResumenModel extends Mysql
         $this->intIdRuta = $ruta;
         $this->strFecha = $fecha ?? NOWDATE;
 
-        $sql = "SELECT re.idresumen, re.base, re.cobrado, re.ventas, re.gastos, re.datecreated FROM resumen re
+        $sql = "SELECT re.idresumen, re.base, re.cobrado, re.ventas, re.gastos, re.total, re.datecreated FROM resumen re
                 LEFT OUTER JOIN persona pe ON(re.personaid = pe.idpersona) 
                 WHERE pe.codigoruta = $this->intIdRuta AND re.status = 0 AND re.datecreated = '{$this->strFecha}'";
         $request = $this->select($sql);
@@ -33,7 +33,7 @@ class ResumenModel extends Mysql
     {
         $this->intIdRuta = $ruta;
 
-        $sql = "SELECT re.idresumen, re.base, re.cobrado, re.ventas, re.gastos, re.datecreated, re.status FROM resumen re
+        $sql = "SELECT re.idresumen, re.base, re.cobrado, re.ventas, re.gastos, re.total, re.datecreated, re.status FROM resumen re
                 LEFT OUTER JOIN persona pe ON(re.personaid = pe.idpersona) 
                 WHERE pe.codigoruta = $this->intIdRuta AND re.status = 0 AND re.datecreated != '".NOWDATE."'";
         $request = $this->select($sql);
