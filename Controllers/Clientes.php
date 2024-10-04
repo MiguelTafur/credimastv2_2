@@ -94,14 +94,14 @@ class Clientes extends Controllers{
 	{
 		if($_POST)
 		{
-			if(empty($_POST['txtIdentificacion']) || empty($_POST['txtNombre']) || empty($_POST['txtApellido']) || empty($_POST['txtTelefono']) || empty($_POST['txtDireccion1']))
+			if(empty($_POST['txtIdentificacion']) || empty($_POST['txtNombre']) || empty($_POST['txtNegocio']) || empty($_POST['txtTelefono']) || empty($_POST['txtDireccion1']))
 			{
-				$arrRespose = array("status" => false, "msg" => "Datos incorrectos.");
+				$arrResponse = array("status" => false, "msg" => "Datos incorrectos.");
 			}else{
 				$idCliente = intval($_POST['idCliente']);
 				$strIdentificacion = strClean($_POST['txtIdentificacion']);
 				$strNombre =  ucwords(strClean($_POST['txtNombre']));
-				$strApellido =  ucwords(strClean($_POST['txtApellido']));
+				$strApellido =  ucwords(strClean($_POST['txtNegocio']));
 				$intTelefono = intval(strClean($_POST['txtTelefono']));
 				$strDireccion1 =  strClean($_POST['txtDireccion1']);
 				$strDireccion2 =  strClean($_POST['txtDireccion2']);

@@ -1,6 +1,6 @@
 <?php 
   headerAdmin($data);
-  getModal('modalResumen',$data); 
+  getModal('modalPrestamos',$data); 
 ?>
 
 <main class="app-content">
@@ -67,15 +67,15 @@
                 </div>
                 <div class="card-footer">
                   <div class="d-grid d-md-flex gap-2 justify-content-md-around">
-                    <button class="btn btn-secondary btn-sm">
+                    <button class="btn btn-secondary btn-sm" onclick="fntNewBase()  ">
                       <i class="bi bi-plus-circle me-1"></i>
                       Base
                     </button>
-                    <button class="btn btn-secondary btn-sm">
+                    <button class="btn btn-secondary btn-sm" onclick="fntNewVenta()">
                       <i class="bi bi-plus-circle me-1"></i>
                       Venta
                     </button>
-                    <button class="btn btn-secondary btn-sm">
+                    <button class="btn btn-secondary btn-sm" onclick="fntNewGasto()">
                       <i class="bi bi-plus-circle me-1"></i>
                       Gasto
                     </button>

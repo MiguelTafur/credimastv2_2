@@ -357,7 +357,7 @@ function fntNewClientePrestamo()
             e.preventDefault();
             let strIdentificacion = document.querySelector('#txtIdentificacion').value;
             let strNombre = document.querySelector('#txtNombre').value;
-            let strApellido = document.querySelector('#txtApellido').value;
+            let strApellido = document.querySelector('#txtNegocio').value;
             let intTelefono = document.querySelector('#txtTelefono').value;
             let strDireccion1 = document.querySelector('#txtDireccion1').value;
             let strDireccion2 = document.querySelector('#txtDireccion2').value;
