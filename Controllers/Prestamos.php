@@ -207,12 +207,6 @@ class Prestamos extends Controllers{
 			{
 				$arrResponse = array("status" => false, "msg" => "Datos incorrectos.");
 			}else{
-				/*if(!empty($_POST['inputClienteRenovar'])){
-					$intClienteId = intval($_POST['inputClienteRenovar']);
-				}
-				if(!empty($_POST['listClientId'])){
-					$intClienteId = intval($_POST['listClientes']);
-				}*/
 				$idPrestamo = intval($_POST['idPrestamo']);
 				$intClienteId = intval($_POST['listClientes']);
 				$intMonto = intval($_POST['txtMonto']);
@@ -227,7 +221,7 @@ class Prestamos extends Controllers{
 				$contador = 0;
 
 				//VALIDA SI HAY UN RESUMEN Y DEVUELVE LA FECHA, Si NO, LO CREA.
-				$fechaPrestamo = setDelResumenActual('set')['datecreated'] ?? NOWDATE;
+				$fechaPrestamo = setDelResumenActual('set', $ruta)['datecreated'] ?? NOWDATE;
 
 				//Calculando el vencimiento del crédito
 				$fechaEnSegundos = strtotime($fechaPrestamo);
@@ -315,7 +309,6 @@ class Prestamos extends Controllers{
 																	$strObservacion,
 																	$fechaPrestamo,
 																	$fechaFinal,
-																	$usuario,
 																	$ruta);
 				}
 				
@@ -345,12 +338,11 @@ class Prestamos extends Controllers{
 
 				$intIdprestamo = intval($_POST['idPrestamo']);
 				$ruta = $_SESSION['idRuta'];
-        		$usuario = $_SESSION['idUser'];
 
-				$requestDelete = $this->model->deletePrestamo($intIdprestamo, $usuario, $ruta);
+				$requestDelete = $this->model->deletePrestamo($intIdprestamo, $ruta);
 				if($requestDelete > 0)
 				{
-					$resumen = setDelResumenActual('del');
+					$resumen = setDelResumenActual('del', $ruta);
 					$status = is_array($resumen) ? false : true;
 					if($status == true AND $resumen != NOWDATE)
 					{
@@ -366,6 +358,69 @@ class Prestamos extends Controllers{
 				}
 				else{
 					$arrResponse = array('status' => false, 'msg' => 'Error al eliminar el Préstamo.');
+				}
+				echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);	
+			}
+		}
+		die();
+	}
+
+	public function accion()
+	{
+		if($_POST)
+		{
+			if($_SESSION['permisosMod']['d']){
+
+				$ruta = $_POST['idRuta'];
+
+				$requestAccion = $this->model->accionPagos($ruta);
+				if($requestAccion > 0)
+				{	
+					$arrResponse = array('status' => true, 'msg' => 'Consulta realizada.', 'request' => $requestAccion);
+				}else{
+					$arrResponse = array('status' => false, 'msg' => 'Error al consutar.');
+				}
+				echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);	
+			}
+		}
+		die();
+	}
+
+	public function accionPrestamos()
+	{
+		if($_POST)
+		{
+			if($_SESSION['permisosMod']['d']){
+
+				$ruta = $_POST['idRuta'];
+
+				$requestAccion = $this->model->accionPrestamos($ruta);
+				if($requestAccion > 0)
+				{	
+					$arrResponse = array('status' => true, 'msg' => 'Consulta realizada.');
+				}else{
+					$arrResponse = array('status' => false, 'msg' => 'Error al consutar.');
+				}
+				echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);	
+			}
+		}
+		die();
+	}
+
+	public function accionPrestamosUsuario()
+	{
+		if($_POST)
+		{
+			if($_SESSION['permisosMod']['d']){
+
+				$ruta = $_POST['idRuta'];
+
+				$requestAccion = $this->model->accionPrestamosUsuario($ruta);
+				if($requestAccion > 0)
+				{	
+					$arrResponse = array('status' => true, 'msg' => 'Consulta realizada.');
+				}else{
+					$arrResponse = array('status' => false, 'msg' => 'Error al consutar.');
 				}
 				echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);	
 			}

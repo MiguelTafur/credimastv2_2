@@ -72,8 +72,7 @@ class PrestamosModel extends Mysql
         $this->intIdRuta = $ruta;
         $this->strFecha = $fecha;
 
-        $sql = "SELECT SUM(pr.monto) as sumaPrestamos FROM prestamos pr LEFT OUTER JOIN persona pe ON(pr.personaid = pe.idpersona) 
-                WHERE pe.codigoruta = $this->intIdRuta AND pr.status != 0 AND pr.datecreated = '{$this->strFecha}'";
+        $sql = "SELECT SUM(monto) as sumaPrestamos FROM prestamos WHERE codigoruta = $this->intIdRuta AND status != 0 AND datecreated = '{$this->strFecha}'";
         $request = $this->select($sql);
         return $request;
     }
@@ -82,6 +81,8 @@ class PrestamosModel extends Mysql
     public function insertPrestamo(int $cliente, int $monto, int $taza, int $plazo, int $formato, string $observacion, string $fecha, string $vence, int $usuario, int $ruta)
     {
         $this->intIdCliente = $cliente;
+        $this->intIdUsuario = $usuario;
+        $this->intIdRuta = $ruta;
         $this->intMonto = $monto;
         $this->intTaza = $taza;
         $this->intFormato = $formato;
@@ -92,11 +93,11 @@ class PrestamosModel extends Mysql
         
         $return = 0;
 
-        $sumaPrestamos = $this->sumaPrestamos($ruta, $this->strFecha)['sumaPrestamos'];
-
         //INSERTA EL PRESTAMO
-        $query_insert = "INSERT INTO prestamos(personaid,monto,formato,plazo,taza,observacion,hora,datecreated,fechavence) VALUES(?,?,?,?,?,?,?,?,?)";
+        $query_insert = "INSERT INTO prestamos(personaid,codigoruta,usuarioid,monto,formato,plazo,taza,observacion,hora,datecreated,fechavence) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
         $arrData = array($this->intIdCliente,
+                        $this->intIdRuta,
+                        $this->intIdUsuario,
                         $this->intMonto,
                         $this->intFormato,
                         $this->intPlazo,
@@ -110,10 +111,10 @@ class PrestamosModel extends Mysql
         if(!empty($request_insert))
         {
             //TRAE LA SUMA DE LOS PRESTAMOS
-            $sumaPrestamos = $this->sumaPrestamos($ruta, $this->strFecha)['sumaPrestamos'];
+            $sumaPrestamos = $this->sumaPrestamos($this->intIdRuta, $this->strFecha)['sumaPrestamos'];
 
             //ACTUALIZA LA COLUMNA "VENTAS" DE LA TABLA RESUMEN
-            $updateResumen = setUpdateResumen($usuario, $sumaPrestamos, 3, $this->strFecha);
+            $updateResumen = setUpdateResumen($this->intIdRuta, $sumaPrestamos, 3, $this->strFecha);
 
             $return = $updateResumen;
 
@@ -121,13 +122,14 @@ class PrestamosModel extends Mysql
             $return = "0";    
         }
 
-        return $return;
+        return $request_insert;
     }
 
     //ACTUALIZA UN PRÉSTAMOS
-    public function updatePrestamo(int $idprestamo ,int $monto, int $taza, int $plazo, int $formato, string $observacion, string $fechaprestamo, string $vence, int $usuario, int $ruta)      
+    public function updatePrestamo(int $idprestamo ,int $monto, int $taza, int $plazo, int $formato, string $observacion, string $fechaprestamo, string $vence, int $ruta)      
     {
         $this->intIdPrestamo = $idprestamo;
+        $this->intIdRuta = $ruta;
         $this->intMonto = $monto;
         $this->intTaza = $taza;
         $this->intFormato = $formato;
@@ -143,21 +145,23 @@ class PrestamosModel extends Mysql
         if(!empty($request))
         {
             //TRAE LA SUMA DE LOS PRESTAMOS
-            $sumaPrestamos = $this->sumaPrestamos($ruta, $this->strFecha)['sumaPrestamos'];
+            $sumaPrestamos = $this->sumaPrestamos($this->intIdRuta, $this->strFecha)['sumaPrestamos'];
 
             //ACTUALIZA LA COLUMNA "VENTAS" DE LA TABLA RESUMEN
-            setUpdateResumen($usuario, $sumaPrestamos, 3, $this->strFecha);
+            setUpdateResumen($this->intIdRuta, $sumaPrestamos, 3, $this->strFecha);
         }
 
         return $request;
     }
 
     //ELIMINA EL PRÉSTAMO
-    public function deletePrestamo(int $idprestamo, int $usuario, int $ruta)
+    public function deletePrestamo(int $idprestamo, int $ruta)
     {
         $this->intIdPrestamo = $idprestamo;
+        $this->intIdRuta = $ruta;
         $return = 0;
 
+        //TRAE LA FECHA
         $fechaPrestamo = $this->selectPrestamo($this->intIdPrestamo)['datecreated'];
 
         //VERIFICA SI HAY PAGAMENTOS ASOCIADOS AL PRÉSTAMO
@@ -173,16 +177,72 @@ class PrestamosModel extends Mysql
             if(!empty($request))
             {
                 //TRAE LA SUMA DE LOS PRESTAMOS
-                $sumaPrestamos = $this->sumaPrestamos($ruta, $fechaPrestamo)['sumaPrestamos'];
+                $sumaPrestamos = $this->sumaPrestamos($this->intIdRuta, $fechaPrestamo)['sumaPrestamos'];
 
                 //ACTUALIZA LA COLUMNA "VENTAS" DE LA TABLA RESUMEN
-                setUpdateResumen($usuario, $sumaPrestamos, 3, $fechaPrestamo);
-            }
+                setUpdateResumen($this->intIdRuta, $sumaPrestamos, 3, $fechaPrestamo);
+            } 
 
             $return = $request;
         } else {
             $return = '0';
         }
         return $return;
+    }
+
+    //ACTUALIZA LA COLUMNA PERSONAID DE LA TABLA PAGOS
+    public function accionPagos(int $ruta)
+    {
+        $this->intIdRuta = $ruta;
+        $sql = "SELECT * FROM prestamos WHERE codigoruta = $this->intIdRuta AND status != 0";
+        $request = $this->select_all($sql);
+        
+        foreach ($request as $prestamo) {
+            $idprestamo = $prestamo['idprestamo'];
+            $usuarioId = $prestamo['usuarioid'];
+            $sql2 = "SELECT * FROM pagos WHERE prestamoid = $idprestamo";
+            $request2 = $this->select_all($sql2);
+            foreach ($request2 as $pago) {
+                $query_update = "UPDATE pagos SET personaid = ? WHERE prestamoid = $idprestamo";
+                $arrData = array($usuarioId);
+                $this->update($query_update, $arrData);
+            }   
+        }
+    }
+
+    //ACTUALIZA LA COLUMNA CODIGORUTA DE LA TABLA PRESTAMOS
+    public function accionPrestamos(int $ruta)
+    {
+        $this->intIdRuta = $ruta;
+        $sql = "SELECT * FROM persona WHERE codigoruta = $this->intIdRuta AND rolid = 7";
+        $request = $this->select_all($sql);
+        
+        foreach ($request as $persona) {
+            $idpersona = $persona['idpersona'];
+            $sql2 = "SELECT * FROM prestamos WHERE personaid = $idpersona";
+            $request2 = $this->select_all($sql2);
+            for ($i=0; $i < COUNT($request2); $i++) { 
+                $query_update = "UPDATE prestamos SET codigoruta = ? WHERE personaid = $idpersona";
+                $arrData = array($this->intIdRuta);
+                $this->update($query_update, $arrData);
+            }
+        }
+    }
+
+    public function accionPrestamosUsuario(int $ruta)
+    {
+        $this->intIdRuta = $ruta;
+        $sql = "SELECT * FROM persona WHERE codigoruta = $this->intIdRuta AND rolid != 7";
+        $request = $this->select($sql);
+
+        $idpersona = $request['idpersona'];
+
+        $sql2 = "SELECT * FROM prestamos WHERE codigoruta = $this->intIdRuta AND status != 0";
+        $request2 = $this->select_all($sql2);
+        for ($i=0; $i < COUNT($request2); $i++) { 
+            $query_update = "UPDATE prestamos SET usuarioid = ? WHERE codigoruta = $this->intIdRuta";
+            $arrData = array($idpersona);
+            $this->update($query_update, $arrData);
+        }
     }
 }

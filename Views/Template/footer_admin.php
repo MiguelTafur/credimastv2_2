@@ -2,9 +2,7 @@
     <script>
         const base_url = "<?= base_url(); ?>";
         const smoney = "<?= SMONEY; ?>";
-        /*const ruta = "<?= $_SESSION['idRuta']; ?>";*/
-        const mmObj = window.matchMedia("(max-width: 959px)");
-        const mmObj2 = window.matchMedia("(min-width: 960px)");
+        const ruta = "<?= $_SESSION['idRuta']; ?>";
     </script>
 
     <!-- jquery js-->

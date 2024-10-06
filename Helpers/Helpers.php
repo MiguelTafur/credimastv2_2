@@ -89,25 +89,25 @@
     }
 
     //INSERTA O ELIMINA EL RESUMEN
-    function setDelResumenActual(string $tipo)
+    function setDelResumenActual(string $tipo, int $ruta)
     {
         require_once("Models/ResumenModel.php");
         $objResumen = new ResumenModel();
 
         //VERIFICA SI HAY UN RESUMEN ANTERIOR CREADO
-        $request = $objResumen->selectResumenAnterior($_SESSION['idRuta']);
+        $request = $objResumen->selectResumenAnterior($ruta);
 
         //SI HAY UN RESUMEN GUARDA LA FECHA EN LA VARIABLE
         $request = $request['datecreated'] ?? NULL;
 
         //TRAE EL RESUMEN CON FECHA DETERMINADA
-        $request = $objResumen->selectResumenActual($_SESSION['idRuta'], $request);
+        $request = $objResumen->selectResumenActual($ruta, $request);
         if($tipo == 'set')
         {
             if(empty($request))
             {
                 //INSERTA EL RESUMEN
-                setResumen($_SESSION['idUser']);
+                setResumen($_SESSION['idUser'], $ruta);
                 return true;
             } else {
                 return $request;
@@ -126,20 +126,20 @@
     }
 
     //INSERTA EL RESUMEN
-    function setResumen(int $idpersona)
+    function setResumen(int $idpersona, int $ruta)
     {
         require_once("Models/ResumenModel.php");
         $objResumen = new ResumenModel();
-        $request = $objResumen->insertResumen($idpersona);
+        $request = $objResumen->insertResumen($idpersona, $ruta);
         return $request;
     }
 
     //ACTUALIZA EL RESUMEN
-    function setUpdateResumen(int $idpersona, $valor, int $tipo, string $fecha)
+    function setUpdateResumen(int $ruta, $valor, int $tipo, string $fecha)
     {
         require_once("Models/ResumenModel.php");
         $objResumen = new ResumenModel();
-        $request = $objResumen->updateResumen($idpersona, $valor, $tipo, $fecha);
+        $request = $objResumen->updateResumen($ruta, $valor, $tipo, $fecha);
         return $request;
     }
 

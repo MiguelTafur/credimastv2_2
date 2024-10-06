@@ -20,10 +20,8 @@ class ResumenModel extends Mysql
     {
         $this->intIdRuta = $ruta;
         $this->strFecha = $fecha ?? NOWDATE;
-
-        $sql = "SELECT re.idresumen, re.base, re.cobrado, re.ventas, re.gastos, re.total, re.datecreated FROM resumen re
-                LEFT OUTER JOIN persona pe ON(re.personaid = pe.idpersona) 
-                WHERE pe.codigoruta = $this->intIdRuta AND re.status = 0 AND re.datecreated = '{$this->strFecha}'";
+        
+        $sql = "SELECT * FROM resumen WHERE codigoruta = $this->intIdRuta AND status = 0 AND datecreated = '{$this->strFecha}'";
         $request = $this->select($sql);
         return $request;
     }
@@ -33,54 +31,53 @@ class ResumenModel extends Mysql
     {
         $this->intIdRuta = $ruta;
 
-        $sql = "SELECT re.idresumen, re.base, re.cobrado, re.ventas, re.gastos, re.total, re.datecreated, re.status FROM resumen re
-                LEFT OUTER JOIN persona pe ON(re.personaid = pe.idpersona) 
-                WHERE pe.codigoruta = $this->intIdRuta AND re.status = 0 AND re.datecreated != '".NOWDATE."'";
+        $sql = "SELECT * FROM resumen WHERE codigoruta = $this->intIdRuta AND status = 0 AND datecreated != '".NOWDATE."'";
         $request = $this->select($sql);
         return $request;
     }
 
     //REGISTRANDO EL RESUMEN 
-    public function insertResumen(int $idpersona)
+    public function insertResumen(int $idpersona, int $ruta)
     {
         $this->intIdPersona = $idpersona;
-        $query_insert = "INSERT INTO resumen(personaid, datecreated) VALUES(?,?)";
-        $arrData = array($this->intIdPersona, NOWDATE);
+        $this->intIdRuta = $ruta;
+        $query_insert = "INSERT INTO resumen(personaid, codigoruta, datecreated) VALUES(?,?,?)";
+        $arrData = array($this->intIdPersona, $this->intIdRuta, NOWDATE);
         $request = $this->insert($query_insert, $arrData);
         return $request;
     }
 
     //ACTUALIZA EL RESUMEN SEGÚN EL TIPO(BASE, COBRADO, VENTAS, GASTOS)
-    public function updateResumen(int $idpersona, $valor, int $tipo, string $fecha)
+    public function updateResumen(int $ruta, $valor, int $tipo, string $fecha)
     {
-        $this->intIdPersona = $idpersona;
+        $this->intIdRuta = $ruta;
         $this->intValor = $valor;
         $this->intTipo = $tipo;
         $this->strFecha = $fecha;
 
         if($this->intTipo == 1)
         {
-            $query_update = "UPDATE resumen SET base = ? WHERE personaid = $this->intIdPersona AND datecreated = '{$this->strFecha}'";
+            $query_update = "UPDATE resumen SET base = ? WHERE codigoruta = $this->intIdRuta AND datecreated = '{$this->strFecha}'";
         } else if($this->intTipo == 2){
-            $query_update = "UPDATE resumen SET cobrado = ? WHERE personaid = $this->intIdPersona AND datecreated = '{$this->strFecha}'";
+            $query_update = "UPDATE resumen SET cobrado = ? WHERE codigoruta = $this->intIdRuta AND datecreated = '{$this->strFecha}'";
         } else if($this->intTipo == 3){
-            $query_update = "UPDATE resumen SET ventas = ? WHERE personaid = $this->intIdPersona AND datecreated = '{$this->strFecha}'";
+            $query_update = "UPDATE resumen SET ventas = ? WHERE codigoruta = $this->intIdRuta AND datecreated = '{$this->strFecha}'";
         } else if($this->intTipo == 4){
-            $query_update = "UPDATE resumen SET gastos = ? WHERE personaid = $this->intIdPersona AND datecreated = '{$this->strFecha}'";
+            $query_update = "UPDATE resumen SET gastos = ? WHERE codigoruta = $this->intIdRuta AND datecreated = '{$this->strFecha}'";
         }
 
         $arrData = array($this->intValor);
         $request = $this->update($query_update, $arrData);
 
         //TRAE LOS DATOS DEL RESUMEN
-        $sql = "SELECT base, cobrado, ventas, gastos, total FROM resumen WHERE personaid = $this->intIdPersona AND datecreated = '{$this->strFecha}'";
+        $sql = "SELECT base, cobrado, ventas, gastos, total FROM resumen WHERE codigoruta = $this->intIdRuta AND datecreated = '{$this->strFecha}'";
         $request = $this->select($sql);
 
         //CALCULA EL TOTAL DEL RESUMEN
         $request['total'] = ($request['base'] + $request['cobrado']) - ($request['ventas'] + $request['gastos']);
 
         //ACTUALIZA EL TOTAL DEL RESUMEN
-        $query_update = "UPDATE resumen SET total = ? WHERE personaid = $this->intIdPersona AND datecreated = '{$this->strFecha}'";
+        $query_update = "UPDATE resumen SET total = ? WHERE codigoruta = $this->intIdRuta AND datecreated = '{$this->strFecha}'";
         $arrData = array($request['total']);
         $request = $this->update($query_update, $arrData);
 

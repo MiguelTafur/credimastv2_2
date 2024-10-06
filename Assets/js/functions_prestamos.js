@@ -699,3 +699,129 @@ function openModal()
 
     $('#modalFormPrestamo').modal('show');
 }
+
+async function accion()
+{
+    const formData = new FormData();
+    formData.append('idRuta', ruta);
+
+    //divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Prestamos/accion', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            Toast.fire({
+                icon: "success",
+                title: json.msg
+            });
+            
+        }else{
+            Swal.fire("Error", json.msg, "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error"
+            });*/
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+async function accionPrestamos()
+{
+    const formData = new FormData();
+    formData.append('idRuta', ruta);
+
+    //divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Prestamos/accionPrestamos', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            Toast.fire({
+                icon: "success",
+                title: json.msg
+            });
+            
+        }else{
+            Swal.fire("Error", json.msg, "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error"
+            });*/
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+async function accionPrestamosUsuario()
+{
+    const formData = new FormData();
+    formData.append('idRuta', ruta);
+
+    //divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Prestamos/accionPrestamosUsuario', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            Toast.fire({
+                icon: "success",
+                title: json.msg
+            });
+            
+        }else{
+            Swal.fire("Error", json.msg, "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error"
+            });*/
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}

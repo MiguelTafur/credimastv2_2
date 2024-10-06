@@ -51,7 +51,7 @@ function fntNewRuta()
 
             if(strNombre === '' || strCodigo === '')
             {
-                swal("Atención", "Escribe un nombre.", "error");
+                swal("Atención", "Todos los campos son obligatorios.", "error");
                 return false;
             }
 

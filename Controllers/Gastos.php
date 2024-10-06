@@ -52,4 +52,49 @@ class Gastos extends Controllers{
 		die();
 	}
 
+	//REGISTRAR GASTO
+	public function setGastos()
+    {
+        if($_POST)
+        {
+            if(empty($_POST['txtNombre']) || empty($_POST['txtValor']))
+            {
+                $arrResponse = array("status" => false, "msg" => "Error de datos.");
+            }else{
+                $idGasto = intval($_POST['idGasto']);
+                $strNombre =  ucwords(strClean($_POST['txtNombre']));
+                $intValor = intval($_POST['txtValor']);
+                $request_user = "";
+
+                if($idGasto === 0)
+                {
+                    $option = 1;
+                    if($_SESSION['permisosMod']['w']){
+						//VALIDA SI HAY UN RESUMEN Y DEVUELVE LA FECHA, Si NO, LO CREA.
+						$fechaGasto = setDelResumenActual('set')['datecreated'] ?? NOWDATE;
+                        $request_user = $this->model->insertGasto($_SESSION['idUser'],$strNombre,$intValor, $fechaGasto, $_SESSION['idRuta']);
+                    }
+                }else{
+                        $option = 2;
+                        if($_SESSION['permisosMod']['u']){
+                        $request_user = $this->model->updateGasto($idGasto,$intValor,$strNombre);
+                        }
+                    }
+
+                if($request_user > 0)
+                {
+                    if($option === 1){
+                        $arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.');
+                    }else{
+                        $arrResponse = array('status' => true, 'msg' => 'Datos actualizados correctamente.');
+                    }
+                }else{
+                    $arrResponse = array("status" => false, "msg" => 'No es posible almacenar los datos.');
+                }
+            }	
+            echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+        }
+        die();
+    }
+
 }
