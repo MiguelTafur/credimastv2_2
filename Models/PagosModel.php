@@ -4,6 +4,8 @@ class PagosModel extends Mysql
 {
     PRIVATE $intIdPrestamo;
     PRIVATE $intIdPago;
+    PRIVATE $intIdRuta;
+    PRIVATE $intIdUsuario;
     PRIVATE $intPago;
     PRIVATE $strFecha;
 
@@ -22,14 +24,14 @@ class PagosModel extends Mysql
     }
 
     //TRAE LA SUMA DE LOS TODOS PAGAMENTOS(CON LA FECHA ACTUAL) DEL PRÉSTAMO
-    public function sumaPagamentosFechaActual(string $fecha)
+    public function sumaPagamentosFechaActual(string $fecha, int $ruta)
     {
-        $ruta = $_SESSION['idRuta'];
+        $this->intIdRuta = $ruta;
         $this->strFecha = $fecha;
 
         $sql = "SELECT SUM(pa.abono) as sumaPagos FROM pagos pa LEFT OUTER JOIN prestamos pr ON(pa.prestamoid = pr.idprestamo)
                 LEFT OUTER JOIN persona pe ON(pr.personaid = pe.idpersona) 
-                WHERE pe.codigoruta = $ruta AND pr.status != 0 AND pa.datecreated = '{$this->strFecha}'";
+                WHERE pe.codigoruta = $this->intIdRuta AND pr.status != 0 AND pa.datecreated = '{$this->strFecha}'";
         $request = $this->select($sql);
         return $request;
     }
@@ -53,9 +55,11 @@ class PagosModel extends Mysql
     }
 
     //REGSITRA UN PAGAMENTO
-    public function insertPago(int $idprestamo, int $pago, int $usuario, string $fecha = NULL)
+    public function insertPago(int $idprestamo, int $pago, int $usuario, int $ruta, string $fecha = NULL)
     {
         $this->intIdPrestamo = $idprestamo;
+        $this->intIdUsuario = $usuario;
+        $this->intIdRuta = $ruta;
         $this->intPago = $pago;
         $this->strFecha = $fecha ?? NOWDATE;
         $return = 0;
@@ -72,8 +76,8 @@ class PagosModel extends Mysql
             if($saldo >= $this->intPago)
             {
                 //INSERTA EL PAGAMENTO
-                $query_insert = "INSERT INTO pagos(prestamoid,abono,hora,datecreated) VALUES(?,?,?,?)";
-                $arrData = array($this->intIdPrestamo,$this->intPago,NOWTIME,$this->strFecha);
+                $query_insert = "INSERT INTO pagos(prestamoid,personaid,abono,hora,datecreated) VALUES(?,?,?,?,?)";
+                $arrData = array($this->intIdPrestamo,$this->intIdUsuario,$this->intPago,NOWTIME,$this->strFecha);
                 $request_insert = $this->insert($query_insert,$arrData);
                 $return = $request_insert;
 
@@ -92,10 +96,10 @@ class PagosModel extends Mysql
                     }
 
                     //TRAE LA SUMA DE LOS PAGAMENTOS DEL PRÉSTAMO
-                    $sumaPagamentos = $this->sumaPagamentosFechaActual($this->strFecha)['sumaPagos'];
+                    $sumaPagamentos = $this->sumaPagamentosFechaActual($this->strFecha, $this->intIdRuta)['sumaPagos'];
 
                     //ACTUALIZA LA COLUMNA "COBRADO" DE LA TABLA RESUMEN
-                    setUpdateResumen($usuario, $sumaPagamentos, 2, $this->strFecha);
+                    setUpdateResumen($this->intIdRuta, $sumaPagamentos, 2, $this->strFecha);
                 }
             }else {
                 //PAGAMENTO REPETIDO
@@ -109,11 +113,11 @@ class PagosModel extends Mysql
     }
 
     //ELIMINA EL PAGAMENTO
-    public function deletePago(int $idprestamo, int $idpago, int $usuario)
+    public function deletePago(int $idprestamo, int $idpago, int $ruta)
     {
         $this->intIdPrestamo = $idprestamo;
         $this->intIdPago = $idpago;
-        $ruta = $_SESSION['idRuta'];
+        $this->intIdRuta = $ruta;
 
         //TRAE LA FECHA DEL PAGAMENTO
         $sql = "SELECT datecreated FROM pagos WHERE idpago = $this->intIdPago";
@@ -130,10 +134,10 @@ class PagosModel extends Mysql
             $return = $requestU;
 
             //TRAE LA SUMA DE LOS PAGAMENTOS DEL PRÉSTAMO
-            $sumaPagamentos = $this->sumaPagamentosFechaActual($requestDate['datecreated'])['sumaPagos'];
+            $sumaPagamentos = $this->sumaPagamentosFechaActual($requestDate['datecreated'], $this->intIdRuta)['sumaPagos'];
 
             //ACTUALIZA LA COLUMNA "COBRADO" DE LA TABLA RESUMEN
-            setUpdateResumen($usuario, $sumaPagamentos, 2, $requestDate['datecreated']);
+            setUpdateResumen($this->intIdRuta, $sumaPagamentos, 2, $requestDate['datecreated']);
 
         }else{
             //ERROR AL REGISTRAR EL PAGAMENTO

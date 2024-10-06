@@ -24,10 +24,12 @@ class Pagos extends Controllers{
 				$idPrestamo = intval(($_POST['idPrestamo']));
 				$intMonto = intval($_POST['pagoPrestamo']);
 				$usuario = $_SESSION['idUser'];
+				$ruta = $_SESSION['idRuta'];
 
 				//VALIDA SI HAY UN RESUMEN Y DEVUELVE LA FECHA, Si NO, LO CREA.
-				$fechaResumen = setDelResumenActual('set')['datecreated'] ?? NULL;
-				$request_pago = $this->model->insertPago($idPrestamo, $intMonto, $usuario, $fechaResumen);
+				$fechaResumen = setDelResumenActual('set', $ruta)['datecreated'] ?? NULL;
+
+				$request_pago = $this->model->insertPago($idPrestamo, $intMonto, $usuario, $ruta, $fechaResumen);
 
                 if($request_pago > 0)
                 {
@@ -97,13 +99,14 @@ class Pagos extends Controllers{
 				$intIdprestamo = intval($_POST['idPrestamo']);
 				$intIdPago = intval($_POST['idPago']);
 				$usuario = $_SESSION['idUser'];
+				$ruta = $_SESSION['idRuta'];
 
-				$requestDelete = $this->model->deletePago($intIdprestamo, $intIdPago, $usuario);
+				$requestDelete = $this->model->deletePago($intIdprestamo, $intIdPago, $ruta);
 				
 				if($requestDelete)
 				{
 					//ELIMINA EL RESUMEN SI LA BASE, EL COBRADO, LAS VENTAS, Y LOS GASTOS ESTÁN NULLOS
-					$resumen = setDelResumenActual('del');
+					$resumen = setDelResumenActual('del', $ruta);
 					$status = is_array($resumen) ? false : true;
 					if($status == true AND $resumen != NOWDATE)
 					{
