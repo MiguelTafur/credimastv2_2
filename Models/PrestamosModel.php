@@ -20,9 +20,9 @@ class PrestamosModel extends Mysql
     }
 
     //TRAE TODOS LOS PRÉSTAMOS
-    public function selectPrestamos()
+    public function selectPrestamos(int $ruta)
     {
-        $ruta = $_SESSION['idRuta'];
+        $this->intIdRuta = $ruta;
         $sql = "SELECT 
                     pr.idprestamo, 
                     pr.personaid,
@@ -40,7 +40,7 @@ class PrestamosModel extends Mysql
                 FROM prestamos pr 
                 INNER JOIN persona pe 
                 ON (pr.personaid = pe.idpersona)
-                WHERE (pe.codigoruta = $ruta and pr.status = 1) or (pe.codigoruta = $ruta AND pr.status = 2 and pr.datefinal = '" . NOWDATE . "') ORDER BY pr.datecreated ASC";
+                WHERE (pe.codigoruta = $this->intIdRuta and pr.status = 1) or (pe.codigoruta = $this->intIdRuta AND pr.status = 2 and pr.datefinal = '" . NOWDATE . "') ORDER BY pr.datecreated ASC";
         $request = $this->select_all($sql);
         return $request;
     }

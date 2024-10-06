@@ -29,9 +29,9 @@ class Prestamos extends Controllers{
 	{
 		if($_SESSION['permisosMod']['r'])
 		{
-			$arrData = $this->model->selectPrestamos();
+			$arrData = $this->model->selectPrestamos($_SESSION['idRuta']);
 
-			$resumenAnterior =getResumenAnterior();
+			$resumenAnterior = getResumenAnterior();
 			$fecha = $resumenAnterior['datecreated'] ?? NOWDATE;
 
 			for ($i=0; $i < count($arrData); $i++) {
