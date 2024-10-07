@@ -114,9 +114,58 @@ async function fntRegistrarGasto()
     return false;
 }
 
+//EDITAR GASTO
+async function fntEditInfo(idgasto)
+{
+    document.querySelector('#titleModal').innerHTML = "Actualizar Gasto";
+    document.querySelector('#btnText').innerHTML = "Actualizar";
+
+    const formData = new FormData();
+    formData.append('idGasto', idgasto);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url + '/Gastos/getGasto', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status)
+        {
+            document.querySelector("#idGasto").value = json.data.idgasto;
+            document.querySelector('#txtNombre').value = json.data.nombre;
+            document.querySelector('#txtValor').value = json.data.monto;
+            $('#modalFormGastos').modal('show');
+            
+        }else{
+            Swal.fire("Error", json.msg, "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error interno"
+            });*/
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
 function openModal()
 {
     document.querySelector('#idGasto').value ="";
+    document.querySelector('#titleModal').innerHTML = "Nuevo Gasto";
+    document.querySelector('#btnText').innerHTML = "Registrar";
     document.querySelector("#formGasto").reset();
     $('#modalFormGastos').modal('show');
 }

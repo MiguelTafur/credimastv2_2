@@ -6,7 +6,7 @@ class GastosModel extends Mysql
     PRIVATE $intIdRuta;
     PRIVATE $strFecha;
     PRIVATE $strNombre;
-    PRIVATE $intValor;
+    PRIVATE $intMonto;
     PRIVATE $intIdUsuario;
 
     public function __construct()
@@ -43,7 +43,7 @@ class GastosModel extends Mysql
         $this->intIdGasto = $idgasto;
 
         $sql = "SELECT * FROM gastos WHERE idgasto = $this->intIdGasto";
-        $request = $this->select_all($sql);
+        $request = $this->select($sql);
 
         return $request;
     }
@@ -64,13 +64,13 @@ class GastosModel extends Mysql
     {
         $this->intIdUsuario = $usuario;
         $this->strNombre = $nombre;
-        $this->intValor = $valor;
+        $this->intMonto = $valor;
         $this->strFecha = $fecha;
         $this->intIdRuta = $ruta;
         $return = 0;
 
         $query_insert = "INSERT INTO gastos(personaid, codigoruta, nombre, monto, hora, datecreated) VALUES(?,?,?,?,?,?)";
-        $arrData = array($this->intIdUsuario, $this->intIdRuta,$this->strNombre, $this->intValor, NOWTIME, $this->strFecha);
+        $arrData = array($this->intIdUsuario, $this->intIdRuta,$this->strNombre, $this->intMonto, NOWTIME, $this->strFecha);
         $request_insert = $this->insert($query_insert, $arrData);
         $return = $request_insert;
 
@@ -88,6 +88,30 @@ class GastosModel extends Mysql
         }   
 
         return $return;
+    }
+
+    public function updateGasto(int $idgasto, string $nombre,  int $monto, int $ruta, string $fecha)
+    {
+        $this->intIdGasto = $idgasto;
+        $this->strNombre = $nombre;
+        $this->intMonto = $monto;
+        $this->intIdRuta = $ruta;
+        $this->strFecha = $fecha;
+
+        $query_update = "UPDATE gastos SET nombre = ?, monto = ? WHERE idgasto = $this->intIdGasto";
+        $arrData = array($this->strNombre, $this->intMonto);
+        $request = $this->update($query_update, $arrData);
+
+        if(!empty($request))
+        {
+            //TRAE LA SUMA DE LOS GASTOS
+            $sumaGastos = $this->sumaGastos($this->intIdRuta, $this->strFecha)['sumaGastos'];
+
+            //ACTUALIZA LA COLUMNA "VENTAS" DE LA TABLA RESUMEN
+            setUpdateResumen($this->intIdRuta, $sumaGastos, 4, $this->strFecha);
+        }
+
+        return $request;
     }
 }
 

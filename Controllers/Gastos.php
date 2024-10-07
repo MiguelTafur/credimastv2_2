@@ -31,25 +31,59 @@ class Gastos extends Controllers{
 			$arrData = $this->model->selectGastos($_SESSION['idRuta']);
 			for ($i=0; $i < count($arrData); $i++) {
 				
-				$btnView = '';
 				$btnEdit = '';
 				$btnDelete = '';
 
-				if($_SESSION['permisosMod']['r']){
-					$btnView = '<button class="btn btn-secondary btn-sm me-1" onClick="fntViewInfo('.$arrData[$i]['idgasto'].')" title="Ver Gasto"><i class="bi bi-person-vcard-fill me-0"></i></button>';
-				}
-				if($_SESSION['permisosMod']['u']){
-					$btnEdit = '<button class="btn btn-warning btn-sm me-1" onClick="fntEditInfo('.$arrData[$i]['idgasto'].')" title="Editar Gasto"><i class="bi bi-pencil-square me-0"></i></button>';
-				}
-				if($_SESSION['permisosMod']['d']){
-					$btnDelete = '<button class="btn btn-danger btn-sm" onClick="fntDelInfo('.$arrData[$i]['idgasto'].')" title="Eliminar Gasto"><i class="bi bi-trash3-fill me-0"></i></button>';
+				$fecha = getResumenAnterior()['datecreated'] ?? NOWDATE;
+
+				if($arrData[$i]['datecreated'] == $fecha)
+				{
+					if($_SESSION['permisosMod']['u']){
+						$btnEdit = '<button class="btn btn-warning btn-sm me-1" onClick="fntEditInfo('.$arrData[$i]['idgasto'].')" title="Editar Gasto"><i class="bi bi-pencil-square me-0"></i></button>';
+					}
+				} else {
+					if($_SESSION['permisosMod']['u']){
+						$btnEdit = '<button class="btn btn-warning btn-sm me-1" title="Editar Gasto" disabled><i class="bi bi-pencil-square me-0"></i></button>';
+					}
 				}
 
-				$arrData[$i]['options'] = '<div class="text-center d-flex justify-content-center">'.$btnView.' '.$btnEdit.' '.$btnDelete.'</div>';
+				if($arrData[$i]['datecreated'] == $fecha)
+				{
+					if($_SESSION['permisosMod']['d']){
+						$btnDelete = '<button class="btn btn-danger btn-sm" onClick="fntDelInfo('.$arrData[$i]['idgasto'].')" title="Eliminar Gasto"><i class="bi bi-trash3-fill me-0"></i></button>';
+					}
+				} else {
+					if($_SESSION['permisosMod']['d']){
+						$btnDelete = '<button class="btn btn-danger btn-sm" title="Eliminar Gasto" disabled><i class="bi bi-trash3-fill me-0"></i></button>';
+					}
+				}
+
+				$arrData[$i]['options'] = '<div class="text-center d-flex justify-content-center">'.$btnEdit.' '.$btnDelete.'</div>';
 			}
 			echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
 		}
 		die();
+	}
+
+	//TRAE UN GASTO ESPECÍFICO
+	public function getGasto()
+	{
+		if($_SESSION['permisosMod']['r'])
+		{
+			$idgasto = intval($_POST['idGasto']);
+
+			if($idgasto > 0)
+			{
+				$arrData = $this->model->selectGasto($idgasto);
+				if(empty($arrData))
+				{
+					$arrResponse = array('status' => false, 'msg' => 'Datos no encontrados.');
+				}else{
+					$arrResponse = array('status' => true, 'data' => $arrData);
+				}
+				echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+			}
+		}
 	}
 
 	//REGISTRAR GASTO
@@ -68,18 +102,19 @@ class Gastos extends Controllers{
         		$usuario = $_SESSION['idUser'];
                 $request_user = "";
 
+				//VALIDA SI HAY UN RESUMEN Y DEVUELVE LA FECHA, Si NO, LO CREA.
+				$fechaGasto = setDelResumenActual('set', $ruta)['datecreated'] ?? NOWDATE;
+
                 if($idGasto === 0)
                 {
                     $option = 1;
                     if($_SESSION['permisosMod']['w']){
-						//VALIDA SI HAY UN RESUMEN Y DEVUELVE LA FECHA, Si NO, LO CREA.
-						$fechaGasto = setDelResumenActual('set', $ruta)['datecreated'] ?? NOWDATE;
                         $request_user = $this->model->insertGasto($usuario,$ruta,$strNombre,$intValor,$fechaGasto);
                     }
                 }else{
                         $option = 2;
                         if($_SESSION['permisosMod']['u']){
-                        $request_user = $this->model->updateGasto($idGasto,$intValor,$strNombre);
+                        $request_user = $this->model->updateGasto($idGasto,$strNombre,$intValor,$ruta,$fechaGasto);
                         }
                     }
 
