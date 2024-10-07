@@ -27,13 +27,14 @@
   <?php 
     if(!empty($data['resumenAnterior'])) {
       resumenAnterior($data);
+      $resumenAnterior = 'Anterior';
     } 
 
-    $baseResumen = $data['resumenActual']['base'] ?? 0;
-    $cobradoResumen = $data['resumenActual']['cobrado'] ?? 0;
-    $prestamoResumen = $data['resumenActual']['ventas'] ?? 0;
-    $gastosResumen = $data['resumenActual']['gastos'] ?? 0;
-    $totalResumen = $data['resumenActual']['total'] ?? 0;
+    $baseResumen = $data['resumenAnterior']['base'] ?? 0;
+    $cobradoResumen = $data['resumenAnterior']['cobrado'] ?? 0;
+    $prestamoResumen = $data['resumenAnterior']['ventas'] ?? 0;
+    $gastosResumen = $data['resumenAnterior']['gastos'] ?? 0;
+    $totalResumen = $data['resumenAnterior']['total'] ?? 0;
   ?>
 
   <!-- LISTA Y DASHBOARD -->
@@ -44,7 +45,7 @@
           <div class="row justify-content-center">
             <div class="col-6">
               <div class="card mb-4">
-                <div class="card-header text-center text-body-secondary h6">Información del Resumen</div>
+                <div class="card-header text-center text-body-secondary h6">Información del Resumen <?= $resumenAnterior ?? ''; ?></div>
                 <div class="card-body">
                   <div class="row justify-content-center">
                     <div class="col-12">
@@ -90,7 +91,7 @@
                 </div>
               </div>
               <div class="card">
-                <div class="card-header text-center text-body-secondary h6">Finalizar Resumen</div>
+                <div class="card-header text-center text-body-secondary h6">Finalizar Resumen <?= $resumenAnterior ?? ''; ?></div>
                 <div class="card-body text-center">
                   <button class="btn btn-warning" type="submit">
                     <i class="bi bi-check-circle-fill"></i>
