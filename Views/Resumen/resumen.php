@@ -107,18 +107,33 @@
                 </div>
                 <div class="card-footer">
                   <div class="d-grid d-md-flex gap-2 justify-content-md-around">
-                    <button class="btn btn-secondary btn-sm <?= $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" onclick="fntNewBase(<?= $baseResumen; ?>, <?= $totalResumen; ?>)">
-                      <i class="bi bi-plus-circle me-1"></i>
-                      Base
-                    </button>
-                    <button class="btn btn-secondary btn-sm <?= $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" onclick="fntNewVenta(<?= !empty($prestamoResumen) ? $prestamoResumen : $prestamoResumenActual; ?>, <?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?>)">
-                      <i class="bi bi-plus-circle me-1"></i>
-                      Préstamo
-                    </button>
-                    <button class="btn btn-secondary btn-sm <?= $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" onclick="fntNewGasto(<?= !empty($gastosResumen) ? $gastosResumen : $gastosResumenActual; ?>, <?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?>)">
-                      <i class="bi bi-plus-circle me-1"></i>
-                      Gasto
-                    </button>
+                    <div class="btn-group" role="group" aria-label="prestamos">
+                      <button class="btn btn-secondary btn-sm me-1 <?= $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" onclick="fntNewBase(<?= $baseResumen; ?>, <?= $totalResumen; ?>)">
+                        <i class="bi bi-plus-circle me-1"></i>
+                        Base
+                      </button>
+                      <button class="btn btn-secondary btn-sm" id="btnViewBase">
+                        <i class="bi bi-eye me-0"></i>
+                      </button>
+                    </div>
+                    <div class="btn-group" role="group" aria-label="prestamos">
+                      <button class="btn btn-secondary btn-sm me-1 <?= $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" onclick="fntNewVenta(<?= !empty($prestamoResumen) ? $prestamoResumen : $prestamoResumenActual; ?>, <?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?>)">
+                        <i class="bi bi-plus-circle me-1"></i>
+                        Préstamo
+                      </button>
+                      <button class="btn btn-secondary btn-sm" id="btnViewPrestamos">
+                        <i class="bi bi-eye me-0"></i>
+                      </button>
+                    </div>
+                    <div class="btn-group" role="group" aria-label="prestamos">
+                      <button class="btn btn-secondary btn-sm me-1 <?= $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" onclick="fntNewGasto(<?= !empty($gastosResumen) ? $gastosResumen : $gastosResumenActual; ?>, <?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?>)">
+                        <i class="bi bi-plus-circle me-1"></i>
+                        Gasto
+                      </button>
+                      <button class="btn btn-secondary btn-sm" id="btnViewGastos">
+                        <i class="bi bi-eye me-0"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
