@@ -34,8 +34,6 @@
     $prestamoResumen = $data['resumenActual']['ventas'] ?? 0;
     $gastosResumen = $data['resumenActual']['gastos'] ?? 0;
     $totalResumen = $data['resumenActual']['total'] ?? 0;
-
-    $arrPrestamoTotal = array('prestamo' => $prestamoResumen, 'total' => $totalResumen);
   ?>
 
   <!-- LISTA Y DASHBOARD -->
@@ -94,7 +92,7 @@
               <div class="card">
                 <div class="card-header text-center text-body-secondary h6">Finalizar Resumen</div>
                 <div class="card-body text-center">
-                  <button class="btn btn-warning">
+                  <button class="btn btn-warning" type="submit">
                     <i class="bi bi-check-circle-fill"></i>
                     Registrar
                   </button>

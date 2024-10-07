@@ -22,7 +22,7 @@ class Resumen extends Controllers{
 		$data['resumenAnterior'] = $this->model->selectResumenAnterior($_SESSION['idRuta']);
 
 		//TRAE EL RESUMEN ANTERIOR CON ESTADO 0 Y LA FECHA ACTUAL
-		$data['resumenActual'] = $this->model->selectResumenAnterior($_SESSION['idRuta']);
+		$data['resumenActual'] = $this->model->selectResumenActual($_SESSION['idRuta']);
 
 		$this->views->getView($this,"resumen",$data);
 	}
