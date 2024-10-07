@@ -8,6 +8,7 @@ class ResumenModel extends Mysql
     PRIVATE $intTipo;
     PRIVATE $intIdResumen;
     PRIVATE $strFecha;
+    PRIVATE $intStatus;
 
     public function __construct()
     {
@@ -15,7 +16,7 @@ class ResumenModel extends Mysql
     }
 
 
-    //TRAE EL RESUMEN DE LA FECHA ACTUAL
+    //TRAE EL RESUMEN DE LA FECHA ACTUAL Y EL STATUS 0
     public function selectResumenActual(int $ruta, string $fecha = NULL)
     {
         $this->intIdRuta = $ruta;
@@ -26,12 +27,23 @@ class ResumenModel extends Mysql
         return $request;
     }
 
-    //TRAE EL RESUMEN CON EL ESTADO 0 Y CON LA FECHA ACTUAL DIFERENTE
+    //TRAE EL RESUMEN CON EL ESTADO 0 Y CON LA FECHA ACTUAL DIFERENTE Y EL STATUS 0
     public function selectResumenAnterior(int $ruta)
     {
         $this->intIdRuta = $ruta;
 
         $sql = "SELECT * FROM resumen WHERE codigoruta = $this->intIdRuta AND status = 0 AND datecreated != '".NOWDATE."'";
+        $request = $this->select($sql);
+        return $request;
+    }
+
+    //TRAE EL RESUMEN CON LA FECHA ACTUAL Y EL STATUS 1
+    public function selectResumenCerrado(int $ruta, string $fecha)
+    {
+        $this->intIdRuta = $ruta;
+        $this->strFecha = $fecha;
+        
+        $sql = "SELECT * FROM resumen WHERE codigoruta = $this->intIdRuta AND status = 1 AND datecreated = '{$this->strFecha}'";
         $request = $this->select($sql);
         return $request;
     }
@@ -91,6 +103,18 @@ class ResumenModel extends Mysql
 
         $query_delete = "DELETE FROM resumen WHERE idresumen = $this->intIdResumen";
         $request = $this->delete($query_delete);
+        return $request;
+    }
+
+    public function statusResumen(int $idresumen, int $status)
+    {
+        $this->intIdResumen = $idresumen;
+        $this->intStatus = $status;
+
+        $query_update = "UPDATE resumen SET status = ? WHERE idresumen = $this->intIdResumen";
+        $arrData = array($this->intStatus);
+        $request = $this->update($query_update, $arrData);
+
         return $request;
     }
 }

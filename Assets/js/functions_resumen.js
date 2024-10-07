@@ -6,7 +6,79 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 function iniciarApp() {
-    
+    fntNewResumen();
+}
+
+//OBTIENE EL ID DEL RESUMEN
+function fntNewResumen()
+{
+    if(document.querySelector("#formResumen")){
+        let formResumen = document.querySelector("#formResumen");
+        formResumen.onsubmit = function(e)
+        {
+            e.preventDefault();
+            let estado = document.querySelector('#status').value;
+            let mensaje = estado == 1 ? 'Registrar' : 'Corregir';
+            Swal.fire({
+                title: mensaje + " Resumen",
+                text: "¿Realmente quiere " + mensaje + " el Resumen?",
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#d9a300",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Si, " + mensaje + "!",
+                cancelButtonText: "No, cancelar!",
+            }).then((result) => {
+            if (result.isConfirmed) {
+                fntRegistrarResumen();
+            }
+            });
+        }
+    }
+}
+//RESISTRAR RESUMEN
+async function fntRegistrarResumen()
+{
+    divLoading.style.display = "flex";
+    try {
+        const data = new FormData(formResumen);
+        let resp = await fetch(base_url + '/Resumen/setResumen', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: data
+        });
+        json = await resp.json();
+        if(json.status) {
+            Swal.fire({
+                title: json.msg,
+                text: '',
+                icon: "success",
+                confirmButtonColor: "#d9a300",
+                confirmButtonText: "Continuar",
+            }).then((result) => {
+            if (result.isConfirmed) {
+                location.reload();
+            }
+            });
+        } else {
+            Swal.fire("Atención!", json.msg, "warning");
+            /*Toast.fire({
+                icon: "warning",
+                title: "Ocurrió un error en el Servidor"
+            });*/
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Sua sesión expiró, recarga la página para entrar nuevamente"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
 }
 
 //TRAER TODOS LOS CLIENTES EN EL SELECT
@@ -171,8 +243,7 @@ function fntNewGasto(gasto, total)
 }
 //REGISTRAR GASTO  
 async function fntRegistrarGasto(gasto, total)
-{
-    
+{ 
     divLoading.style.display = "flex";
     try {
         const data = new FormData(formGasto);
