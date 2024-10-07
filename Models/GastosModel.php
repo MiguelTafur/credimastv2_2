@@ -113,6 +113,34 @@ class GastosModel extends Mysql
 
         return $request;
     }
+
+    //ELIMINA GASTO
+    public function deleteGasto(int $idgasto, int $ruta)
+    {
+        $this->intIdGasto = $idgasto;
+        $this->intIdRuta = $ruta;
+        $return = 0;
+        
+        //TRAE LA FECHA
+        $fechaGasto = $this->selectGasto($this->intIdGasto)['datecreated'];
+
+        //ELIMINA EL GASTO
+        $query_delete = "DELETE FROM gastos WHERE idgasto = $this->intIdGasto";
+        $request = $this->delete($query_delete);
+
+        if(!empty($request))
+        {
+            //TRAE LA SUMA
+            $sumaGastos = $this->sumaGastos($this->intIdRuta, $fechaGasto)['sumaGastos'];
+
+            //ACTUALIZA LA COLUMNA "gastos" DE LA TABLA RESUMEN
+            setUpdateResumen($this->intIdRuta, $sumaGastos, 4, $fechaGasto);
+        } 
+
+        $return = $request;
+        
+        return $return;
+    }
 }
 
  ?>

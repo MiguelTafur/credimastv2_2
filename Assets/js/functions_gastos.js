@@ -161,6 +161,84 @@ async function fntEditInfo(idgasto)
     return false;
 }
 
+//ELIMINAR GASTO
+function fntDelInfo(idgasto)
+{
+    Swal.fire({
+        title: "Eliminar Gasto",
+        text: "¿Realmente quiere eliminar el Gasto?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d9a300",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminar!",
+        cancelButtonText: "No, cancelar!",
+    }).then((result) => {
+    if (result.isConfirmed) {
+        fntDeleteGasto(idgasto);
+    }
+    });
+}
+
+async function fntDeleteGasto(idgasto)
+{
+    const formData = new FormData();
+    formData.append('idGasto', idgasto);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Gastos/delGasto', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            if(json.statusAnterior)
+            {
+                Swal.fire({
+                    title: json.msg,
+                    text: 'El resumen ha sido eliminado debido a que no contiene más datos',
+                    icon: "warning",
+                    confirmButtonColor: "#d9a300",
+                    confirmButtonText: "Continuar",
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    location.reload();
+                }
+                });
+            } else {
+                //Swal.fire("Eliminar!", json.msg , "success");
+                tableGastos.ajax.reload(null, false);
+                Toast.fire({
+                    icon: "success",
+                    title: json.msg
+                });
+            }
+            
+        }else{
+            Swal.fire("Error", json.msg, "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error"
+            });*/
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
 function openModal()
 {
     document.querySelector('#idGasto').value ="";
