@@ -1,6 +1,7 @@
 <?php 
   headerAdmin($data);
   getModal('modalPrestamos',$data); 
+  getModal('modalGastos',$data); 
 ?>
 
 <main class="app-content">
@@ -85,11 +86,11 @@
                       <i class="bi bi-plus-circle me-1"></i>
                       Base
                     </button>
-                    <button class="btn btn-secondary btn-sm" onclick="fntNewVenta(<?= $prestamoResumen; ?>, <?= $totalResumen; ?>)">
+                    <button class="btn btn-secondary btn-sm" onclick="fntNewVenta(<?= !empty($prestamoResumen) ? $prestamoResumen : $prestamoResumenActual; ?>, <?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?>)">
                       <i class="bi bi-plus-circle me-1"></i>
                       Préstamo
                     </button>
-                    <button class="btn btn-secondary btn-sm" onclick="fntNewGasto(<?= $gastosResumen; ?>, <?= $totalResumen; ?>)">
+                    <button class="btn btn-secondary btn-sm" onclick="fntNewGasto(<?= !empty($gastosResumen) ? $gastosResumen : $gastosResumenActual; ?>, <?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?>)">
                       <i class="bi bi-plus-circle me-1"></i>
                       Gasto
                     </button>

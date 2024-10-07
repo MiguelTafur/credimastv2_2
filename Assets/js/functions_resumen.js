@@ -138,6 +138,82 @@ async function fntRegistrarPrestamo(prestamo, total)
     return false;
 }
 
+//VISTA PARA CREAR GASTO
+function fntNewGasto(gasto, total)
+{
+    $('#modalFormGastos').modal('show');
+
+    if(document.querySelector("#formGasto")){
+        let formGasto = document.querySelector("#formGasto");
+        formGasto.onsubmit = function(e)
+        {
+            e.preventDefault();
+            let strNombre = formGasto.children[1].children[1].value;
+            let strValor = formGasto.children[2].children[1].value;
+
+            if(strNombre == '' || strValor == '')
+            {
+                Swal.fire("Atención", "Todos los campos son obligatorios.", "error");
+                return false;
+            }
+
+            let ElementsValid = document.getElementsByClassName("valid");
+            for (let i = 0; i < ElementsValid.length; i++) {
+                if(ElementsValid[i].classList.contains('is-invalid')){
+                    Swal.fire("Atención!", "Por favor verifique los campos en rojo.", "error");
+                    return false;
+                }
+            }
+
+            fntRegistrarGasto(gasto, total);
+        }
+    }
+}
+//REGISTRAR GASTO  
+async function fntRegistrarGasto(gasto, total)
+{
+    
+    divLoading.style.display = "flex";
+    try {
+        const data = new FormData(formGasto);
+        let resp = await fetch(base_url + '/Gastos/setGastos', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: data
+        });
+        json = await resp.json();
+        if(json.status) {
+            let monto = parseInt(formGasto.children[2].children[1].value);
+            document.querySelector('#gastosResumen').textContent = gasto + monto;
+            document.querySelector('#totalResumen').textContent = total - monto;
+            $('#modalFormGastos').modal("hide");
+            formGasto.reset();
+            //Swal.fire("Roles de usuario", json.msg ,"success");
+            Toast.fire({
+                icon: "success",
+                title: json.msg
+            });
+        } else {
+            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            /*Toast.fire({
+                icon: "warning",
+                title: "Ocurrió un error en el Servidor"
+            });*/
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Sua sesión expiró, recarga la página para entrar nuevamente"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
 //VISTA PARA CREAR UN CLIENTE EN LA SECCIÓN RESUMEN
 function fntNewClientePrestamo()
 {   

@@ -20,7 +20,7 @@
               </div> 
               <div class="form-group col-md-6">
                 <label class="form-label" for="txtValor">Valor</label>
-                <input type="tel" class="form-control" id="txtValor" name="txtValor" placeholder="Código" required onkeypress="return controlTag(event)">
+                <input type="tel" class="form-control" id="txtValor" name="txtValor" placeholder="Valor" required onkeypress="return controlTag(event)">
               </div>  
 
               <div class="tile-footer mt-4">
