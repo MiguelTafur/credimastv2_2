@@ -365,3 +365,80 @@ async function fntRegistrarClientePrestamo()
     divLoading.style.display = "none";
     return false;
 }
+
+//VISTA PARA CREAR LA BASE
+function fntNewBase(total)
+{
+    $('#modalFormBase').modal('show');
+
+    if(document.querySelector("#formBase")){
+        let formBase = document.querySelector("#formBase");
+        formBase.onsubmit = function(e)
+        {
+            e.preventDefault();
+
+            let intValor = document.querySelector("#txtValor").value;
+
+            if(intValor == '')
+            {
+                Swal.fire("Atención", "El valor es obligatorio.", "error");
+                return false;
+            }
+
+            let ElementsValid = document.getElementsByClassName("valid");
+            for (let i = 0; i < ElementsValid.length; i++) {
+                if(ElementsValid[i].classList.contains('is-invalid')){
+                    Swal.fire("Atención!", "Por favor verifique los campos en rojo.", "error");
+                    return false;
+                }
+            }
+
+            fntRegistrarBase(total);
+        }
+    }
+}
+//REGISTRAR BASE
+async function fntRegistrarBase(total)
+{
+    divLoading.style.display = "flex";
+    try {
+        const data = new FormData(formBase);
+        let resp = await fetch(base_url + '/Base/setBase', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: data
+        });
+        json = await resp.json();
+        if(json.status) {
+            let monto = parseInt(formBase.children[1].children[1].value);
+            document.querySelector('#baseResumen').textContent = monto;
+            document.querySelector('#totalResumen').textContent = total + monto;
+            document.querySelector('#idResumen').value = json.idresumen;
+            $('#modalFormBase').modal("hide");
+            formBase.reset();
+            //Swal.fire("Roles de usuario", json.msg ,"success");
+            Toast.fire({
+                icon: "success",
+                title: json.msg
+            });
+        } else {
+            Swal.fire("Error", json.msg , "error");
+            /*Toast.fire({
+                icon: "warning",
+                title: "Ocurrió un error en el Servidor"
+            });*/
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Sua sesión expiró, recarga la página para entrar nuevamente"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+

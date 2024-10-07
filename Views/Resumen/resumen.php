@@ -1,5 +1,6 @@
 <?php 
   headerAdmin($data);
+  getModal('modalResumen',$data); 
   getModal('modalPrestamos',$data); 
   getModal('modalGastos',$data); 
 ?>
@@ -108,7 +109,7 @@
                 <div class="card-footer">
                   <div class="d-grid d-md-flex gap-2 justify-content-md-around">
                     <div class="btn-group" role="group" aria-label="prestamos">
-                      <button class="btn btn-secondary btn-sm me-1 <?= $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" onclick="fntNewBase(<?= $baseResumen; ?>, <?= $totalResumen; ?>)">
+                      <button class="btn btn-secondary btn-sm me-1 <?= $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" onclick="fntNewBase(<?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?>)">
                         <i class="bi bi-plus-circle me-1"></i>
                         Base
                       </button>
