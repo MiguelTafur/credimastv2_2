@@ -81,9 +81,7 @@
                             <th>VENTAS:</th>
                             <td id="prestamoResumen">
                               <?= 
-                                !empty($prestamoResumen) ? $prestamoResumen : $prestamoResumenActual;
                                 $data['resumenAnterior']['ventas'] ?? $data['resumenActual']['ventas'] ?? $data['resumenCerrado']['ventas'] ?? 0;
-
                               ?>
                             </td>
                           </tr>

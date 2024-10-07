@@ -120,10 +120,11 @@ class Gastos extends Controllers{
 
                 if($request_user > 0)
                 {
+					$idresumen = setDelResumenActual('set', $ruta)['idresumen'];
                     if($option === 1){
-                        $arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.');
+                        $arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.', 'idresumen' => $idresumen);
                     }else{
-                        $arrResponse = array('status' => true, 'msg' => 'Datos actualizados correctamente.');
+                        $arrResponse = array('status' => true, 'msg' => 'Datos actualizados correctamente.', 'idresumen' => $idresumen);
                     }
                 }else{
                     $arrResponse = array("status" => false, "msg" => 'No es posible almacenar los datos.');

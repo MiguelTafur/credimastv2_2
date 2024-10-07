@@ -122,7 +122,7 @@ class PrestamosModel extends Mysql
             $return = "0";    
         }
 
-        return $request_insert;
+        return $return;
     }
 
     //ACTUALIZA UN PRÉSTAMOS

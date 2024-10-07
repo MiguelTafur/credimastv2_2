@@ -182,6 +182,7 @@ async function fntRegistrarPrestamo(prestamo, total)
             let monto = parseInt(formPrestamos.children[2].children[1].value);
             document.querySelector('#prestamoResumen').textContent = prestamo + monto;
             document.querySelector('#totalResumen').textContent = total - monto;
+            document.querySelector('#idResumen').value = json.idresumen;
             $('#modalFormPrestamo').modal("hide");
             formPrestamos.reset();
             $('#listClientes').val(null).trigger('change');
@@ -258,6 +259,7 @@ async function fntRegistrarGasto(gasto, total)
             let monto = parseInt(formGasto.children[2].children[1].value);
             document.querySelector('#gastosResumen').textContent = gasto + monto;
             document.querySelector('#totalResumen').textContent = total - monto;
+            document.querySelector('#idResumen').value = json.idresumen;
             $('#modalFormGastos').modal("hide");
             formGasto.reset();
             //Swal.fire("Roles de usuario", json.msg ,"success");

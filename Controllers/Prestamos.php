@@ -221,7 +221,10 @@ class Prestamos extends Controllers{
 				$contador = 0;
 
 				//VALIDA SI HAY UN RESUMEN Y DEVUELVE LA FECHA, Si NO, LO CREA.
-				$fechaPrestamo = setDelResumenActual('set', $ruta)['datecreated'] ?? NOWDATE;
+				$resumenAnterior = setDelResumenActual('set', $ruta);
+				$fechaPrestamo = $resumenAnterior['datecreated'] ?? NOWDATE;
+
+				//dep($resumenAnterior);exit;
 
 				//Calculando el vencimiento del crédito
 				$fechaEnSegundos = strtotime($fechaPrestamo);
@@ -314,8 +317,9 @@ class Prestamos extends Controllers{
 				
 				if($request_prestamo > 0)
 				{
-					$arrResponse = $option == 1 ? array('status' => true, 'msg' => 'Préstamo registrado.')
-												: array('status' => true, 'msg' => 'Préstamo actualizado.');
+					$idresumen = setDelResumenActual('set', $ruta)['idresumen'];
+					$arrResponse = $option == 1 ? array('status' => true, 'msg' => 'Préstamo registrado.', 'idresumen' => $idresumen)
+												: array('status' => true, 'msg' => 'Préstamo actualizado.', 'idresumen' => $idresumen);
 				}else if($request_prestamo == '0')
 				{
 					$arrResponse = array('status' => false, 'msg' => 'Atencion! No es posible registrar el préstamo.');
