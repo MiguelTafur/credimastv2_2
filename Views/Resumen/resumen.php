@@ -35,6 +35,12 @@
     $prestamoResumen = $data['resumenAnterior']['ventas'] ?? 0;
     $gastosResumen = $data['resumenAnterior']['gastos'] ?? 0;
     $totalResumen = $data['resumenAnterior']['total'] ?? 0;
+
+    $baseResumenActual = $data['resumenActual']['base'] ?? 0;
+    $cobradoResumenActual = $data['resumenActual']['cobrado'] ?? 0;
+    $prestamoResumenActual = $data['resumenActual']['ventas'] ?? 0;
+    $gastosResumenActual = $data['resumenActual']['gastos'] ?? 0;
+    $totalResumenActual = $data['resumenActual']['total'] ?? 0;
   ?>
 
   <!-- LISTA Y DASHBOARD -->
@@ -53,22 +59,22 @@
                         <tbody>
                           <tr>
                             <th class="w-50">BASE:</th>
-                            <td id="baseResumen"><?= $baseResumen; ?></td>
+                            <td id="baseResumen"><?= !empty($baseResumen) ? $baseResumen : $baseResumenActual; ?></td>
                           </tr>
                           <tr>
                             <th>COBRADO:</th>
-                            <td><?= $cobradoResumen; ?></td>
+                            <td><?= !empty($cobradoResumen) ? $cobradoResumen : $cobradoResumenActual; ?></td>
                           </tr>
                           <tr>
                             <th>VENTAS:</th>
-                            <td id="prestamoResumen"><?= $prestamoResumen; ?></td>
+                            <td id="prestamoResumen"><?= !empty($prestamoResumen) ? $prestamoResumen : $prestamoResumenActual; ?></td>
                           </tr>
                           <tr>
                             <th>GASTOS:</th>
-                            <td id="gastosResumen"><?= $gastosResumen; ?></td>
+                            <td id="gastosResumen"><?= !empty($gastosResumen) ? $gastosResumen : $gastosResumenActual; ?></td>
                           </tr>
                         </tbody>
-                        <caption class="text-end mt-3">TOTAL :&nbsp;&nbsp;&nbsp;<span id="totalResumen"><?= $totalResumen; ?></span></caption>
+                        <caption class="text-end mt-3">TOTAL :&nbsp;&nbsp;&nbsp;<span id="totalResumen"><?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?></span></caption>
                       </table>
                     </div>
                   </div>

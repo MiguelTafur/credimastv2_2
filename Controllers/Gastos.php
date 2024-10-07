@@ -64,6 +64,8 @@ class Gastos extends Controllers{
                 $idGasto = intval($_POST['idGasto']);
                 $strNombre =  ucwords(strClean($_POST['txtNombre']));
                 $intValor = intval($_POST['txtValor']);
+				$ruta = $_SESSION['idRuta'];
+        		$usuario = $_SESSION['idUser'];
                 $request_user = "";
 
                 if($idGasto === 0)
@@ -71,8 +73,8 @@ class Gastos extends Controllers{
                     $option = 1;
                     if($_SESSION['permisosMod']['w']){
 						//VALIDA SI HAY UN RESUMEN Y DEVUELVE LA FECHA, Si NO, LO CREA.
-						$fechaGasto = setDelResumenActual('set')['datecreated'] ?? NOWDATE;
-                        $request_user = $this->model->insertGasto($_SESSION['idUser'],$strNombre,$intValor, $fechaGasto, $_SESSION['idRuta']);
+						$fechaGasto = setDelResumenActual('set', $ruta)['datecreated'] ?? NOWDATE;
+                        $request_user = $this->model->insertGasto($usuario,$ruta,$strNombre,$intValor,$fechaGasto);
                     }
                 }else{
                         $option = 2;

@@ -28,8 +28,12 @@ function fntTableGastos()
         "columns":[
             {"data":"datecreated"},
             {"data":"nombre"},
-            {"data":"valor"},
+            {"data":"monto"},
             {"data":"options"}
+        ],
+
+        "columnDefs": [
+            {"className": "dt-center", "targets": "_all"}
         ],
         
         "responsive":"true",

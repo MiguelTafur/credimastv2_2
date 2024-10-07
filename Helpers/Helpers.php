@@ -88,6 +88,14 @@
         return $request;
     }
 
+    function getResumenActual()
+    {
+        require_once("Models/ResumenModel.php");
+        $objResumen = new ResumenModel();
+        $request = $objResumen->selectResumenActual($_SESSION['idRuta']);
+        return $request;
+    }
+
     //INSERTA O ELIMINA EL RESUMEN
     function setDelResumenActual(string $tipo, int $ruta)
     {

@@ -19,9 +19,7 @@ class GastosModel extends Mysql
     {
         $this->intIdRuta = $ruta;
 
-        $sql = "SELECT ga.nombre, ga.monto, ga.hora, ga.datecreated FROM gastos ga
-                LEFT OUTER JOIN persona pe ON(ga.personaid = pe.idpersona) 
-                WHERE pe.codigoruta = $this->intIdRuta AND ga.status != 0";
+        $sql = "SELECT * FROM gastos WHERE codigoruta = $this->intIdRuta";
         $request = $this->select_all($sql);
 
         return $request;
@@ -33,9 +31,7 @@ class GastosModel extends Mysql
         $this->intIdRuta = $ruta;
         $this->strFecha = $ruta;
 
-        $sql = "SELECT ga.nombre, ga.monto, ga.hora, ga.datecreated FROM gastos ga
-                LEFT OUTER JOIN persona pr ON(ga.personaid = pe.idpersona) 
-                WHERE pe.codigoruta = $this->intIdRuta AND ga.status != 0 AND datecreated = '{$this->strFecha}'";
+        $sql = "SELECT * FROM gastos WHERE codigoruta = $this->intIdRuta AND datecreated = '{$this->strFecha}'";
         $request = $this->select_all($sql);
 
         return $request;
@@ -58,14 +54,13 @@ class GastosModel extends Mysql
         $this->intIdRuta = $ruta;
         $this->strFecha = $fecha;
 
-        $sql = "SELECT SUM(ga.monto) as sumaGastos FROM gastos ga LEFT OUTER JOIN persona pe ON(ga.personaid = pe.idpersona) 
-                WHERE pe.codigoruta = $this->intIdRuta AND ga.status != 0 AND ga.datecreated = '{$this->strFecha}'";
+        $sql = "SELECT SUM(monto) as sumaGastos FROM gastos WHERE codigoruta = $this->intIdRuta AND datecreated = '{$this->strFecha}'";
         $request = $this->select($sql);
         return $request;
     }
 
     //REGISTRAR GASTOS
-    public function insertGasto(int $usuario, string $nombre, int $valor, string $fecha, int $ruta)
+    public function insertGasto(int $usuario, int $ruta, string $nombre, int $valor, string $fecha)
     {
         $this->intIdUsuario = $usuario;
         $this->strNombre = $nombre;
@@ -74,8 +69,8 @@ class GastosModel extends Mysql
         $this->intIdRuta = $ruta;
         $return = 0;
 
-        $query_insert = "INSERT INTO gasto(personaid, nombre, monto, hora, datecreated) VALUES(?,?,?,?,?)";
-        $arrData = array($this->intIdUsuario,$this->strNombre, $this->intValor, NOWTIME, $this->strFecha);
+        $query_insert = "INSERT INTO gastos(personaid, codigoruta, nombre, monto, hora, datecreated) VALUES(?,?,?,?,?,?)";
+        $arrData = array($this->intIdUsuario, $this->intIdRuta,$this->strNombre, $this->intValor, NOWTIME, $this->strFecha);
         $request_insert = $this->insert($query_insert, $arrData);
         $return = $request_insert;
 
@@ -85,7 +80,7 @@ class GastosModel extends Mysql
             $sumaGastos = $this->sumaGastos($this->intIdRuta, $this->strFecha)['sumaGastos'];
 
             //ACTUALIZA LA COLUMNA "VENTAS" DE LA TABLA RESUMEN
-            $updateResumen = setUpdateResumen($usuario, $sumaGastos, 4, $this->strFecha);
+            $updateResumen = setUpdateResumen($this->intIdRuta, $sumaGastos, 4, $this->strFecha);
 
             $return = $updateResumen;
         } else {
