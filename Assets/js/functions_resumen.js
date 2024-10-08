@@ -27,7 +27,7 @@ async function fntBase()
         json = await resp.json();
     
         if(!json.base){
-            fntBaseResumen();
+            fntTotalUltimoResumenCerrado();
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
@@ -39,27 +39,6 @@ async function fntBase()
     }
     divLoading.style.display = "none";
     return false;
-}
-
-//MUESTRA UNA ALERTA PARA INSERTA EL VALOR DE LA BASE SEGÚN EL USUARIO ESCOJA
-async function fntBaseResumen()
-{
-    Swal.fire({
-        title: "Base Resumen",
-        text: "¿Desea registrar una nueva Base?",
-        icon: "info",
-        showCancelButton: true,
-        confirmButtonColor: "#d9a300",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Si, Registrar!",
-        cancelButtonText: "No, Cancelar!",
-    }).then((result) => {
-    if (result.isConfirmed) {
-        fntNewBase();
-    } else {
-        fntTotalUltimoResumenCerrado();
-    }
-    });
 }
 
 async function fntTotalUltimoResumenCerrado()
@@ -78,7 +57,6 @@ async function fntTotalUltimoResumenCerrado()
         json = await resp.json();
     
         if(json.status){
-            console.log(json.base);
             fntRegistrarBaseResumenAnterior(json.base);
         }else{
             Swal.fire("Atención!", json.msg, "warning");
@@ -537,17 +515,21 @@ async function fntRegistrarBase(total)
         });
         json = await resp.json();
         if(json.status) {
-            let monto = parseInt(formBase.children[1].children[1].value);
-            document.querySelector('#baseResumen').textContent = monto;
-            document.querySelector('#totalResumen').textContent = total + monto;
-            document.querySelector('#idResumen').value = json.idresumen;
-            $('#modalFormBase').modal("hide");
-            formBase.reset();
-            //Swal.fire("Roles de usuario", json.msg ,"success");
-            Toast.fire({
-                icon: "success",
-                title: json.msg
-            });
+            if(!total){
+                location.reload();
+            } else {
+                let monto = parseInt(formBase.children[1].children[1].value);
+                document.querySelector('#baseResumen').textContent = monto;
+                document.querySelector('#totalResumen').textContent = total + monto;
+                document.querySelector('#idResumen').value = json.idresumen;
+                $('#modalFormBase').modal("hide");
+                formBase.reset();
+                //Swal.fire("Roles de usuario", json.msg ,"success");
+                Toast.fire({
+                    icon: "success",
+                    title: json.msg
+                });
+            }
         } else {
             Swal.fire("Error", json.msg , "error");
             /*Toast.fire({

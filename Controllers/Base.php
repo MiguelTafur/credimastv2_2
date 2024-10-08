@@ -94,6 +94,7 @@ class Base extends Controllers{
         die();
     }
 
+    //TRAE LA BASE
     public function getBase()
     {
         if($_POST)
