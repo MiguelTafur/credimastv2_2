@@ -27,6 +27,9 @@ class Resumen extends Controllers{
 		//TRAE EL RESUMEN CON LA FECHA ACTUAL Y EL STATUS 1
 		$data['resumenCerrado'] = $this->model->selectResumenCerrado($_SESSION['idRuta'], NOWDATE);
 
+		//TRAE EL ÚLTIMO RESUMEN CON STATUS 1
+		$data['resumenUltimo'] = $this->model->selectResumenUltimo($_SESSION['idRuta']);
+
 		$this->views->getView($this,"resumen",$data);
 	}
 

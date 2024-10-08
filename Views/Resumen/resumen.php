@@ -46,6 +46,8 @@
     $gastosResumenActual = $data['resumenActual']['gastos'] ?? 0;
     $totalResumenActual = $data['resumenActual']['total'] ?? 0;
 
+    dep($data['resumenUltimo']);
+
   ?>
 
   <!-- LISTA Y DASHBOARD -->
@@ -66,7 +68,7 @@
                             <th class="w-50">BASE:</th>
                             <td id="baseResumen">
                               <?= 
-                                $data['resumenAnterior']['base'] ?? $data['resumenActual']['base'] ?? $data['resumenCerrado']['base'] ?? 0;
+                                $data['resumenAnterior']['base'] ?? $data['resumenActual']['base'] ?? $data['resumenCerrado']['base'] ?? $data['resumenUltimo'];
                               ?>
                             </td>
                           </tr>

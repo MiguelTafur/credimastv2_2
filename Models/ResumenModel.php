@@ -48,6 +48,38 @@ class ResumenModel extends Mysql
         return $request;
     }
 
+    //DEVUELVE EL TOTAL DEL ÚLTIMO RESUMEN SE NO INGRESÓ UNA BASE
+    public function selectResumenUltimo(int $ruta)
+    {
+        $this->intIdRuta = $ruta;
+        $return = 0;
+
+        $sql = "SELECT * FROM resumen WHERE codigoruta = $this->intIdRuta AND status = 1 ORDER BY datecreated DESC";
+        $request = $this->select($sql);
+
+        $return = $request;
+
+        if(!empty($request))
+        {
+            $fechaUltimoResumen = $this->selectResumenAnterior($this->intIdRuta)['datecreated'] ?? NOWDATE;
+
+            $sql2 = "SELECT * FROM base WHERE codigoruta = $this->intIdRuta AND datecreated = '{$fechaUltimoResumen}'";
+            $request2 = $this->select($sql2);
+
+            if(!empty($request2))
+            {
+                $return = $request2['monto'];
+
+            } else {
+                $return = $request['total'];
+            }
+        } else {
+            $return = 0;
+        }
+
+        return $return;
+    }
+
     //REGISTRANDO EL RESUMEN 
     public function insertResumen(int $idpersona, int $ruta)
     {
