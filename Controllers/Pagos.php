@@ -108,23 +108,32 @@ class Pagos extends Controllers{
 				$usuario = $_SESSION['idUser'];
 				$ruta = $_SESSION['idRuta'];
 
-				$requestDelete = $this->model->deletePago($intIdprestamo, $intIdPago, $ruta);
-				
-				if($requestDelete)
-				{
-					//ELIMINA EL RESUMEN SI LA BASE, EL COBRADO, LAS VENTAS, Y LOS GASTOS ESTÁN NULLOS
-					$resumen = setDelResumenActual('del', $ruta);
-					$status = is_array($resumen) ? false : true;
-					if($status == true AND $resumen != NOWDATE)
-					{
-						$status = true;
-					} else {
-						$status = false;
-					}	
+				//VERIFICANDO SI HAY UN RESUMEN CON EL ESTADO 1
+				$estadoResumen = getResumenActual1($ruta)['status'] ?? 0;
 
-					$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el pago.', 'statusAnterior' => $status);
-				}else{
-					$arrResponse = array('status' => false, 'msg' => 'Error al eliminar el Pago.');
+				if($estadoResumen === 0)
+				{			
+
+					$requestDelete = $this->model->deletePago($intIdprestamo, $intIdPago, $ruta);
+					
+					if($requestDelete)
+					{
+						//ELIMINA EL RESUMEN SI LA BASE, EL COBRADO, LAS VENTAS, Y LOS GASTOS ESTÁN NULLOS
+						$resumen = setDelResumenActual('del', $ruta);
+						$status = is_array($resumen) ? false : true;
+						if($status == true AND $resumen != NOWDATE)
+						{
+							$status = true;
+						} else {
+							$status = false;
+						}	
+
+						$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el pago.', 'statusAnterior' => $status);
+					}else{
+						$arrResponse = array('status' => false, 'msg' => 'Error al eliminar el Pago.');
+					}
+				} else {
+					$arrResponse = array('status' => false, 'msg' => 'Resumen finalizado. No es posible eliminar el Gasto.');
 				}
 				echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);	
 			}
