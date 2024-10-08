@@ -27,7 +27,8 @@ async function fntBase()
         json = await resp.json();
     
         if(!json.base){
-            fntTotalUltimoResumenCerrado();
+            let total = parseInt(document.querySelector("#totalResumen").firstChild.textContent);
+            fntTotalUltimoResumenCerrado(total);
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
@@ -41,7 +42,7 @@ async function fntBase()
     return false;
 }
 
-async function fntTotalUltimoResumenCerrado()
+async function fntTotalUltimoResumenCerrado(total)
 {
     const formData = new FormData();
     formData.append('idRuta', ruta);
@@ -57,7 +58,7 @@ async function fntTotalUltimoResumenCerrado()
         json = await resp.json();
     
         if(json.status){
-            fntRegistrarBaseResumenAnterior(json.base);
+            fntRegistrarBaseResumenAnterior(json.base, total);
         }else{
             Swal.fire("Atención!", json.msg, "warning");
             /*Toast.fire({
@@ -77,13 +78,12 @@ async function fntTotalUltimoResumenCerrado()
     return false;
 }
 //REGISTRAR BASE CON EL TOTAL DEL RESUMEN ANTERIOR
-async function fntRegistrarBaseResumenAnterior(base)
+async function fntRegistrarBaseResumenAnterior(base, total)
 {
     divLoading.style.display = "flex";
     try {
         const formData = new FormData();
         formData.append('base', base);
-        formData.append('tipo', 2);
         let resp = await fetch(base_url + '/Base/setBaseResumenAnterior', {
             method: 'POST',
             mode: 'cors',
@@ -92,7 +92,8 @@ async function fntRegistrarBaseResumenAnterior(base)
         });
         json = await resp.json();
         if(json.status) {
-            location.reload();
+            document.querySelector("#totalResumen").firstChild.textContent = base + total;
+            document.querySelector("#baseResumen").firstChild.textContent = base;
         } else {
             Swal.fire("Error", json.msg , "error");
             /*Toast.fire({
