@@ -26,26 +26,33 @@ class Pagos extends Controllers{
 				$usuario = $_SESSION['idUser'];
 				$ruta = $_SESSION['idRuta'];
 
-				//VALIDA SI HAY UN RESUMEN Y DEVUELVE LA FECHA, Si NO, LO CREA.
-				$fechaResumen = setDelResumenActual('set', $ruta)['datecreated'] ?? NULL;
+				//VERIFICANDO SI HAY UN RESUMEN CON EL ESTADO 1
+				$estadoResumen = getResumenActual1($ruta)['status'] ?? 0;
 
-				$request_pago = $this->model->insertPago($idPrestamo, $intMonto, $usuario, $ruta, $fechaResumen);
+				if($estadoResumen === 0)
+				{			
+					//VALIDA SI HAY UN RESUMEN Y DEVUELVE LA FECHA, Si NO, LO CREA.
+					$fechaResumen = setDelResumenActual('set', $ruta)['datecreated'] ?? NULL;
 
-                if($request_pago > 0)
-                {
-                    $arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.');
+					$request_pago = $this->model->insertPago($idPrestamo, $intMonto, $usuario, $ruta, $fechaResumen);
 
-                }else if($request_pago == '0')
-                {
-                    $arrResponse = array("status" => false, "msg" => "Pago ya realizado.");	
-                }else if($request_pago == '!')
-                {
-                    $arrResponse = array("status" => false, "msg" => "El pago ingresado no puede ser mayor al saldo.");	
-                }else
-                {
-                    $arrResponse = array("status" => false, "msg" => "No es posible almacenar los datos.");
-                }
+					if($request_pago > 0)
+					{
+						$arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.');
 
+					}else if($request_pago == '0')
+					{
+						$arrResponse = array("status" => false, "msg" => "Pago ya realizado.");	
+					}else if($request_pago == '!')
+					{
+						$arrResponse = array("status" => false, "msg" => "El pago ingresado no puede ser mayor al saldo.");	
+					}else
+					{
+						$arrResponse = array("status" => false, "msg" => "No es posible almacenar los datos.");
+					}
+				} else {
+					$arrResponse = array('status' => false, 'msg' => 'Resumen finalizado. No es posible registrar el Pago.');
+				}
 			}
 			echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
 		}
