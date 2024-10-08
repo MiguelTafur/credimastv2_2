@@ -551,3 +551,5 @@ async function fntRegistrarBase(total)
     return false;
 }
 
+//EDITAR BASE
+

@@ -108,12 +108,12 @@
                 </div>
                 <div class="card-footer">
                   <div class="d-grid d-md-flex gap-2 justify-content-md-around">
-                    <button title="Editar Base" class="btn btn-secondary btn-sm me-1 <?= $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" onclick="fntNewBase(<?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?>)">
+                    <button title="Editar Base" class="btn btn-secondary btn-sm me-1 <?= !empty($data['resumenCerrado']['status']) && $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" onclick="fntEditBase(<?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?>)">
                       <i class="bi bi-pencil-square me-1"></i>
                       Base
                     </button>
                     <div class="btn-group" role="group" aria-label="prestamos">
-                      <button title="Registrar Préstamo" class="btn btn-secondary btn-sm me-1 <?= $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" onclick="fntNewVenta(<?= !empty($prestamoResumen) ? $prestamoResumen : $prestamoResumenActual; ?>, <?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?>)">
+                      <button title="Registrar Préstamo" class="btn btn-secondary btn-sm me-1 <?= !empty($data['resumenCerrado']['status']) && $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" onclick="fntNewVenta(<?= !empty($prestamoResumen) ? $prestamoResumen : $prestamoResumenActual; ?>, <?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?>)">
                         <i class="bi bi-plus-circle me-1"></i>
                         Préstamo
                       </button>
@@ -122,7 +122,7 @@
                       </button>
                     </div>
                     <div class="btn-group" role="group" aria-label="prestamos">
-                      <button title="Registrar Gasto" class="btn btn-secondary btn-sm me-1 <?= $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" onclick="fntNewGasto(<?= !empty($gastosResumen) ? $gastosResumen : $gastosResumenActual; ?>, <?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?>)">
+                      <button title="Registrar Gasto" class="btn btn-secondary btn-sm me-1 <?= !empty($data['resumenCerrado']['status']) && $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" onclick="fntNewGasto(<?= !empty($gastosResumen) ? $gastosResumen : $gastosResumenActual; ?>, <?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?>)">
                         <i class="bi bi-plus-circle me-1"></i>
                         Gasto
                       </button>

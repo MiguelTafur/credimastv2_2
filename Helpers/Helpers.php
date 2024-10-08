@@ -88,11 +88,21 @@
         return $request;
     }
 
+    //TRAE EL RESUMEN CON EL ESTADO 0 Y CON LA FECHA ACTUAL
     function getResumenActual()
     {
         require_once("Models/ResumenModel.php");
         $objResumen = new ResumenModel();
         $request = $objResumen->selectResumenActual($_SESSION['idRuta']);
+        return $request;
+    }
+
+    //TRAE EL RESUMEN CON EL ESTADO 1 Y CON LA FECHA ACTUAL
+    function getResumenActual1()
+    {
+        require_once("Models/ResumenModel.php");
+        $objResumen = new ResumenModel();
+        $request = $objResumen->selectResumenActual1($_SESSION['idRuta']);
         return $request;
     }
 
@@ -115,8 +125,11 @@
             if(empty($request))
             {
                 //INSERTA EL RESUMEN
-                setResumen($_SESSION['idUser'], $ruta);
-                return true;
+                $estadoResumen = getResumenActual1($ruta)['status'] ?? 0;
+                if($estadoResumen == 0){
+                    setResumen($_SESSION['idUser'], $ruta);
+                    return true;
+                }
             } else {
                 return $request;
             }

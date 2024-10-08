@@ -27,6 +27,17 @@ class ResumenModel extends Mysql
         return $request;
     }
 
+    //TRAE EL RESUMEN DE LA FECHA ACTUAL Y EL STATUS 1
+    public function selectResumenActual1(int $ruta)
+    {
+        $this->intIdRuta = $ruta;
+        $this->strFecha = NOWDATE;
+        
+        $sql = "SELECT * FROM resumen WHERE codigoruta = $this->intIdRuta AND status = 1 AND datecreated = '{$this->strFecha}'";
+        $request = $this->select($sql);
+        return $request;
+    }
+
     //TRAE EL RESUMEN CON EL ESTADO 0 Y CON LA FECHA ACTUAL DIFERENTE Y EL STATUS 0
     public function selectResumenAnterior(int $ruta)
     {

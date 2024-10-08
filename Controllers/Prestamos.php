@@ -286,11 +286,29 @@ class Prestamos extends Controllers{
 
 				$request_prestamo = "";
 
-				if($idPrestamo == 0)
-				{
-					$option = 1;
-					if($_SESSION['permisosMod']['w']){
-						$request_prestamo = $this->model->insertPrestamo($intClienteId, 
+				$estadoResumen = getResumenActual1($ruta)['status'] ?? 0;
+
+				if($estadoResumen === 0)
+				{			
+					if($idPrestamo == 0)
+					{
+						$option = 1;
+						if($_SESSION['permisosMod']['w']){
+							$request_prestamo = $this->model->insertPrestamo($intClienteId, 
+																			$intMonto,
+																			$intTaza,
+																			$intPlazo,
+																			$intFormato,
+																			$strObservacion,
+																			$fechaPrestamo,
+																			$fechaFinal,
+																			$usuario,
+																			$ruta);
+						}
+
+					} else {
+						$option = 2;
+						$request_prestamo = $this->model->updatePrestamo($idPrestamo,
 																		$intMonto,
 																		$intTaza,
 																		$intPlazo,
@@ -298,35 +316,24 @@ class Prestamos extends Controllers{
 																		$strObservacion,
 																		$fechaPrestamo,
 																		$fechaFinal,
-																		$usuario,
 																		$ruta);
 					}
-
+					
+					if($request_prestamo > 0)
+					{
+						$idresumen = setDelResumenActual('set', $ruta)['idresumen'];
+						$arrResponse = $option == 1 ? array('status' => true, 'msg' => 'Préstamo registrado.', 'idresumen' => $idresumen)
+													: array('status' => true, 'msg' => 'Préstamo actualizado.', 'idresumen' => $idresumen);
+					}else if($request_prestamo == '0')
+					{
+						$arrResponse = array('status' => false, 'msg' => 'Atencion! No es posible registrar el préstamo.');
+					}else
+					{
+						$arrResponse = array("status" => false, "msg" => 'No es posible almacenar los datos.');
+					}	
 				} else {
-					$option = 2;
-					$request_prestamo = $this->model->updatePrestamo($idPrestamo,
-																	$intMonto,
-																	$intTaza,
-																	$intPlazo,
-																	$intFormato,
-																	$strObservacion,
-																	$fechaPrestamo,
-																	$fechaFinal,
-																	$ruta);
+					$arrResponse = array('status' => false, 'msg' => 'Resumen finalizado. No es posible registrar el préstamo.');
 				}
-				
-				if($request_prestamo > 0)
-				{
-					$idresumen = setDelResumenActual('set', $ruta)['idresumen'];
-					$arrResponse = $option == 1 ? array('status' => true, 'msg' => 'Préstamo registrado.', 'idresumen' => $idresumen)
-												: array('status' => true, 'msg' => 'Préstamo actualizado.', 'idresumen' => $idresumen);
-				}else if($request_prestamo == '0')
-				{
-					$arrResponse = array('status' => false, 'msg' => 'Atencion! No es posible registrar el préstamo.');
-				}else
-				{
-					$arrResponse = array("status" => false, "msg" => 'No es posible almacenar los datos.');
-				}	
 			}	
 			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		}
