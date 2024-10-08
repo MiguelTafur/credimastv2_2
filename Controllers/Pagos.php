@@ -133,7 +133,7 @@ class Pagos extends Controllers{
 						$arrResponse = array('status' => false, 'msg' => 'Error al eliminar el Pago.');
 					}
 				} else {
-					$arrResponse = array('status' => false, 'msg' => 'Resumen finalizado. No es posible eliminar el Gasto.');
+					$arrResponse = array('status' => false, 'msg' => 'Resumen finalizado. No es posible eliminar el Pago.');
 				}
 				echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);	
 			}

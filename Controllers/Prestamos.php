@@ -351,25 +351,34 @@ class Prestamos extends Controllers{
 				$intIdprestamo = intval($_POST['idPrestamo']);
 				$ruta = $_SESSION['idRuta'];
 
-				$requestDelete = $this->model->deletePrestamo($intIdprestamo, $ruta);
-				if($requestDelete > 0)
+				//VERIFICANDO SI HAY UN RESUMEN CON EL ESTADO 1
+				$estadoResumen = getResumenActual1($ruta)['status'] ?? 0;
+
+				if($estadoResumen === 0)
 				{
-					$resumen = setDelResumenActual('del', $ruta);
-					$status = is_array($resumen) ? false : true;
-					if($status == true AND $resumen != NOWDATE)
+
+					$requestDelete = $this->model->deletePrestamo($intIdprestamo, $ruta);
+					if($requestDelete > 0)
 					{
-						$status = true;
-					} else {
-						$status = false;
-					}	
-					
-					$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el Préstamo.', 'statusAnterior' => $status);
-				} else if($requestDelete == '0')
-				{
-					$arrResponse = array('status' => false, 'msg' => 'El Préstamo tiene pagamentos asociados.');
-				}
-				else{
-					$arrResponse = array('status' => false, 'msg' => 'Error al eliminar el Préstamo.');
+						$resumen = setDelResumenActual('del', $ruta);
+						$status = is_array($resumen) ? false : true;
+						if($status == true AND $resumen != NOWDATE)
+						{
+							$status = true;
+						} else {
+							$status = false;
+						}	
+						
+						$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el Préstamo.', 'statusAnterior' => $status);
+					} else if($requestDelete == '0')
+					{
+						$arrResponse = array('status' => false, 'msg' => 'El Préstamo tiene pagamentos asociados.');
+					}
+					else{
+						$arrResponse = array('status' => false, 'msg' => 'Error al eliminar el Préstamo.');
+					}
+				} else {
+					$arrResponse = array('status' => false, 'msg' => 'Resumen finalizado. No es posible eliminar el Préstamo.');
 				}
 				echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);	
 			}
