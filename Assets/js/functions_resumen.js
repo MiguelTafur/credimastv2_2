@@ -373,7 +373,7 @@ async function fntRegistrarGasto(gasto, total)
                 title: json.msg
             });
         } else {
-            Swal.fire("Error", "Ocurrió un error en el Servidor" , "error");
+            Swal.fire("Error", json.msg, "error");
             /*Toast.fire({
                 icon: "warning",
                 title: "Ocurrió un error en el Servidor"

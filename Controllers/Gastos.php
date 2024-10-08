@@ -102,33 +102,41 @@ class Gastos extends Controllers{
         		$usuario = $_SESSION['idUser'];
                 $request_user = "";
 
-				//VALIDA SI HAY UN RESUMEN Y DEVUELVE LA FECHA, Si NO, LO CREA.
-				$fechaGasto = setDelResumenActual('set', $ruta)['datecreated'] ?? NOWDATE;
+				//VERIFICANDO SI HAY UN RESUMEN CON EL ESTADO 1
+				$estadoResumen = getResumenActual1($ruta)['status'] ?? 0;
 
-                if($idGasto === 0)
-                {
-                    $option = 1;
-                    if($_SESSION['permisosMod']['w']){
-                        $request_user = $this->model->insertGasto($usuario,$ruta,$strNombre,$intValor,$fechaGasto);
-                    }
-                }else{
-                        $option = 2;
-                        if($_SESSION['permisosMod']['u']){
-                        $request_user = $this->model->updateGasto($idGasto,$strNombre,$intValor,$ruta,$fechaGasto);
-                        }
-                    }
+				if($estadoResumen === 0)
+				{			
+					//VALIDA SI HAY UN RESUMEN CON EL ESTADO 0 Y DEVUELVE LA FECHA, Si NO, LO CREA.
+					$fechaGasto = setDelResumenActual('set', $ruta)['datecreated'] ?? NOWDATE;
 
-                if($request_user > 0)
-                {
-					$idresumen = setDelResumenActual('set', $ruta)['idresumen'];
-                    if($option === 1){
-                        $arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.', 'idresumen' => $idresumen);
-                    }else{
-                        $arrResponse = array('status' => true, 'msg' => 'Datos actualizados correctamente.', 'idresumen' => $idresumen);
-                    }
-                }else{
-                    $arrResponse = array("status" => false, "msg" => 'No es posible almacenar los datos.');
-                }
+					if($idGasto === 0)
+					{
+						$option = 1;
+						if($_SESSION['permisosMod']['w']){
+							$request_user = $this->model->insertGasto($usuario,$ruta,$strNombre,$intValor,$fechaGasto);
+						}
+					}else{
+							$option = 2;
+							if($_SESSION['permisosMod']['u']){
+							$request_user = $this->model->updateGasto($idGasto,$strNombre,$intValor,$ruta,$fechaGasto);
+							}
+						}
+
+					if($request_user > 0)
+					{
+						$idresumen = setDelResumenActual('set', $ruta)['idresumen'];
+						if($option === 1){
+							$arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.', 'idresumen' => $idresumen);
+						}else{
+							$arrResponse = array('status' => true, 'msg' => 'Datos actualizados correctamente.', 'idresumen' => $idresumen);
+						}
+					}else{
+						$arrResponse = array("status" => false, "msg" => 'No es posible almacenar los datos.');
+					}
+				} else {
+					$arrResponse = array('status' => false, 'msg' => 'Resumen finalizado. No es posible registrar el Gasto.');
+				}
             }	
             echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
         }

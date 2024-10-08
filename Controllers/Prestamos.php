@@ -286,6 +286,7 @@ class Prestamos extends Controllers{
 
 				$request_prestamo = "";
 
+				//VERIFICANDO SI HAY UN RESUMEN CON EL ESTADO 1
 				$estadoResumen = getResumenActual1($ruta)['status'] ?? 0;
 
 				if($estadoResumen === 0)
@@ -332,7 +333,7 @@ class Prestamos extends Controllers{
 						$arrResponse = array("status" => false, "msg" => 'No es posible almacenar los datos.');
 					}	
 				} else {
-					$arrResponse = array('status' => false, 'msg' => 'Resumen finalizado. No es posible registrar el préstamo.');
+					$arrResponse = array('status' => false, 'msg' => 'Resumen finalizado. No es posible registrar el Préstamo.');
 				}
 			}	
 			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
