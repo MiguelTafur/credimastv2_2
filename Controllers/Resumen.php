@@ -59,4 +59,18 @@ class Resumen extends Controllers{
 		}
 		die();
 	}
+
+	public function getResumenUltimo()
+	{
+		if($_POST)
+		{
+			$ruta = $_POST['idRuta'];
+
+			$base = $this->model->selectResumenUltimo($ruta);
+			
+			$arrResponse = array('status' => true, 'base' => $base);
+			
+			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+		}
+	}
 }

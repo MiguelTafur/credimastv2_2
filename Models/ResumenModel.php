@@ -57,8 +57,9 @@ class ResumenModel extends Mysql
         $sql = "SELECT * FROM resumen WHERE codigoruta = $this->intIdRuta AND status = 1 ORDER BY datecreated DESC";
         $request = $this->select($sql);
 
-        $return = $request;
+        $return = $request['total'] ?? 0;
 
+        /*
         if(!empty($request))
         {
             $fechaUltimoResumen = $this->selectResumenAnterior($this->intIdRuta)['datecreated'] ?? NOWDATE;
@@ -76,6 +77,7 @@ class ResumenModel extends Mysql
         } else {
             $return = 0;
         }
+        */
 
         return $return;
     }

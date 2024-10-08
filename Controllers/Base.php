@@ -61,4 +61,51 @@ class Base extends Controllers{
         }
         die();
     }
+
+    //REGISTRAR BASE
+	public function setBaseResumenAnterior()
+    {
+        if($_POST)
+        {
+            $intValor = intval($_POST['base']);
+            $strObservacion = '';
+            $ruta = $_SESSION['idRuta'];
+            $usuario = $_SESSION['idUser'];
+            $request_user = "";
+
+            //VALIDA SI HAY UN RESUMEN Y DEVUELVE LA FECHA, Si NO, LO CREA.
+            $fechaBase = setDelResumenActual('set', $ruta)['datecreated'] ?? NOWDATE;
+
+            if($_SESSION['permisosMod']['w']){
+                $request_user = $this->model->insertBase($usuario,$ruta,$intValor,$strObservacion,$fechaBase);
+            }
+
+            if($request_user > 0)
+            {
+                $arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.');
+            } else if($request_user == '0'){
+                $arrResponse = array("status" => false, "msg" => 'Base ya ingresada.');
+            }else{
+                $arrResponse = array("status" => false, "msg" => 'No es posible almacenar los datos.');
+            }
+
+            echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+        }
+        die();
+    }
+
+    public function getBase()
+    {
+        if($_POST)
+        {
+            $ruta = $_POST['idRuta'];
+
+            $base = $this->model->selectBase($ruta);
+            
+            $arrResponse = array('status' => true, 'base' => $base);
+
+            echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+        }
+        die();
+    }
 }

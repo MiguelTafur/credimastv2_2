@@ -7,6 +7,132 @@ document.addEventListener('DOMContentLoaded', function(){
 
 function iniciarApp() {
     fntNewResumen();
+    fntBase();
+}
+
+//CONSULTA SI HAY UNA BASE REGISTRADA
+async function fntBase()
+{
+    const formData = new FormData();
+    formData.append('idRuta', ruta);
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Base/getBase', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(!json.base){
+            fntBaseResumen();
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+//MUESTRA UNA ALERTA PARA INSERTA EL VALOR DE LA BASE SEGÚN EL USUARIO ESCOJA
+async function fntBaseResumen()
+{
+    Swal.fire({
+        title: "Base Resumen",
+        text: "¿Desea registrar una nueva Base?",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonColor: "#d9a300",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, Registrar!",
+        cancelButtonText: "No, Cancelar!",
+    }).then((result) => {
+    if (result.isConfirmed) {
+        fntNewBase();
+    } else {
+        fntTotalUltimoResumenCerrado();
+    }
+    });
+}
+
+async function fntTotalUltimoResumenCerrado()
+{
+    const formData = new FormData();
+    formData.append('idRuta', ruta);
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Resumen/getResumenUltimo', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            console.log(json.base);
+            fntRegistrarBaseResumenAnterior(json.base);
+        }else{
+            Swal.fire("Atención!", json.msg, "warning");
+            /*Toast.fire({
+                icon: "warning",
+                title: "Ocurrió un error en el Servidor"
+            });*/
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+//REGISTRAR BASE CON EL TOTAL DEL RESUMEN ANTERIOR
+async function fntRegistrarBaseResumenAnterior(base)
+{
+    divLoading.style.display = "flex";
+    try {
+        const formData = new FormData();
+        formData.append('base', base);
+        formData.append('tipo', 2);
+        let resp = await fetch(base_url + '/Base/setBaseResumenAnterior', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+        json = await resp.json();
+        if(json.status) {
+            location.reload();
+        } else {
+            Swal.fire("Error", json.msg , "error");
+            /*Toast.fire({
+                icon: "warning",
+                title: "Ocurrió un error en el Servidor"
+            });*/
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Sua sesión expiró, recarga la página para entrar nuevamente"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
 }
 
 //OBTIENE EL ID DEL RESUMEN
@@ -367,7 +493,7 @@ async function fntRegistrarClientePrestamo()
 }
 
 //VISTA PARA CREAR LA BASE
-function fntNewBase(total)
+function fntNewBase(total = null)
 {
     $('#modalFormBase').modal('show');
 
