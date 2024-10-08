@@ -108,7 +108,11 @@
                 </div>
                 <div class="card-footer">
                   <div class="d-grid d-md-flex gap-2 justify-content-md-around">
-                    <button title="Editar Base" class="btn btn-secondary btn-sm me-1 <?= !empty($data['resumenCerrado']['status']) && $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" onclick="fntEditBase(<?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?>)">
+                    <button 
+                      title="Editar Base" 
+                      class="btn btn-secondary btn-sm me-1 
+                      <?= !empty($data['resumenCerrado']['status']) && $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" 
+                      onclick="fntEditBase(<?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?>, <?= !empty($baseResumen) ? $baseResumen : $baseResumenActual; ?>)">
                       <i class="bi bi-pencil-square me-1"></i>
                       Base
                     </button>

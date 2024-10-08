@@ -3,7 +3,7 @@
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="titleModal">Nueva Base</h5>
+        <h1 class="modal-title fs-5" id="titleModal">Actualizar Base</h5>
         <div data-bs-theme="dark">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -24,7 +24,7 @@
               <div class="tile-footer mt-4">
                 <button class="btn btn-warning" type="submit">
                   <i class="bi bi-check-circle-fill"></i>
-                  <span id="btnText">Registrar</span>
+                  <span id="btnText">Actualizar</span>
                 </button>&nbsp;&nbsp;&nbsp;
                 <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">
                   <i class="bi bi-x-circle-fill me-2"></i>Cancelar

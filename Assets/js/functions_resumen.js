@@ -42,6 +42,7 @@ async function fntBase()
     return false;
 }
 
+//TRAE EL TOTAL DEL ULTIMO RESUMEN CON ESTADO 1
 async function fntTotalUltimoResumenCerrado(total)
 {
     const formData = new FormData();
@@ -77,7 +78,7 @@ async function fntTotalUltimoResumenCerrado(total)
     divLoading.style.display = "none";
     return false;
 }
-//REGISTRAR BASE CON EL TOTAL DEL RESUMEN ANTERIOR
+//REGISTRAR LA BASE CON EL TOTAL DEL RESUMEN ANTERIOR
 async function fntRegistrarBaseResumenAnterior(base, total)
 {
     divLoading.style.display = "flex";
@@ -472,9 +473,47 @@ async function fntRegistrarClientePrestamo()
 }
 
 //VISTA PARA CREAR LA BASE
-function fntNewBase(total = null)
+async function fntEditBase(total, base)
 {
-    $('#modalFormBase').modal('show');
+    const formData = new FormData();
+    formData.append('base', base);
+    formData.append('idRuta', ruta);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url + '/Base/getMontoBase', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status)
+        {
+            document.querySelector('#txtValor').value = json.data.monto;
+            document.querySelector('#txtObservacion').value = json.data.observacion;
+            $('#modalFormBase').modal('show');
+            
+        }else{
+            Swal.fire("Error", json.msg, "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error interno"
+            });*/
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
 
     if(document.querySelector("#formBase")){
         let formBase = document.querySelector("#formBase");
@@ -550,6 +589,4 @@ async function fntRegistrarBase(total)
     divLoading.style.display = "none";
     return false;
 }
-
-//EDITAR BASE
 

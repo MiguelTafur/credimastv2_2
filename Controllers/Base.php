@@ -82,7 +82,7 @@ class Base extends Controllers{
 
             if($request_user > 0)
             {
-                $arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.');
+                $arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.', 'idbase' => $request_user);
             } else if($request_user == '0'){
                 $arrResponse = array("status" => false, "msg" => 'Base ya ingresada.');
             }else{
@@ -99,10 +99,26 @@ class Base extends Controllers{
     {
         if($_POST)
         {
-            $ruta = $_POST['idRuta'];
+            $ruta = intval($_POST['idRuta']);
 
             $base = $this->model->selectBase($ruta);
             
+            $arrResponse = array('status' => true, 'base' => $base);
+
+            echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+        }
+        die();
+    }
+
+    //TRAE LA BASE
+    public function getMontoBase()
+    {
+        if($_POST)
+        {
+            $ruta = intval($_POST['idRuta']);
+            $monto = intval($_POST['base']);
+
+            $base = $this->model->selectMontoBase($ruta, $monto);
             $arrResponse = array('status' => true, 'base' => $base);
 
             echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);

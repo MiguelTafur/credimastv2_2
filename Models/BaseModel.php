@@ -59,4 +59,18 @@ class BaseModel extends Mysql
         return $request;
         
     }
+
+    public function selectMontoBase(int $ruta, int $base)
+    {
+        $this->intIdRuta = $ruta;
+        $this->intMonto = $base;
+
+        $fecha = getResumenAnterior($this->intIdRuta)['datecreated'] ?? NOWDATE;
+
+        $sql = "SELECT * FROM base WHERE codigoruta = $this->intIdRuta AND datecreated = '{$fecha}' AND monto = $this->intMonto";
+        $request = $this->select($sql);
+
+        return $request;
+        
+    }
 }
