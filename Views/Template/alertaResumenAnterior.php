@@ -8,9 +8,3 @@
     Recuerda que los <strong class="fst-italic">Pagos</strong> y <strong class="fst-italic">Préstamos</strong> realizados serán registrados con la misma <strong class="fst-italic">Fecha</strong> del resumen pendiente.
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-
-  <div class="alert alert-light alert-dismissible fade show font-monospace" role="alert">
-    <i class="bi bi-info-circle"></i>
-    Si eliminas todos los <strong class="fst-italic">Datos</strong>, el <strong class="fst-italic">Resumen</strong> será <strong class="fst-italic">Eliminado</strong> automáticamente.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-  </div>

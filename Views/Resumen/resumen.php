@@ -60,6 +60,7 @@
                 <div class="card-body">
                   <div class="row justify-content-center">
                     <div class="col-12">
+                      <!-- INFORMACIÓN DEL RESUMEN -->
                       <table class="table table-borderless text-center mb-0">
                         <tbody>
                           <tr>
@@ -106,6 +107,7 @@
                     </div>
                   </div>
                 </div>
+                <!-- BOTONES DE BASE, PRÉSTAMOS Y GASTOS -->
                 <div class="card-footer">
                   <div class="d-grid d-md-flex gap-2 justify-content-md-around">
                     <button 
@@ -125,7 +127,12 @@
                         <i class="bi bi-plus-circle me-1"></i>
                         Préstamo
                       </button>
-                      <button class="btn btn-secondary btn-sm" id="btnViewPrestamos">
+                      <button 
+                        class="btn btn-secondary btn-sm" 
+                        id="btnViewPrestamos" 
+                        data-bs-toggle="offcanvas" 
+                        data-bs-target="#offcanvasPrestamos" 
+                        aria-controls="offcanvasRight">
                         <i class="bi bi-eye me-0"></i>
                       </button>
                     </div>
@@ -138,13 +145,19 @@
                         <i class="bi bi-plus-circle me-1"></i>
                         Gasto
                       </button>
-                      <button class="btn btn-secondary btn-sm" id="btnViewGastos">
+                      <button 
+                        class="btn btn-secondary btn-sm" 
+                        id="btnViewGastos"
+                        data-bs-toggle="offcanvas" 
+                        data-bs-target="#offcanvasGastos" 
+                        aria-controls="offcanvasRight">
                         <i class="bi bi-eye me-0"></i>
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
+              <!-- BOTONES DE REGISTRAR Y CORREGIR -->
               <div class="card">
                 <div class="card-header text-center text-body-secondary h6">Acciones Resumen <?= $resumenAnterior ?? ''; ?></div>
                 <div class="card-body text-center">
@@ -172,7 +185,15 @@
       </div>
     </div>
     <div class="tab-pane fade" id="dashboard-tab-pane" role="tabpanel" aria-labelledby="dashboard-tab" tabindex="0">
-      
+    <button 
+      class="btn btn-secondary btn-sm" 
+      onClick="fntViewPagamentos()" 
+      title="Ver Pagamentos" 
+      data-bs-toggle="offcanvas" 
+      data-bs-target="#offcanvasRight" 
+      aria-controls="offcanvasRight">
+      <i class="bi bi-cash-stack me-0"></i>
+    </button>
     </div>
   </div>
 </main>
