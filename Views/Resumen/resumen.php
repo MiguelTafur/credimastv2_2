@@ -130,7 +130,11 @@
                       </button>
                     </div>
                     <div class="btn-group" role="group" aria-label="prestamos">
-                      <button title="Registrar Gasto" class="btn btn-secondary btn-sm me-1 <?= !empty($data['resumenCerrado']['status']) && $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" onclick="fntNewGasto(<?= !empty($gastosResumen) ? $gastosResumen : $gastosResumenActual; ?>, <?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?>)">
+                      <button 
+                        title="Registrar Gasto" 
+                        class="btn btn-secondary btn-sm me-1 
+                        <?= !empty($data['resumenCerrado']['status']) && $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" 
+                        onclick="fntNewGasto()">
                         <i class="bi bi-plus-circle me-1"></i>
                         Gasto
                       </button>

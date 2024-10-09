@@ -317,7 +317,7 @@ async function fntRegistrarPrestamo()
 }
 
 //VISTA PARA CREAR GASTO
-function fntNewGasto(gasto, total)
+function fntNewGasto()
 {
     $('#modalFormGastos').modal('show');
 
@@ -343,12 +343,12 @@ function fntNewGasto(gasto, total)
                 }
             }
 
-            fntRegistrarGasto(gasto, total);
+            fntRegistrarGasto();
         }
     }
 }
 //REGISTRAR GASTO  
-async function fntRegistrarGasto(gasto, total)
+async function fntRegistrarGasto()
 { 
     divLoading.style.display = "flex";
     try {
@@ -361,10 +361,9 @@ async function fntRegistrarGasto(gasto, total)
         });
         json = await resp.json();
         if(json.status) {
-            let monto = parseInt(formGasto.children[2].children[1].value);
-            document.querySelector('#gastosResumen').textContent = gasto + monto;
-            document.querySelector('#totalResumen').textContent = total - monto;
-            document.querySelector('#idResumen').value = json.idresumen;
+            document.querySelector('#gastosResumen').textContent = json.resumen.gastos;
+            document.querySelector('#totalResumen').textContent = json.resumen.total;
+            document.querySelector('#idResumen').value = json.resumen.idresumen;
             $('#modalFormGastos').modal("hide");
             formGasto.reset();
             //Swal.fire("Roles de usuario", json.msg ,"success");
