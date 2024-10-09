@@ -6,7 +6,7 @@ class BaseModel extends Mysql
     PRIVATE $intIdUsuario;
     PRIVATE $intIdRuta;
     PRIVATE $intMonto;
-    PRIVATE $strObservacion;
+    PRIVATE $inputMonto;
     PRIVATE $strFecha;
 
     public function __construct()
@@ -14,12 +14,11 @@ class BaseModel extends Mysql
         parent::__construct();
     }	
 
-    public function insertBase(int $usuario, int $ruta, int $monto, string $observacion, string $fecha)
+    public function insertBase(int $usuario, int $ruta, int $monto, string $fecha)
     {
         $this->intIdUsuario = $usuario;
         $this->intIdRuta = $ruta;
         $this->intMonto = $monto;
-        $this->strObservacion = $observacion;
         $this->strFecha = $fecha;
         $return = 0;
 
@@ -29,8 +28,8 @@ class BaseModel extends Mysql
 
         if(empty($request))
         {
-            $query_insert = "INSERT INTO base(personaid, codigoruta, monto, observacion, hora, datecreated) VALUES(?,?,?,?,?,?)";
-            $arrData = array($this->intIdUsuario, $this->intIdRuta, $this->intMonto, $this->strObservacion, NOWTIME, $this->strFecha);
+            $query_insert = "INSERT INTO base(personaid, codigoruta, monto, hora, datecreated) VALUES(?,?,?,?,?)";
+            $arrData = array($this->intIdUsuario, $this->intIdRuta, $this->intMonto, NOWTIME, $this->strFecha);
             $request = $this->insert($query_insert, $arrData);
 
             if(!empty($request))
@@ -45,6 +44,27 @@ class BaseModel extends Mysql
         }
 
         return $return;
+    }
+
+    //EDITAR BASE
+    public function updateBase(int $usuario, int $ruta, int $monto, string $fecha)
+    {
+        $this->intIdUsuario = $usuario;
+        $this->intIdRuta = $ruta;
+        $this->intMonto = $monto;
+        $this->strFecha = $fecha;
+
+        $sql = "UPDATE base SET personaid = ?, monto = ? WHERE codigoruta = $this->intIdRuta AND datecreated = '{$this->strFecha}'";
+        $arrData = array($this->intIdUsuario, $this->intMonto);
+        $request = $this->update($sql, $arrData);
+
+        if(!empty($request))
+        {
+            //ACTUALIZA LA COLUMNA "VENTAS" DE LA TABLA RESUMEN
+            setUpdateResumen($this->intIdRuta, $this->intMonto, 1, $this->strFecha);
+        }
+
+        return $this->intMonto;
     }
 
     public function selectBase(int $ruta)

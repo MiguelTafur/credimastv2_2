@@ -12,7 +12,6 @@
         <div class="tile">
           <div class="tile-body">    
             <form id="formBase" name="formBase" class="row">
-              <input type="hidden" id="idBase" name="idBase" value="">
               <div class="form-group col-12 mb-4    ">
                 <label class="form-label" for="txtValor">Valor</label>
                 <input type="tel" class="form-control" id="txtValor" name="txtValor" placeholder="Valor" required onkeypress="return controlTag(event)">

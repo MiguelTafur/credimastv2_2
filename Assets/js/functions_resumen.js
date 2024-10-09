@@ -472,48 +472,11 @@ async function fntRegistrarClientePrestamo()
     return false;
 }
 
-//VISTA PARA CREAR LA BASE
+//VISTA PARA EDITAR LA BASE
 async function fntEditBase(total, base)
 {
-    const formData = new FormData();
-    formData.append('base', base);
-    formData.append('idRuta', ruta);
-
-    divLoading.style.display = "flex";
-    try {
-        let resp = await fetch(base_url + '/Base/getMontoBase', {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            body: formData
-        });
-    
-        json = await resp.json();
-    
-        if(json.status)
-        {
-            document.querySelector('#txtValor').value = json.data.monto;
-            document.querySelector('#txtObservacion').value = json.data.observacion;
-            $('#modalFormBase').modal('show');
-            
-        }else{
-            Swal.fire("Error", json.msg, "error");
-            /*Toast.fire({
-                icon: "error",
-                title: "Ocurrió un error interno"
-            });*/
-            console.log(json.msg);
-        }
-    } catch (error) {
-        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
-        /*Toast.fire({
-            icon: "error",
-            title: "Ocurrió un error interno"
-        });*/
-        console.log(error);
-    }
-    divLoading.style.display = "none";
-    return false;
+    document.querySelector('#txtValor').value = base;
+    $('#modalFormBase').modal('show');
 
     if(document.querySelector("#formBase")){
         let formBase = document.querySelector("#formBase");
@@ -537,17 +500,17 @@ async function fntEditBase(total, base)
                 }
             }
 
-            fntRegistrarBase(total);
+            fntEditarBase(total, base);
         }
     }
 }
-//REGISTRAR BASE
-async function fntRegistrarBase(total)
+//ACTUALIZAR BASE
+async function fntEditarBase(total, base)
 {
     divLoading.style.display = "flex";
     try {
         const data = new FormData(formBase);
-        let resp = await fetch(base_url + '/Base/setBase', {
+        let resp = await fetch(base_url + '/Base/setBaseUpdate', {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -555,21 +518,15 @@ async function fntRegistrarBase(total)
         });
         json = await resp.json();
         if(json.status) {
-            if(!total){
-                location.reload();
-            } else {
-                let monto = parseInt(formBase.children[1].children[1].value);
-                document.querySelector('#baseResumen').textContent = monto;
-                document.querySelector('#totalResumen').textContent = total + monto;
-                document.querySelector('#idResumen').value = json.idresumen;
-                $('#modalFormBase').modal("hide");
-                formBase.reset();
-                //Swal.fire("Roles de usuario", json.msg ,"success");
-                Toast.fire({
-                    icon: "success",
-                    title: json.msg
-                });
-            }
+            document.querySelector('#baseResumen').textContent = json.base;
+            document.querySelector('#totalResumen').textContent = json.base + total;
+            $('#modalFormBase').modal("hide");
+            formBase.reset();
+            //Swal.fire("Roles de usuario", json.msg ,"success");
+            Toast.fire({
+                icon: "success",
+                title: json.msg
+            });
         } else {
             Swal.fire("Error", json.msg , "error");
             /*Toast.fire({
