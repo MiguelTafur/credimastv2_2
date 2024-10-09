@@ -112,12 +112,16 @@
                       title="Editar Base" 
                       class="btn btn-secondary btn-sm me-1 
                       <?= !empty($data['resumenCerrado']['status']) && $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" 
-                      onclick="fntEditBase(<?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?>, <?= !empty($baseResumen) ? $baseResumen : $baseResumenActual; ?>)">
+                      onclick="fntEditBase()">
                       <i class="bi bi-pencil-square me-1"></i>
                       Base
                     </button>
                     <div class="btn-group" role="group" aria-label="prestamos">
-                      <button title="Registrar Préstamo" class="btn btn-secondary btn-sm me-1 <?= !empty($data['resumenCerrado']['status']) && $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" onclick="fntNewVenta(<?= !empty($prestamoResumen) ? $prestamoResumen : $prestamoResumenActual; ?>, <?= !empty($totalResumen) ? $totalResumen : $totalResumenActual; ?>)">
+                      <button 
+                        title="Registrar Préstamo" 
+                        class="btn btn-secondary btn-sm me-1 
+                        <?= !empty($data['resumenCerrado']['status']) && $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" 
+                        onclick="fntNewVenta()">
                         <i class="bi bi-plus-circle me-1"></i>
                         Préstamo
                       </button>

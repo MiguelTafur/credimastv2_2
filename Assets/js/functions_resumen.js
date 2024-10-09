@@ -218,7 +218,7 @@ function fntClientesPrestamo()
 }
 
 //VISTA PARA CREAR UN PRÉSTAMO
-function fntNewVenta(prestamo, total)
+function fntNewVenta()
 {
     $('#listFormato').select2({
         dropdownParent: $('#modalFormPrestamo'),
@@ -268,11 +268,11 @@ function fntNewVenta(prestamo, total)
                 return false;
             }
         }
-        fntRegistrarPrestamo(prestamo, total);
+        fntRegistrarPrestamo();
     }
 }
 //REGISTRAR PRÉSTAMO
-async function fntRegistrarPrestamo(prestamo, total)
+async function fntRegistrarPrestamo()
 {
     divLoading.style.display = "flex";
     try {
@@ -285,10 +285,9 @@ async function fntRegistrarPrestamo(prestamo, total)
         });
         json = await resp.json();
         if(json.status) {
-            let monto = parseInt(formPrestamos.children[2].children[1].value);
-            document.querySelector('#prestamoResumen').textContent = prestamo + monto;
-            document.querySelector('#totalResumen').textContent = total - monto;
-            document.querySelector('#idResumen').value = json.idresumen;
+            document.querySelector('#prestamoResumen').textContent = json.resumen.ventas;
+            document.querySelector('#totalResumen').textContent = json.resumen.total;
+            document.querySelector('#idResumen').value = json.resumen.idresumen;
             $('#modalFormPrestamo').modal("hide");
             formPrestamos.reset();
             $('#listClientes').val(null).trigger('change');
@@ -473,7 +472,7 @@ async function fntRegistrarClientePrestamo()
 }
 
 //VISTA PARA EDITAR LA BASE
-async function fntEditBase(total, base)
+async function fntEditBase()
 {
     $('#modalFormBase').modal('show');
 

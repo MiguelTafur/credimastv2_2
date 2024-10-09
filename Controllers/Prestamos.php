@@ -322,9 +322,10 @@ class Prestamos extends Controllers{
 					
 					if($request_prestamo > 0)
 					{
-						$idresumen = setDelResumenActual('set', $ruta)['idresumen'];
-						$arrResponse = $option == 1 ? array('status' => true, 'msg' => 'Préstamo registrado.', 'idresumen' => $idresumen)
-													: array('status' => true, 'msg' => 'Préstamo actualizado.', 'idresumen' => $idresumen);
+						$arrResumen = getResumenActual($fechaPrestamo);
+
+						$arrResponse = $option == 1 ? array('status' => true, 'msg' => 'Préstamo registrado.', 'resumen' => $arrResumen)
+													: array('status' => true, 'msg' => 'Préstamo actualizado.', 'resumen' => $arrResumen);
 					}else if($request_prestamo == '0')
 					{
 						$arrResponse = array('status' => false, 'msg' => 'Atencion! No es posible registrar el préstamo.');
