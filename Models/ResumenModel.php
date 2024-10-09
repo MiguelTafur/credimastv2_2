@@ -136,8 +136,8 @@ class ResumenModel extends Mysql
         $this->intIdResumen = $idresumen;
         $this->intStatus = $status;
 
-        $query_update = "UPDATE resumen SET status = ? WHERE idresumen = $this->intIdResumen";
-        $arrData = array($this->intStatus);
+        $query_update = "UPDATE resumen SET status = ?, hora = ? WHERE idresumen = $this->intIdResumen";
+        $arrData = array($this->intStatus, NOWTIME);
         $request = $this->update($query_update, $arrData);
 
         return $request;
