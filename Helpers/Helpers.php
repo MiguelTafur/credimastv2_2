@@ -89,11 +89,11 @@
     }
 
     //TRAE EL RESUMEN CON EL ESTADO 0 Y CON LA FECHA ACTUAL
-    function getResumenActual()
+    function getResumenActual(string $fecha = NULL)
     {
         require_once("Models/ResumenModel.php");
         $objResumen = new ResumenModel();
-        $request = $objResumen->selectResumenActual($_SESSION['idRuta']);
+        $request = $objResumen->selectResumenActual($_SESSION['idRuta'], $fecha);
         return $request;
     }
 

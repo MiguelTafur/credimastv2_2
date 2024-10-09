@@ -54,8 +54,8 @@ class BaseModel extends Mysql
         $this->intMonto = $monto;
         $this->strFecha = $fecha;
 
-        $sql = "UPDATE base SET personaid = ?, monto = ? WHERE codigoruta = $this->intIdRuta AND datecreated = '{$this->strFecha}'";
-        $arrData = array($this->intIdUsuario, $this->intMonto);
+        $sql = "UPDATE base SET personaid = ?, monto = ?, hora = ? WHERE codigoruta = $this->intIdRuta AND datecreated = '{$this->strFecha}'";
+        $arrData = array($this->intIdUsuario, $this->intMonto, NOWTIME);
         $request = $this->update($sql, $arrData);
 
         if(!empty($request))

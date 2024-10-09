@@ -475,7 +475,6 @@ async function fntRegistrarClientePrestamo()
 //VISTA PARA EDITAR LA BASE
 async function fntEditBase(total, base)
 {
-    document.querySelector('#txtValor').value = base;
     $('#modalFormBase').modal('show');
 
     if(document.querySelector("#formBase")){
@@ -500,12 +499,12 @@ async function fntEditBase(total, base)
                 }
             }
 
-            fntEditarBase(total, base);
+            fntEditarBase();
         }
     }
 }
 //ACTUALIZAR BASE
-async function fntEditarBase(total, base)
+async function fntEditarBase()
 {
     divLoading.style.display = "flex";
     try {
@@ -518,8 +517,8 @@ async function fntEditarBase(total, base)
         });
         json = await resp.json();
         if(json.status) {
-            document.querySelector('#baseResumen').textContent = json.base;
-            document.querySelector('#totalResumen').textContent = json.base + total;
+            document.querySelector('#baseResumen').textContent = json.resumen.base;
+            document.querySelector('#totalResumen').textContent = json.resumen.total;
             $('#modalFormBase').modal("hide");
             formBase.reset();
             //Swal.fire("Roles de usuario", json.msg ,"success");

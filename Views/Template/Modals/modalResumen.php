@@ -12,14 +12,10 @@
         <div class="tile">
           <div class="tile-body">    
             <form id="formBase" name="formBase" class="row">
-              <div class="form-group col-12 mb-4    ">
+              <div class="form-group col-12 mb-4">
                 <label class="form-label" for="txtValor">Valor</label>
                 <input type="tel" class="form-control" id="txtValor" name="txtValor" placeholder="Valor" required onkeypress="return controlTag(event)">
               </div>  
-              <div class="form-group col-md-12">
-                <label class="form-label" for="txtObservacion">Observación</label>
-                <textarea class="form-control" id="txtObservacion" name="txtObservacion"></textarea>
-              </div> 
               <div class="tile-footer mt-4">
                 <button class="btn btn-warning" type="submit">
                   <i class="bi bi-check-circle-fill"></i>

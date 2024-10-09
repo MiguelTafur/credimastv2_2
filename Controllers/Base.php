@@ -75,10 +75,13 @@ class Base extends Controllers{
                 //VALIDA SI HAY UN RESUMEN Y DEVUELVE LA FECHA, Si NO, LO CREA.
                 $fechaBase = setDelResumenActual('set', $ruta)['datecreated'] ?? NOWDATE;
 
-                //dep($_POST);exit;
-
+                //ACTUALIZA LA BASE
                 $base = $this->model->updateBase($usuario, $ruta, $monto, $fechaBase);
-                $arrResponse = array('status' => true, 'base' => $base);
+
+                //TRAE LOS DATOS DEL RESUMEN
+                $arrResumen = getResumenActual($fechaBase);
+
+                $arrResponse = array('status' => true, 'resumen' => $arrResumen);
 
                 echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
             } else {
