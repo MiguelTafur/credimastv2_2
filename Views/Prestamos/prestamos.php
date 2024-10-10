@@ -51,7 +51,7 @@
             <tr>
               <th class="text-center">Fecha</th>
               <th class="text-center">Hora</th>
-              <th class="text-center">Abono</th>
+              <th class="text-center">Valor</th>
             </tr>
           </thead>
           <tbody id="tbodyPagamentos">
