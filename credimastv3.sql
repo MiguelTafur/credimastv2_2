@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3307
--- Tempo de geração: 07/10/2024 às 01:23
--- Versão do servidor: 10.4.28-MariaDB
--- Versão do PHP: 8.1.17
+-- Host: 127.0.0.1
+-- Tempo de geração: 10-Out-2024 às 19:44
+-- Versão do servidor: 10.4.32-MariaDB
+-- versão do PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,7 +24,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `base`
+-- Estrutura da tabela `base`
 --
 
 CREATE TABLE `base` (
@@ -32,15 +32,27 @@ CREATE TABLE `base` (
   `personaid` bigint(20) NOT NULL,
   `codigoruta` bigint(20) NOT NULL,
   `monto` int(11) NOT NULL,
-  `observacion` varchar(100) NOT NULL,
   `hora` time NOT NULL,
   `datecreated` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 
+--
+-- Extraindo dados da tabela `base`
+--
+
+INSERT INTO `base` (`idbase`, `personaid`, `codigoruta`, `monto`, `hora`, `datecreated`) VALUES
+(14, 1606, 780, 1000, '17:12:46', '2024-10-07'),
+(15, 1253, 776, 30, '14:42:13', '2024-10-08'),
+(16, 168, 603, 10000, '15:12:07', '2024-10-08'),
+(17, 1, 444, 1000, '17:26:39', '2024-10-07'),
+(18, 1, 444, 1205, '07:51:13', '2024-10-09'),
+(20, 168, 603, 4220, '16:38:57', '2024-10-09'),
+(21, 1253, 776, 0, '08:18:00', '2024-10-10');
+
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `gastos`
+-- Estrutura da tabela `gastos`
 --
 
 CREATE TABLE `gastos` (
@@ -54,10 +66,25 @@ CREATE TABLE `gastos` (
   `status` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 
+--
+-- Extraindo dados da tabela `gastos`
+--
+
+INSERT INTO `gastos` (`idgasto`, `personaid`, `codigoruta`, `nombre`, `monto`, `hora`, `datecreated`, `status`) VALUES
+(2, 1253, 776, 'Salario', 500, '08:24:46', '2024-10-06', 1),
+(8, 1, 444, 'Desayuno', 15, '09:43:16', '2024-10-07', 1),
+(9, 1, 444, 'Teste', 20, '10:08:56', '2024-10-07', 1),
+(10, 1253, 776, 'Teste', 20, '10:11:06', '2024-10-06', 1),
+(11, 1253, 776, 'DvDos', 40, '15:25:43', '2024-10-07', 1),
+(12, 168, 603, 'Gasolina', 60, '16:31:30', '2024-10-08', 1),
+(13, 168, 603, 'Sualdo', 500, '16:32:13', '2024-10-08', 1),
+(14, 168, 603, 'Almuerzo', 20, '16:33:17', '2024-10-08', 1),
+(15, 168, 603, 'Reserva', 100, '14:08:23', '2024-10-09', 1);
+
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `modulo`
+-- Estrutura da tabela `modulo`
 --
 
 CREATE TABLE `modulo` (
@@ -68,7 +95,7 @@ CREATE TABLE `modulo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 
 --
--- Despejando dados para a tabela `modulo`
+-- Extraindo dados da tabela `modulo`
 --
 
 INSERT INTO `modulo` (`idmodulo`, `titulo`, `descripcion`, `status`) VALUES
@@ -82,7 +109,7 @@ INSERT INTO `modulo` (`idmodulo`, `titulo`, `descripcion`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `pagos`
+-- Estrutura da tabela `pagos`
 --
 
 CREATE TABLE `pagos` (
@@ -95,7 +122,7 @@ CREATE TABLE `pagos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 
 --
--- Despejando dados para a tabela `pagos`
+-- Extraindo dados da tabela `pagos`
 --
 
 INSERT INTO `pagos` (`idpago`, `prestamoid`, `personaid`, `abono`, `hora`, `datecreated`) VALUES
@@ -60171,12 +60198,17 @@ INSERT INTO `pagos` (`idpago`, `prestamoid`, `personaid`, `abono`, `hora`, `date
 (63565, 5036, 0, 720, NULL, '2024-10-05'),
 (63566, 4843, 0, 100, NULL, '2024-10-05'),
 (63567, 5048, 0, 120, NULL, '2024-10-05'),
-(63568, 4670, 0, 300, NULL, '2024-10-05');
+(63568, 4670, 0, 300, NULL, '2024-10-05'),
+(63570, 5028, 1606, 150, '13:01:26', '2024-10-07'),
+(63571, 5051, 1606, 75, '13:01:44', '2024-10-07'),
+(63572, 5055, 1253, 120, '14:48:10', '2024-10-08'),
+(63573, 3816, 1253, 360, '14:48:37', '2024-10-08'),
+(63574, 5034, 1, 240, '16:40:11', '2024-10-07');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `permisos`
+-- Estrutura da tabela `permisos`
 --
 
 CREATE TABLE `permisos` (
@@ -60190,7 +60222,7 @@ CREATE TABLE `permisos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 
 --
--- Despejando dados para a tabela `permisos`
+-- Extraindo dados da tabela `permisos`
 --
 
 INSERT INTO `permisos` (`idpermiso`, `rolid`, `moduloid`, `r`, `w`, `u`, `d`) VALUES
@@ -60216,7 +60248,7 @@ INSERT INTO `permisos` (`idpermiso`, `rolid`, `moduloid`, `r`, `w`, `u`, `d`) VA
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `persona`
+-- Estrutura da tabela `persona`
 --
 
 CREATE TABLE `persona` (
@@ -60237,7 +60269,7 @@ CREATE TABLE `persona` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 
 --
--- Despejando dados para a tabela `persona`
+-- Extraindo dados da tabela `persona`
 --
 
 INSERT INTO `persona` (`idpersona`, `identificacion`, `nombres`, `apellidos`, `telefono`, `direccion1`, `direccion2`, `email_user`, `password`, `token`, `rolid`, `codigoruta`, `datecreated`, `status`) VALUES
@@ -61208,7 +61240,7 @@ INSERT INTO `persona` (`idpersona`, `identificacion`, `nombres`, `apellidos`, `t
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `prestamos`
+-- Estrutura da tabela `prestamos`
 --
 
 CREATE TABLE `prestamos` (
@@ -61229,7 +61261,7 @@ CREATE TABLE `prestamos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 
 --
--- Despejando dados para a tabela `prestamos`
+-- Extraindo dados da tabela `prestamos`
 --
 
 INSERT INTO `prestamos` (`idprestamo`, `personaid`, `codigoruta`, `usuarioid`, `monto`, `formato`, `plazo`, `taza`, `observacion`, `hora`, `datecreated`, `fechavence`, `datefinal`, `status`) VALUES
@@ -66049,12 +66081,23 @@ INSERT INTO `prestamos` (`idprestamo`, `personaid`, `codigoruta`, `usuarioid`, `
 (5051, 1639, 0, 0, 1500, 1, 24, 20, '', NULL, '2024-10-04', '2024-11-01', NULL, 1),
 (5052, 1678, 0, 0, 1200, 1, 20, 20, '', NULL, '2024-10-05', '2024-10-29', NULL, 1),
 (5055, 1298, 776, 1253, 2000, 1, 20, 20, '', '19:51:40', '2024-10-06', '2024-10-29', NULL, 1),
-(5057, 1309, 776, 1253, 300, 1, 20, 20, '', '20:02:58', '2024-10-06', '2024-10-29', NULL, 1);
+(5057, 1309, 776, 1253, 300, 1, 20, 20, '', '20:02:58', '2024-10-06', '2024-10-29', NULL, 1),
+(5066, 1264, 776, 1253, 200, 1, 20, 20, '', '15:25:59', '2024-10-07', '2024-10-30', NULL, 1),
+(5067, 1631, 780, 1606, 200, 1, 20, 20, '', '16:04:21', '2024-10-07', '2024-10-30', NULL, 1),
+(5068, 1669, 780, 1606, 100, 1, 20, 20, '', '15:32:50', '2024-10-07', '2024-10-30', NULL, 1),
+(5070, 1279, 776, 1253, 500, 1, 20, 20, '', '12:35:39', '2024-10-08', '2024-10-31', NULL, 1),
+(5071, 1282, 776, 1253, 10, 1, 10, 10, '', '12:36:14', '2024-10-08', '2024-10-19', NULL, 1),
+(5073, 1043, 603, 168, 5000, 1, 24, 20, '', '16:14:19', '2024-10-08', '2024-11-11', NULL, 1),
+(5074, 1193, 603, 168, 200, 1, 20, 20, '', '16:14:32', '2024-10-08', '2024-10-31', NULL, 1),
+(5075, 1647, 780, 1606, 500, 1, 20, 20, '', '11:54:45', '2024-10-07', '2024-10-30', NULL, 1),
+(5076, 1279, 776, 1253, 50, 1, 20, 20, '', '11:59:36', '2024-10-10', '2024-11-02', NULL, 1),
+(5077, 334, 444, 1, 600, 1, 20, 20, '', '12:02:20', '2024-10-09', '2024-11-01', NULL, 1),
+(5078, 1184, 603, 168, 300, 1, 20, 20, '', '12:04:20', '2024-10-09', '2024-11-01', NULL, 1);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `resumen`
+-- Estrutura da tabela `resumen`
 --
 
 CREATE TABLE `resumen` (
@@ -66072,16 +66115,24 @@ CREATE TABLE `resumen` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 
 --
--- Despejando dados para a tabela `resumen`
+-- Extraindo dados da tabela `resumen`
 --
 
 INSERT INTO `resumen` (`idresumen`, `personaid`, `codigoruta`, `base`, `cobrado`, `ventas`, `gastos`, `total`, `hora`, `datecreated`, `status`) VALUES
-(36, 1253, 776, NULL, NULL, 2300, NULL, -2300, NULL, '2024-10-06', 0);
+(36, 1253, 776, NULL, NULL, 2300, 520, -2820, NULL, '2024-10-06', 1),
+(39, 1, 444, 1000, 240, NULL, 35, 1205, NULL, '2024-10-07', 1),
+(46, 1253, 776, NULL, NULL, 200, 40, -240, NULL, '2024-10-07', 1),
+(47, 1606, 780, 1000, 225, 800, NULL, 425, NULL, '2024-10-07', 0),
+(55, 1253, 776, 30, 480, 510, NULL, 0, '16:37:25', '2024-10-08', 1),
+(58, 168, 603, 10000, NULL, 5200, 580, 4220, '16:38:56', '2024-10-08', 1),
+(59, 1, 444, 1205, NULL, 600, NULL, 605, NULL, '2024-10-09', 0),
+(61, 168, 603, 4220, NULL, 300, 100, 3820, NULL, '2024-10-09', 0),
+(62, 1253, 776, 0, NULL, 50, NULL, -50, NULL, '2024-10-10', 0);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `rol`
+-- Estrutura da tabela `rol`
 --
 
 CREATE TABLE `rol` (
@@ -66092,7 +66143,7 @@ CREATE TABLE `rol` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_swedish_ci;
 
 --
--- Despejando dados para a tabela `rol`
+-- Extraindo dados da tabela `rol`
 --
 
 INSERT INTO `rol` (`idrol`, `nombrerol`, `descripcion`, `status`) VALUES
@@ -66106,7 +66157,7 @@ INSERT INTO `rol` (`idrol`, `nombrerol`, `descripcion`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `ruta`
+-- Estrutura da tabela `ruta`
 --
 
 CREATE TABLE `ruta` (
@@ -66118,7 +66169,7 @@ CREATE TABLE `ruta` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `ruta`
+-- Extraindo dados da tabela `ruta`
 --
 
 INSERT INTO `ruta` (`idruta`, `codigo`, `nombre`, `datecreated`, `estado`) VALUES
@@ -66148,14 +66199,14 @@ INSERT INTO `ruta` (`idruta`, `codigo`, `nombre`, `datecreated`, `estado`) VALUE
 --
 
 --
--- Índices de tabela `base`
+-- Índices para tabela `base`
 --
 ALTER TABLE `base`
   ADD PRIMARY KEY (`idbase`),
   ADD KEY `personaid` (`personaid`);
 
 --
--- Índices de tabela `gastos`
+-- Índices para tabela `gastos`
 --
 ALTER TABLE `gastos`
   ADD PRIMARY KEY (`idgasto`),
@@ -66164,13 +66215,13 @@ ALTER TABLE `gastos`
   ADD KEY `codigoruta_2` (`codigoruta`);
 
 --
--- Índices de tabela `modulo`
+-- Índices para tabela `modulo`
 --
 ALTER TABLE `modulo`
   ADD PRIMARY KEY (`idmodulo`);
 
 --
--- Índices de tabela `pagos`
+-- Índices para tabela `pagos`
 --
 ALTER TABLE `pagos`
   ADD PRIMARY KEY (`idpago`),
@@ -66179,7 +66230,7 @@ ALTER TABLE `pagos`
   ADD KEY `personaid` (`personaid`);
 
 --
--- Índices de tabela `permisos`
+-- Índices para tabela `permisos`
 --
 ALTER TABLE `permisos`
   ADD PRIMARY KEY (`idpermiso`),
@@ -66187,7 +66238,7 @@ ALTER TABLE `permisos`
   ADD KEY `moduloid` (`moduloid`);
 
 --
--- Índices de tabela `persona`
+-- Índices para tabela `persona`
 --
 ALTER TABLE `persona`
   ADD PRIMARY KEY (`idpersona`),
@@ -66195,45 +66246,45 @@ ALTER TABLE `persona`
   ADD KEY `rutaid` (`codigoruta`);
 
 --
--- Índices de tabela `prestamos`
+-- Índices para tabela `prestamos`
 --
 ALTER TABLE `prestamos`
   ADD PRIMARY KEY (`idprestamo`);
 
 --
--- Índices de tabela `resumen`
+-- Índices para tabela `resumen`
 --
 ALTER TABLE `resumen`
   ADD PRIMARY KEY (`idresumen`),
   ADD KEY `codigoruta` (`personaid`);
 
 --
--- Índices de tabela `rol`
+-- Índices para tabela `rol`
 --
 ALTER TABLE `rol`
   ADD PRIMARY KEY (`idrol`);
 
 --
--- Índices de tabela `ruta`
+-- Índices para tabela `ruta`
 --
 ALTER TABLE `ruta`
   ADD PRIMARY KEY (`idruta`);
 
 --
--- AUTO_INCREMENT para tabelas despejadas
+-- AUTO_INCREMENT de tabelas despejadas
 --
 
 --
 -- AUTO_INCREMENT de tabela `base`
 --
 ALTER TABLE `base`
-  MODIFY `idbase` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `idbase` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de tabela `gastos`
 --
 ALTER TABLE `gastos`
-  MODIFY `idgasto` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `idgasto` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de tabela `modulo`
@@ -66245,7 +66296,7 @@ ALTER TABLE `modulo`
 -- AUTO_INCREMENT de tabela `pagos`
 --
 ALTER TABLE `pagos`
-  MODIFY `idpago` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63569;
+  MODIFY `idpago` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63575;
 
 --
 -- AUTO_INCREMENT de tabela `permisos`
@@ -66263,13 +66314,13 @@ ALTER TABLE `persona`
 -- AUTO_INCREMENT de tabela `prestamos`
 --
 ALTER TABLE `prestamos`
-  MODIFY `idprestamo` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5058;
+  MODIFY `idprestamo` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5079;
 
 --
 -- AUTO_INCREMENT de tabela `resumen`
 --
 ALTER TABLE `resumen`
-  MODIFY `idresumen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `idresumen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT de tabela `rol`
@@ -66284,18 +66335,18 @@ ALTER TABLE `ruta`
   MODIFY `idruta` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=784;
 
 --
--- Restrições para tabelas despejadas
+-- Restrições para despejos de tabelas
 --
 
 --
--- Restrições para tabelas `permisos`
+-- Limitadores para a tabela `permisos`
 --
 ALTER TABLE `permisos`
   ADD CONSTRAINT `permisos_ibfk_1` FOREIGN KEY (`rolid`) REFERENCES `rol` (`idrol`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `permisos_ibfk_2` FOREIGN KEY (`moduloid`) REFERENCES `modulo` (`idmodulo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Restrições para tabelas `persona`
+-- Limitadores para a tabela `persona`
 --
 ALTER TABLE `persona`
   ADD CONSTRAINT `persona_ibfk_1` FOREIGN KEY (`rolid`) REFERENCES `rol` (`idrol`) ON DELETE CASCADE ON UPDATE CASCADE,
