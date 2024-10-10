@@ -3,6 +3,7 @@
   getModal('modalResumen',$data); 
   getModal('modalPrestamos',$data); 
   getModal('modalGastos',$data); 
+  getModal('modalBase',$data); 
 ?>
 
 <main class="app-content">
