@@ -220,55 +220,66 @@ function fntClientesPrestamo()
 //VISTA PARA CREAR UN PRÉSTAMO
 function fntNewVenta()
 {
-    $('#listFormato').select2({
-        dropdownParent: $('#modalFormPrestamo'),
-        placeholder: 'Seleccione un Formato',
-        language: {
-            noResults: function() {
-                return "No hay resultado";        
-            },
-            searching: function() {
-                return "Buscando...";
+    if(document.querySelector("#formPrestamos"))
+    {
+        document.querySelector('#idPrestamo').value ="";  
+        document.querySelector('#titleModal').innerHTML = "Nuevo Préstamo";
+        document.querySelector('#btnText').innerHTML = "Registrar"; 
+        document.querySelector("#formPrestamos").reset();
+
+        $('#listFormato').select2({
+            dropdownParent: $('#modalFormPrestamo'),
+            placeholder: 'Seleccione un Formato',
+            language: {
+                noResults: function() {
+                    return "No hay resultado";        
+                },
+                searching: function() {
+                    return "Buscando...";
+                }
             }
-        }
-    });
+        });
 
-    fntClientesPrestamo();
+        fntClientesPrestamo();
 
-    $('#listFormato').on("change", function(e) {
-        const options = e.target.value;
-        if(options == 1) {
-            checkbox.disabled = false;
-        } else if(options == 2 || options == 3) {
-            checkbox.disabled = true;
-        }
-    });
-    
-    $('#modalFormPrestamo').modal('show');
+        $('#listFormato').on("change", function(e) {
+            const options = e.target.value;
+            if(options == 1) {
+                checkbox.disabled = false;
+            } else if(options == 2 || options == 3) {
+                checkbox.disabled = true;
+            }
+        });
+        
+        $('#modalFormPrestamo').modal('show');
 
-    let formPrestamos = document.querySelector("#formPrestamos");
-    formPrestamos.onsubmit = function(e){
-        e.preventDefault();
+        let formPrestamos = document.querySelector("#formPrestamos");
+        formPrestamos.onsubmit = function(e){
+            e.preventDefault();
 
-        let intCliente = document.querySelector('#listClientes').value;
-        let intMonto = document.querySelector('#txtMonto').value;
-        let intTaza = document.querySelector('#txtTaza').value;
-        let intPlazo = document.querySelector('#txtPlazo').value;
-        let intFormato = document.querySelector('#listFormato').value;
+            let intCliente = document.querySelector('#listClientes').value;
+            let intMonto = document.querySelector('#txtMonto').value;
+            let intTaza = document.querySelector('#txtTaza').value;
+            let intPlazo = document.querySelector('#txtPlazo').value;
+            let intFormato = document.querySelector('#listFormato').value;
 
-        if(intCliente == "" || intMonto == "" || intTaza == "" || intPlazo == "" || intFormato == ""){
-            Swal.fire("Atención", "Todos los campos son obligatorios.", "error");
-            return false;
-        }
-
-        let ElementsValid = document.getElementsByClassName("valid");
-        for (let i = 0; i < ElementsValid.length; i++) {
-            if(ElementsValid[i].classList.contains('is-invalid')){
-                Swal.fire("Atencion!", "Por favor verifique los campos en rojo.", "error");
+            if(intCliente == "" || intMonto == "" || intTaza == "" || intPlazo == "" || intFormato == ""){
+                Swal.fire("Atención", "Todos los campos son obligatorios.", "error");
                 return false;
             }
+
+            let ElementsValid = document.getElementsByClassName("valid");
+            for (let i = 0; i < ElementsValid.length; i++) {
+                if(ElementsValid[i].classList.contains('is-invalid')){
+                    Swal.fire("Atencion!", "Por favor verifique los campos en rojo.", "error");
+                    return false;
+                }
+            }
+            $('#listClientes').select2({
+                disabled: false
+            });
+            fntRegistrarPrestamo();
         }
-        fntRegistrarPrestamo();
     }
 }
 //REGISTRAR PRÉSTAMO
@@ -544,3 +555,135 @@ async function fntEditarBase()
     return false;
 }
 
+//VISTA PARA VER LA LISTA DE PRÉSTAMOS
+async function fntViewPrestamos(fecha)
+{
+    const formData = new FormData();
+    formData.append('idRuta', ruta);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Prestamos/getPrestamos', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+
+        json = await resp.json();
+
+        let trPrestamo = '';
+        json.forEach(function(prestamo) {
+            if(prestamo.datecreated == fecha){
+                trPrestamo += `
+                <tr>
+                    <td>${prestamo.cliente}</td>    
+                    <td id="monto-${prestamo.idprestamo}">${prestamo.monto}</td>
+                </tr>`;
+            }
+        });
+        if(trPrestamo){
+
+            document.querySelector("#tbodyPrestamos").innerHTML = trPrestamo;
+            document.querySelectorAll("#tdBotones").forEach(function(boton) {
+                boton.children[0].children[0].classList.add('d-none');
+            })
+        } else {
+            document.querySelector("#tbodyPrestamos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="3">Sin Préstamos</td></tr>';
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+//EDITAR EL PRÉSTAMO
+// async function fntEditInfo(idprestamo)
+// {
+//     document.querySelector('#titleModal').innerHTML = "Editar Préstamo";
+//     document.querySelector('#btnText').innerHTML = "Actualizar";
+
+//     const formData = new FormData();
+//     formData.append('idPrestamo', idprestamo);
+
+//     divLoading.style.display = "flex";
+//     try {
+//         let resp = await fetch(base_url + '/Prestamos/getPrestamo', {
+//             method: 'POST',
+//             mode: 'cors',
+//             cache: 'no-cache',
+//             body: formData
+//         });
+    
+//         json = await resp.json();
+    
+//         if(json.status)
+//         {
+//             let cliente = json.data.nombres.toUpperCase() + ' - ' + json.data.apellidos;
+//             let optionCliente = '<option value="' + json.data.personaid + '">' + cliente + '</option>';
+
+//             document.querySelector("#idPrestamo").value = json.data.idprestamo;
+//             document.querySelector("#listClientes").innerHTML = optionCliente;
+//             document.querySelector('#txtMonto').value = json.data.monto;
+//             document.querySelector('#txtTaza').value = json.data.taza;
+//             document.querySelector('#txtPlazo').value = json.data.plazo;
+//             document.querySelector('#listFormato').value = json.data.formato;
+
+//             if(json.data.formato == 1) {
+//                 checkbox.disabled = false;
+//             } else if(json.data.formato == 2 || json.data.formato == 3) {
+//                 checkbox.disabled = true;
+//             }
+
+//             $('#listClientes').select2({
+//                 dropdownParent: $('#modalFormPrestamo'),
+//                 placeholder: 'Seleccione un Formato',
+//                 language: {
+//                     noResults: function() {
+//                         return "No hay resultado";        
+//                     },
+//                     searching: function() {
+//                         return "Buscando...";
+//                     }
+//                 },
+//                 disabled: true
+//             });
+
+//             $('#listFormato').select2({
+//                 dropdownParent: $('#modalFormPrestamo'),
+//                 language: {
+//                     noResults: function() {
+//                         return "No hay resultado";        
+//                     },
+//                     searching: function() {
+//                         return "Buscando...";
+//                     }
+//                 }
+//             });
+            
+//             $('#modalFormPrestamo').modal('show');
+//         }else{
+//             Swal.fire("Error", json.msg, "error");
+//             /*Toast.fire({
+//                 icon: "error",
+//                 title: "Ocurrió un error interno"
+//             });*/
+//             console.log(json.msg);
+//         }
+//     } catch (error) {
+//         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+//         /*Toast.fire({
+//             icon: "error",
+//             title: "Ocurrió un error interno"
+//         });*/
+//         console.log(error);
+//     }
+//     divLoading.style.display = "none";
+//     return false;
+// }

@@ -33,20 +33,6 @@
       $resumenAnterior = 'Anterior';
     } 
 
-    $idResumen = $data['resumenAnterior']['idresumen'] ?? 0;
-    $baseResumen = $data['resumenAnterior']['base'] ?? 0;
-    $cobradoResumen = $data['resumenAnterior']['cobrado'] ?? 0;
-    $prestamoResumen = $data['resumenAnterior']['ventas'] ?? 0;
-    $gastosResumen = $data['resumenAnterior']['gastos'] ?? 0;
-    $totalResumen = $data['resumenAnterior']['total'] ?? 0;
-
-    $idResumenActual = $data['resumenActual']['idresumen'] ?? 0;
-    $baseResumenActual = $data['resumenActual']['base'] ?? 0;
-    $cobradoResumenActual = $data['resumenActual']['cobrado'] ?? 0;
-    $prestamoResumenActual = $data['resumenActual']['ventas'] ?? 0;
-    $gastosResumenActual = $data['resumenActual']['gastos'] ?? 0;
-    $totalResumenActual = $data['resumenActual']['total'] ?? 0;
-
   ?>
 
   <!-- LISTA Y DASHBOARD -->
@@ -133,7 +119,8 @@
                         id="btnViewPrestamos" 
                         data-bs-toggle="offcanvas" 
                         data-bs-target="#offcanvasPrestamos" 
-                        aria-controls="offcanvasRight">
+                        aria-controls="offcanvasRight"
+                        onclick="fntViewPrestamos('<?= $data['resumenAnterior']['datecreated'] ?? $data['resumenActual']['datecreated']; ?>')">
                         <i class="bi bi-eye me-0"></i>
                       </button>
                     </div>

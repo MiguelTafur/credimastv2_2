@@ -220,6 +220,8 @@ class Prestamos extends Controllers{
 				$contadorPlazo = 0;
 				$contador = 0;
 
+				dep($_POST);exit;
+
 				//VALIDA SI HAY UN RESUMEN Y DEVUELVE LA FECHA, Si NO, LO CREA.
 				$resumenAnterior = setDelResumenActual('set', $ruta);
 				$fechaPrestamo = $resumenAnterior['datecreated'] ?? NOWDATE;

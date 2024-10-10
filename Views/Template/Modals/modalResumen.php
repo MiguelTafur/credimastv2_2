@@ -9,9 +9,9 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th class="text-center">Cliente</th>
-            <th class="text-center">Valor</th>
-            <th class="text-center">Acciones</th>
+            <th>Cliente</th>
+            <th>Valor</th>
+            <!-- <th>Acciones</th> -->
           </tr>
         </thead>
         <tbody id="tbodyPrestamos">
@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<!-- CANVAS VER GASTOS -->
+<!-- CANVAS VER GASTOS 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasGastos" aria-labelledby="offcanvasRightLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasRightLabel">GASTOS</h5>
@@ -43,3 +43,4 @@
     </div>
   </div>
 </div>
+-->

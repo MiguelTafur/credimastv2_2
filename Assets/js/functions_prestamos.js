@@ -261,7 +261,7 @@ async function fntRegistrarPrestamo()
 // EDITAR EL PRÉSTAMO
 async function fntEditInfo(idprestamo)
 {
-    document.querySelector('#titleModal').innerHTML = "Actualizar Préstamo";
+    document.querySelector('#titleModal').innerHTML = "Editar Préstamo";
     document.querySelector('#btnText').innerHTML = "Actualizar";
 
     const formData = new FormData();
