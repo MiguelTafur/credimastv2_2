@@ -578,18 +578,18 @@ async function fntViewPrestamos(fecha)
                 trPrestamo += `
                 <tr>
                     <td>${prestamo.cliente}</td>    
-                    <td id="monto-${prestamo.idprestamo}">${prestamo.monto}</td>
+                    <td>${prestamo.monto}</td>
                 </tr>`;
             }
         });
         if(trPrestamo){
 
             document.querySelector("#tbodyPrestamos").innerHTML = trPrestamo;
-            document.querySelectorAll("#tdBotones").forEach(function(boton) {
-                boton.children[0].children[0].classList.add('d-none');
-            })
+            // document.querySelectorAll("#tdBotones").forEach(function(boton) {
+            //     boton.children[0].children[0].classList.add('d-none');
+            // })
         } else {
-            document.querySelector("#tbodyPrestamos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="3">Sin Préstamos</td></tr>';
+            document.querySelector("#tbodyPrestamos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="2">Sin Préstamos</td></tr>';
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
@@ -602,6 +602,53 @@ async function fntViewPrestamos(fecha)
     divLoading.style.display = "none";
     return false;
 }
+
+//VISTA PARA VER LA LISTA DE GASTOS
+async function fntViewGastos(fecha)
+{
+    const formData = new FormData();
+    formData.append('idRuta', ruta);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Gastos/getGastos', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+
+        json = await resp.json();
+
+        let trGasto = '';
+        json.forEach(function(gasto) {
+            if(gasto.datecreated == fecha){
+                trGasto += `
+                <tr>
+                    <td>${gasto.nombre}</td>    
+                    <td>${gasto.monto}</td>
+                </tr>`;
+            }
+        });
+        if(trGasto){
+
+            document.querySelector("#tbodyGastos").innerHTML = trGasto;
+        } else {
+            document.querySelector("#tbodyGastos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="2">Sin Gastos</td></tr>';
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+
 
 //EDITAR EL PRÉSTAMO
 // async function fntEditInfo(idprestamo)

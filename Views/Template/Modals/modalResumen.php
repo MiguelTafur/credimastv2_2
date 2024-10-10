@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<!-- CANVAS VER GASTOS 
+<!-- CANVAS VER GASTOS -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasGastos" aria-labelledby="offcanvasRightLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasRightLabel">GASTOS</h5>
@@ -32,9 +32,8 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th class="text-center">Nombre</th>
-            <th class="text-center">Valor</th>
-            <th class="text-center">Acciones</th>
+            <th>Nombre</th>
+            <th>Valor</th>
           </tr>
         </thead>
         <tbody id="tbodyGastos">
@@ -43,4 +42,3 @@
     </div>
   </div>
 </div>
--->

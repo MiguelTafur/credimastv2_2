@@ -138,7 +138,8 @@
                         id="btnViewGastos"
                         data-bs-toggle="offcanvas" 
                         data-bs-target="#offcanvasGastos" 
-                        aria-controls="offcanvasRight">
+                        aria-controls="offcanvasRight"
+                        onclick="fntViewGastos('<?= $data['resumenAnterior']['datecreated'] ?? $data['resumenActual']['datecreated']; ?>')">
                         <i class="bi bi-eye me-0"></i>
                       </button>
                     </div>
