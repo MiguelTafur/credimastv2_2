@@ -67,6 +67,18 @@ class Gastos extends Controllers{
 		die();
 	}
 
+	public function getGastosFecha()
+	{
+		$ruta = $_SESSION['idRuta'];
+
+		//VALIDA SI HAY UN RESUMEN CON EL ESTADO 0 Y DEVUELVE LA FECHA, Si NO, LO CREA.
+		$fechaGasto = setDelResumenActual('set', $ruta)['datecreated'] ?? NOWDATE;
+
+		$arrData = $this->model->selectGastosFecha($_SESSION['idRuta'], $fechaGasto);
+
+		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
+	}
+
 	//TRAE UN GASTO ESPECÍFICO
 	public function getGasto()
 	{

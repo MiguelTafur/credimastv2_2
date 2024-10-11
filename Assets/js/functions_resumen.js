@@ -556,14 +556,14 @@ async function fntEditarBase()
 }
 
 //VISTA PARA VER LA LISTA DE PRÉSTAMOS
-async function fntViewPrestamos(fecha)
+async function fntViewPrestamos()
 {
     const formData = new FormData();
     formData.append('idRuta', ruta);
 
     divLoading.style.display = "flex";
     try {
-        let resp = await fetch(base_url+'/Prestamos/getPrestamos', {
+        let resp = await fetch(base_url+'/Prestamos/getPrestamosFecha', {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -574,13 +574,12 @@ async function fntViewPrestamos(fecha)
 
         let trPrestamo = '';
         json.forEach(function(prestamo) {
-            if(prestamo.datecreated == fecha){
-                trPrestamo += `
+            trPrestamo += `
                 <tr>
                     <td>${prestamo.cliente}</td>    
                     <td>${prestamo.monto}</td>
-                </tr>`;
-            }
+                </tr>`
+            ;
         });
         if(trPrestamo){
 
@@ -604,14 +603,14 @@ async function fntViewPrestamos(fecha)
 }
 
 //VISTA PARA VER LA LISTA DE GASTOS
-async function fntViewGastos(fecha)
+async function fntViewGastos()
 {
     const formData = new FormData();
     formData.append('idRuta', ruta);
 
     divLoading.style.display = "flex";
     try {
-        let resp = await fetch(base_url+'/Gastos/getGastos', {
+        let resp = await fetch(base_url+'/Gastos/getGastosFecha', {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
@@ -622,13 +621,12 @@ async function fntViewGastos(fecha)
 
         let trGasto = '';
         json.forEach(function(gasto) {
-            if(gasto.datecreated == fecha){
-                trGasto += `
+            trGasto += `
                 <tr>
                     <td>${gasto.nombre}</td>    
                     <td>${gasto.monto}</td>
-                </tr>`;
-            }
+                </tr>`
+            ;
         });
         if(trGasto){
 

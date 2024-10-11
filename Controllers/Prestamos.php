@@ -178,6 +178,23 @@ class Prestamos extends Controllers{
 		die();
 	}
 
+	public function getPrestamosFecha()
+	{
+		$ruta = $_SESSION['idRuta'];
+
+		//VALIDA SI HAY UN RESUMEN CON EL ESTADO 0 Y DEVUELVE LA FECHA, Si NO, LO CREA.
+		$fechaPrestamo = setDelResumenActual('set', $ruta)['datecreated'] ?? NOWDATE;
+
+		$arrData = $this->model->selectPrestamosFecha($ruta, $fechaPrestamo);
+
+		for ($i=0; $i < count($arrData); $i++) {
+
+			$arrData[$i]['cliente'] = nombresApellidos($arrData[$i]['nombres'], $arrData[$i]['apellidos']);
+		}
+
+		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
+	}
+
 	//TRAE UN PRÉSTASMO ESPECÍFICO
 	public function getPrestamo()
 	{

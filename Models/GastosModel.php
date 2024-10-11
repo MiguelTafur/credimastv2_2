@@ -26,10 +26,10 @@ class GastosModel extends Mysql
     }
 
     //TRAE LOS GASTOS DE SU RESPECTIVA FECHA Y RUTA
-    public function selectGastosFecha(int $ruta)
+    public function selectGastosFecha(int $ruta, string $fecha)
     {
         $this->intIdRuta = $ruta;
-        $this->strFecha = $ruta;
+        $this->strFecha = $fecha;
 
         $sql = "SELECT * FROM gastos WHERE codigoruta = $this->intIdRuta AND datecreated = '{$this->strFecha}'";
         $request = $this->select_all($sql);

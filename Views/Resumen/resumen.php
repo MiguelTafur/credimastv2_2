@@ -120,7 +120,7 @@
                         data-bs-toggle="offcanvas" 
                         data-bs-target="#offcanvasPrestamos" 
                         aria-controls="offcanvasRight"
-                        onclick="fntViewPrestamos('<?= $data['resumenAnterior']['datecreated'] ?? $data['resumenActual']['datecreated']; ?>')">
+                        onclick="fntViewPrestamos()">
                         <i class="bi bi-eye me-0"></i>
                       </button>
                     </div>
@@ -139,7 +139,7 @@
                         data-bs-toggle="offcanvas" 
                         data-bs-target="#offcanvasGastos" 
                         aria-controls="offcanvasRight"
-                        onclick="fntViewGastos('<?= $data['resumenAnterior']['datecreated'] ?? $data['resumenActual']['datecreated']; ?>')">
+                        onclick="fntViewGastos()">
                         <i class="bi bi-eye me-0"></i>
                       </button>
                     </div>

@@ -45,6 +45,21 @@ class PrestamosModel extends Mysql
         return $request;
     }
 
+    //TRAE TODOS LOS PRÉSTAMOS DEPENDIENDO DE LA FECHA
+    public function selectPrestamosFecha(int $ruta, string $fecha)
+    {
+        $this->intIdRuta = $ruta;
+        $this->strFecha = $fecha;
+
+        $sql = "SELECT pe.nombres, pe.apellidos, pr.monto
+                FROM prestamos pr 
+                LEFT OUTER JOIN persona pe 
+                ON (pr.personaid = pe.idpersona)
+                WHERE pr.codigoruta = $this->intIdRuta AND pr.datecreated = '{$this->strFecha}' AND pr.status != 0 ORDER BY pr.hora DESC";
+        $request = $this->select_all($sql);
+        return $request;
+    }
+
     //TRAE UN PRÉSTAMO EN ESPECÍFICO
     public function selectPrestamo(int $idprestamo)
     {

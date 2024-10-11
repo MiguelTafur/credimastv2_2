@@ -147,11 +147,11 @@ class ResumenModel extends Mysql
 
     //ACTUALIZA LOS GASTOS EN LA TABLA RESUMEN
     /*
-    public function accion(int $ruta)
+    public function accionGastos(int $ruta)
     {
         $this->intIdRuta = $ruta;
 
-        $sql = "SELECT ga.idgasto, ga.nombre, ga.monto, ga.datecreated, ga.codigoruta AS fechaG, re.idresumen, re.gastos FROM resumen re 
+        $sql = "SELECT ga.idgasto, ga.nombre, ga.monto, ga.datecreated AS fechaG, re.idresumen, re.gastos FROM resumen re 
                 LEFT OUTER JOIN gastos ga  ON(re.gastos = ga.idgasto)
                 WHERE re.codigoruta = $this->intIdRuta ORDER BY re.datecreated DESC";
         $request = $this->select_all($sql);
@@ -167,25 +167,29 @@ class ResumenModel extends Mysql
 
         return $request;
     }
-        */
+    */
 
-    public function accion(int $ruta)
+    //ACTUALIZA LA BASE EN LA TABLA RESUMEN
+    /*
+    public function accionBase(int $ruta)
     {
         $this->intIdRuta = $ruta;
 
-        $sql = "SELECT *FROM gastos ga
-                WHERE codigoruta = $this->intIdRuta ORDER BY datecreated DESC";
+        $sql = "SELECT ba.idgasto, ba.monto, ga.datecreated fechaG, re.idresumen, re.base FROM resumen re 
+                LEFT OUTER JOIN base ba  ON(re.base = ba.idbase)
+                WHERE re.codigoruta = $this->intIdRuta ORDER BY re.datecreated DESC";
         $request = $this->select_all($sql);
 
-        /*foreach ($request as $gasto) {
-            $gastos = $gasto['monto'];
-            $idresumen = $gasto['idresumen'];
+        // foreach ($request as $base) {
+        //     $bases = $base['monto'];
+        //     $idresumen = $base['idresumen'];
             
-            $query_update = "UPDATE resumen SET gastos = ? WHERE idresumen = $idresumen";
-            $arrData = array($gastos);
-            $request2 = $this->update($query_update, $arrData);
-        }*/
+        //     $query_update = "UPDATE resumen SET base = ? WHERE idresumen = $idresumen";
+        //     $arrData = array($bases);
+        //     $request2 = $this->update($query_update, $arrData);
+        // }
 
         return $request;
     }
+    */
 }
