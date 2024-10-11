@@ -131,6 +131,7 @@ class ResumenModel extends Mysql
         return $request;
     }
 
+
     public function statusResumen(int $idresumen, int $status)
     {
         $this->intIdResumen = $idresumen;
@@ -139,6 +140,51 @@ class ResumenModel extends Mysql
         $query_update = "UPDATE resumen SET status = ?, hora = ? WHERE idresumen = $this->intIdResumen";
         $arrData = array($this->intStatus, NOWTIME);
         $request = $this->update($query_update, $arrData);
+
+        return $request;
+    }
+    
+
+    //ACTUALIZA LOS GASTOS EN LA TABLA RESUMEN
+    /*
+    public function accion(int $ruta)
+    {
+        $this->intIdRuta = $ruta;
+
+        $sql = "SELECT ga.idgasto, ga.nombre, ga.monto, ga.datecreated, ga.codigoruta AS fechaG, re.idresumen, re.gastos FROM resumen re 
+                LEFT OUTER JOIN gastos ga  ON(re.gastos = ga.idgasto)
+                WHERE re.codigoruta = $this->intIdRuta ORDER BY re.datecreated DESC";
+        $request = $this->select_all($sql);
+
+        foreach ($request as $gasto) {
+            $gastos = $gasto['monto'];
+            $idresumen = $gasto['idresumen'];
+            
+            $query_update = "UPDATE resumen SET gastos = ? WHERE idresumen = $idresumen";
+            $arrData = array($gastos);
+            $request2 = $this->update($query_update, $arrData);
+        }
+
+        return $request;
+    }
+        */
+
+    public function accion(int $ruta)
+    {
+        $this->intIdRuta = $ruta;
+
+        $sql = "SELECT *FROM gastos ga
+                WHERE codigoruta = $this->intIdRuta ORDER BY datecreated DESC";
+        $request = $this->select_all($sql);
+
+        /*foreach ($request as $gasto) {
+            $gastos = $gasto['monto'];
+            $idresumen = $gasto['idresumen'];
+            
+            $query_update = "UPDATE resumen SET gastos = ? WHERE idresumen = $idresumen";
+            $arrData = array($gastos);
+            $request2 = $this->update($query_update, $arrData);
+        }*/
 
         return $request;
     }
