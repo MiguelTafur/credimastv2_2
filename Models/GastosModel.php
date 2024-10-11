@@ -19,7 +19,7 @@ class GastosModel extends Mysql
     {
         $this->intIdRuta = $ruta;
 
-        $sql = "SELECT * FROM gastos WHERE codigoruta = $this->intIdRuta";
+        $sql = "SELECT * FROM gastos WHERE codigoruta = $this->intIdRuta AND nombre != '' ORDER BY datecreated DESC LIMIT 100";
         $request = $this->select_all($sql);
 
         return $request;
