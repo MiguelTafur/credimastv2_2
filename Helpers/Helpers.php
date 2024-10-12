@@ -25,6 +25,12 @@
         $view_resumen = "Views/Template/alertaResumenAnterior.php";
         require_once ($view_resumen);        
     }
+
+    function alertaActualizacion($data="")
+    {
+        $view_resumen = "Views/Template/alertaActualizacion.php";
+        require_once ($view_resumen);        
+    }
 	//Muestra información formateada
 	function dep($data)
     {
