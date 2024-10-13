@@ -22,7 +22,7 @@ class ClientesModel extends Mysql
 	{
 		$ruta = $_SESSION['idRuta'];
 		$sql = "SELECT idpersona, identificacion, nombres, apellidos, telefono, direccion1, direccion2, status 
-				FROM persona WHERE rolid = 7 AND codigoruta = $ruta  AND status != 0 ORDER BY nombres ASC";
+				FROM persona WHERE rolid = 7 AND codigoruta = $ruta  AND status != 0 ORDER BY nombres DESC";
 		$request = $this->select_all($sql);
 		return $request;
 	}
@@ -67,8 +67,8 @@ class ClientesModel extends Mysql
 
 		if(empty($request))
 		{
-			$query_insert = "INSERT INTO persona(identificacion,nombres,apellidos,telefono,direccion1,direccion2,rolid,codigoruta)  VALUES(?,?,?,?,?,?,?,?)";
-			$arrData = array($this->strIdentificacion,$this->strNombre,$this->strApellido,$this->intTelefono,$this->strDireccion1, $this->strDireccion2,$this->intTipoId,$this->intIdRuta);
+			$query_insert = "INSERT INTO persona(identificacion,nombres,apellidos,telefono,direccion1,direccion2,rolid,codigoruta,datecreated)  VALUES(?,?,?,?,?,?,?,?,?)";
+			$arrData = array($this->strIdentificacion,$this->strNombre,$this->strApellido,$this->intTelefono,$this->strDireccion1, $this->strDireccion2,$this->intTipoId,$this->intIdRuta, NOWDATE);
 			$request_insert = $this->insert($query_insert, $arrData);
 			$return = $request_insert;
 		}else{

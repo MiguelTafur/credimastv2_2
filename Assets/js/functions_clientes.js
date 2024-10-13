@@ -51,8 +51,7 @@ function fntTableClientes()
         
         "responsive":"true",
         "bDestroy": true,
-        "iDisplayLength": 50,
-        "order":[[0,"desc"]]  
+        "iDisplayLength": 50 
     });
 }
 
