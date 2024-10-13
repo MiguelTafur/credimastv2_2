@@ -7,12 +7,22 @@
 
     <!-- jquery js-->
     <script src="<?= media(); ?>/js/jquery-3.7.0.min.js"></script>
+
+    <!-- highcarts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
     <!-- select2 js-->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- datatable js-->
     <script type="text/javascript" src="<?= media(); ?>/js/plugins/datatables.min.js"></script>
     <!-- sweetalert js-->
     <script type="text/javascript" src="<?= media(); ?>/js/plugins/sweetalert.min.js"></script>
+    <!-- jquery-ui -->
+    <script type="text/javascript" src="<?= media(); ?>/js/datepicker/jquery-ui.min.js"></script>
     <!-- main js-->
     <script src="<?= media(); ?>/js/main.js"></script>
 

@@ -18,6 +18,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <!-- select2 css-->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- jquery-ui -->
+    <link rel="stylesheet" type="text/css" href="<?= media(); ?>/js/datepicker/jquery-ui.min.css"> 
     <!-- main CSS-->
     <link rel="stylesheet" type="text/css" href="<?= media(); ?>/css/main.css">
     <!-- style CSS-->
@@ -38,7 +40,6 @@
     </svg>
     <div id="divLoading">
       <div>
-        <!-- <img src="<?= media(); ?>/images/loading.svg" alt="Loading"> -->
         <div class="spinner-grow"></div>
       </div>
     </div>

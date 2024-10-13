@@ -23,10 +23,19 @@ class Clientes extends Controllers{
 		//TRAE EL RESUMEN ANTERIOR CON ESTADO 0
 		$data['resumenAnterior'] = getResumenAnterior();
 
+		/*** Gráficas ***/ 
+		$anio = date("Y");
+		$mes = date("m");
+
+		//Mensal
+		$data['clientesMDia'] = $this->model->selectClientesMes($anio,$mes);
+
+
 		$data['page_functions_js'] = "functions_clientes.js";
 		$this->views->getView($this,"clientes",$data);
 	}
 
+	//TRAE TODOS LOS CLIENTES
 	public function getClientes()
 	{
 		if($_SESSION['permisosMod']['r']){
@@ -54,6 +63,7 @@ class Clientes extends Controllers{
 		die();
 	}
 
+	//TRAE UN SOLO CLIENTE
 	public function getCliente()
 	{
 		if($_SESSION['permisosMod']['r']){
@@ -73,6 +83,7 @@ class Clientes extends Controllers{
 		die();
 	}
 
+	//TRAE TODOS LOS CLIENTES Y DEVUELVE UN HTML
 	public function getSelectClientes()
 	{
 		$htmlOptions = "";
@@ -90,6 +101,38 @@ class Clientes extends Controllers{
 		die();
 	}
 
+	//TRAE LOS CLIENTES DEPENDIENDO DE LA FECHA
+	public function getDatosGraficaPersona()
+	{
+		if($_POST)
+		{
+			$fechaGrafica = $_POST['fecha'];
+			$arrData = $this->model->datosGraficaPersona($fechaGrafica);
+			$informacion_td = "";
+
+			foreach($arrData as $cliente)
+			{
+				$informacion_td .= "<tr>";
+				$informacion_td .= '<td class="font-weight-bold font-italic">'.$cliente['nombres'].'</td>';
+				$informacion_td .= '<td class="font-weight-bold font-italic">'.$cliente['apellidos'].'</td>';
+			}
+
+			$informacion_td .= "</tr>";
+			
+			if($arrData)
+			{
+				$fecha = $arrData[0]['fecha'];
+				$arrResponse = array('status' => true, 'data' => $informacion_td, 'fecha' => $fecha);	
+			} else {
+				$arrResponse = array('status' => false, 'msg' => 'Nenhum dado encontrado.');
+			}
+
+			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+		}
+		die();
+	}
+
+	//REGISTRA Y EDITA EL CLIENTE
 	public function setCliente()
 	{
 		if($_POST)
@@ -154,6 +197,7 @@ class Clientes extends Controllers{
 		die();
 	}
 
+	//ELIMINA EL CLIENTE
 	public function delCliente()
 	{
 		if($_POST)

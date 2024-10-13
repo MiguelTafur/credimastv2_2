@@ -1,3 +1,4 @@
+<!-- MODAL REGISTRAR Y EDITAR CLIENTE -->
 <div class="modal fade" id="modalFormCliente" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
@@ -54,6 +55,7 @@
   </div>
 </div>
 
+<!-- MODAL VER INFORMACIÓN DEL CLIENTE -->
 <div class="modal fade" id="modalViewCliente" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -114,3 +116,35 @@
   </div>
 </div>
 
+<!-- MODAL INFORMACIÓN EN LA GRÁFICA -->
+ <!-- modal ver operador gráfica -->
+<div class="modal fade" id="modalViewPersonaGrafica" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header header-primary">
+        <h5 class="modal-title" id="titleModal">Clientes nuevos: <span id="datePersonaGrafica" class="fst-italic fw-normal"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">  
+        <div class="table-responsive">
+          <table class="table table-striped text-center">
+            <thead>
+              <tr>
+                <th>NOMBRE</th>
+                <th>NEGOCIO</th>
+              </tr>
+            </thead>
+            <tbody id="listgraficaPersona">
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

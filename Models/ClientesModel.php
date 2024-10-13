@@ -10,7 +10,7 @@ class ClientesModel extends Mysql
 	PRIVATE $strDireccion1;
 	PRIVATE $strDireccion2;
 	PRIVATE $intTipoId;
-	PRIVATE $intStatus;
+	PRIVATE $strFecha;
 	PRIVATE $intIdRuta;
 
 	public function __construct()
@@ -120,6 +120,54 @@ class ClientesModel extends Mysql
 		}
 
 		
+		return $request;
+	}
+
+	/***** GRÁFICAS *****/
+	//MENSUAL DE CLIENTES
+	public function selectClientesMes(string $anio, string $mes)
+	{
+		$totalClientesMes = 0;
+		$arrClientesDias = array();
+		$rutaId = $_SESSION['idRuta'];
+		$dias = cal_days_in_month(CAL_GREGORIAN,$mes,$anio);
+		$n_dia = 1;
+		for ($i=0; $i < $dias; $i++)
+		{
+			$date = date_create($anio.'-'.$mes.'-'.$n_dia);
+			$fechaCliente = date_format($date, "Y-m-d");
+		
+			$sql = "SELECT DAY(datecreated) as dia FROM persona WHERE DATE(datecreated) = '$fechaCliente' AND codigoruta = $rutaId AND rolid = 7";
+			$clienteDia = $this->select($sql);
+
+			$sqlTotal = "SELECT COUNT(*) as total FROM persona WHERE DATE(datecreated) = '$fechaCliente' AND codigoruta = $rutaId AND status != 0 AND rolid = 7";
+			$clienteDiaTotal = $this->select($sqlTotal);
+			$clienteDiaTotal = $clienteDiaTotal['total'];
+
+			$clienteDia['dia'] = $n_dia;
+			$clienteDia['usuario'] = $clienteDiaTotal;
+			$clienteDia['usuario'] = $clienteDia['usuario'] == "" ? 0 : $clienteDia['usuario'];
+			$totalClientesMes += $clienteDiaTotal;
+			array_push($arrClientesDias, $clienteDia);
+			$n_dia++;
+
+		}
+		$meses = Meses();
+		$arrData = array('anio' => $anio, 'mes' => $meses[intval($mes - 1)], 'numeroMes' => $mes, 'total' => $totalClientesMes, 'usuarios' => $arrClientesDias);
+		return $arrData;
+	}
+
+	//Información de la gráfica
+	public function datosGraficaPersona(string $fecha) 
+	{
+		$this->strFecha = $fecha;
+		$rutaId = $_SESSION['idRuta'];
+
+		$sql = "SELECT nombres, apellidos, DATE_FORMAT(datecreated, '%d-%m-%Y') as fecha 
+				FROM persona 
+				WHERE rolid = 7 AND datecreated = '{$this->strFecha}' AND codigoruta = $rutaId";
+		$request = $this->select_all($sql);
+
 		return $request;
 	}
 	

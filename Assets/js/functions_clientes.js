@@ -11,6 +11,23 @@ function iniciarApp() {
     fntNewCliente();
 }
 
+$('.date-picker').datepicker( {
+    closeText: 'Cerrar',
+    prevText: '<Ant',
+    nextText: 'Sig>',
+    currentText: 'Hoy',
+    monthNames: ['1 -', '2 -', '3 -', '4 -', '5 -', '6 -', '7 -', '8 -', '9 -', '10 -', '11 -', '12 -'],
+    monthNamesShort: ['Enero','Febrero','Marzo','Abril', 'Mayo','Junio','Julio','Agosto','Septiembre', 'Octubre','Noviembre','Diciembre'],
+    changeMonth: true,
+    changeYear: true,
+    showButtonPanel: true,
+    dateFormat: 'MM yy',
+    showDays: false,
+    onClose: function(dateText, inst) {
+        $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+    }
+});
+
 function fntTableClientes()
 {
     tableClientes = $('#tableClientes').DataTable( 
@@ -39,6 +56,7 @@ function fntTableClientes()
     });
 }
 
+//VALIDANDO LA INFORMACIÓN PARA REGISTRAR UN CLIENTE
 function fntNewCliente()
 {
     if(document.querySelector("#formCliente")){
@@ -48,7 +66,7 @@ function fntNewCliente()
             e.preventDefault();
             let strIdentificacion = document.querySelector('#txtIdentificacion').value;
             let strNombre = document.querySelector('#txtNombre').value;
-            let strApellido = document.querySelector('#txtApellido').value;
+            let strApellido = document.querySelector('#txtNegocio').value;
             let intTelefono = document.querySelector('#txtTelefono').value;
             let strDireccion1 = document.querySelector('#txtDireccion1').value;
             let strDireccion2 = document.querySelector('#txtDireccion2').value;
@@ -71,7 +89,7 @@ function fntNewCliente()
         }
     }
 }
-
+//REGISTRAR CLIENTE
 async function fntGuardarCliente()
 {
     divLoading.style.display = "flex";
@@ -113,6 +131,7 @@ async function fntGuardarCliente()
     return false;
 }
 
+//INFORMACIÓN CLIENTE
 async function fntViewInfo(idpersona)
 {
     const formData = new FormData();
@@ -166,6 +185,7 @@ async function fntViewInfo(idpersona)
     return false;
 }
 
+//EDITAR CLIENTE
 async function fntEditInfo(idpersona)
 {
     document.querySelector('#titleModal').innerHTML = "Actualizar Cliente";
@@ -190,7 +210,7 @@ async function fntEditInfo(idpersona)
             document.querySelector("#idCliente").value = json.data.idpersona;
             document.querySelector("#txtIdentificacion").value = json.data.identificacion;
             document.querySelector("#txtNombre").value = json.data.nombres;
-            document.querySelector("#txtApellido").value = json.data.apellidos;
+            document.querySelector("#txtNegocio").value = json.data.apellidos;
             document.querySelector("#txtTelefono").value = json.data.telefono;
             document.querySelector("#txtDireccion1").value = json.data.direccion1;
             document.querySelector("#txtDireccion2").value = json.data.direccion2;
@@ -216,6 +236,7 @@ async function fntEditInfo(idpersona)
     return false;
 }
 
+//ALERTA PARA ELIMINAR CLIENTE
 function fntDelInfo(idpersona)
 {
     Swal.fire({
@@ -233,7 +254,7 @@ function fntDelInfo(idpersona)
     }
     });
 }
-
+//ELIMINAR CLIENTE
 async function fntDeleteCliente(idpersona)
 {
     const formData = new FormData();
@@ -275,6 +296,83 @@ async function fntDeleteCliente(idpersona)
     }
     divLoading.style.display = "none";
     return false;
+}
+
+//INFORMACIÓN DE LA GRÁGICA CLIENTE
+async function fntInfoChartPersona(fecha) 
+{
+    let fechaFormateada = fecha.join("-");
+
+    const formData = new FormData();
+    formData.append('fecha', fechaFormateada);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Clientes/getDatosGraficaPersona', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            
+            let tdAnotaciones = json.data;
+            let fecha = json.fecha;
+            
+            document.querySelector("#listgraficaPersona").innerHTML = tdAnotaciones;
+            document.querySelector("#datePersonaGrafica").textContent = fecha;
+
+            $('#modalViewPersonaGrafica').modal('show');
+        }else{
+            // Swal.fire("Error", json.msg, "error");
+            Toast.fire({
+                icon: "error",
+                title: "Sin datos"
+            });
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+
+    /*divLoading.style.display = "flex";
+    let  request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+    let  ajaxUrl = base_url+'/Clientes/getDatosGraficaPersona';
+    let  formData = new FormData();
+    formData.append('fecha', date);
+    request.open("POST",ajaxUrl,true);
+    request.send(formData);
+    request.onreadystatechange = function()
+    {
+        if(request.readyState != 4) return;
+            if(request.status == 200)
+            {
+                let objData = JSON.parse(request.responseText);
+                if(objData.status)
+                {
+                    let tdAnotaciones = objData.data;
+                    let fecha = objData.fecha;
+                    
+                    document.querySelector("#listgraficaPersona").innerHTML = tdAnotaciones;
+                    document.querySelector("#datePersonaGrafica").textContent = fecha;
+                    $('#modalViewPersonaGrafica').modal('show');
+                } else {
+                    swal("Operação", objData.msg, "warning");
+                }
+            }
+            divLoading.style.display = "none";
+            return false;
+    }*/
 }
 
 function openModal()
