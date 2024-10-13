@@ -75,33 +75,32 @@
         <div class="tile">
           <div class="container-title d-flex justify-content-between flex-wrap">
             <h3 class="tile-title mb-0">Gráfica Mensual</h3>
-            <div class="">
-              <form action="">
-                <div class="input-group">
-                  <input class="date-picker clientesMes form-control" name="clientesMes" id="clientesMes" placeholder="Mes y Año">
-                  <button type="button" class="btn btn-warning btn-sm" id="button-addon2" onclick="fntSearchClientesMes()">
-                    <i class="bi bi-search me-0" title="Buscar fecha"></i>
-                  </button>
-                </div>
-              </form>
-            </div>
+            <form>
+              <div class="input-group">
+                <input class="date-picker clientesMes form-control" name="clientesMes" id="clientesMes" placeholder="Mes y Año">
+                <button type="button" class="btn btn-warning btn-sm" id="button-addon2" onclick="fntSearchClientesMes()">
+                  <i class="bi bi-search me-0" title="Buscar fecha"></i>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
         <div id="graficaMesClientes"></div>
       </div>
       <div class="tab-pane fade" id="nav-anual" role="tabpanel" aria-labelledby="nav-anual-tab" tabindex="0">
-        <div class="container-title">
-          <div class="tile">
+        <div class="tile">
+          <div class="container-title d-flex justify-content-between flex-wrap">
             <h3 class="tile-title">Gráfica Anual</h3> 
-          
-          <!-- <div class="dflex">
-            <input class="clientesAnio" name="clientesAnio" placeholder="Año" minlength="4" maxlength="4" onkeypress="return controlTag(event);">
-            <button type="button" class="btn btn-info btn-sm me-0" onclick="fntSearchClientesAnio()">
-              <i class="bi bi-search" title="Procurar data"></i>
-            </button>
-          </div> -->
-            <div id="graficaAnioClientes"></div>  
+            <form>
+              <div class="input-group">
+                <input class="clientesAnio form-control" name="clientesAnio" id="clientesAnio" placeholder="Mes y Año">
+                <button type="button" class="btn btn-warning btn-sm" id="button-addon2" onclick="fntSearchClientesAnio()">
+                  <i class="bi bi-search me-0" title="Buscar fecha"></i>
+                </button>
+              </div>
+            </form>
           </div>
+          <div id="graficaAnioClientes"></div>  
         </div>
       </div>
     </div>
@@ -112,11 +111,12 @@
 
 <script>
 
-  let mes = '<?= $data['clientesMDia']['numeroMes']; ?>';
-  let ano = '<?= $data['clientesMDia']['anio']; ?>';
+let mes = '<?= $data['clientesMDia']['numeroMes']; ?>';
+let ano = '<?= $data['clientesMDia']['anio']; ?>';
 
-  Highcharts.chart('graficaMesClientes', {
-
+//MENSUAL
+Highcharts.chart('graficaMesClientes', 
+{
   chart: {
       type: 'line',
       scrollablePlotArea: {
@@ -191,5 +191,71 @@
           }
       }]
   }
-  });
+});
+
+//ANUAL
+Highcharts.chart('graficaAnioClientes', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: '<?= $data['clientesAnio']['anio']; ?>'
+    },
+    subtitle: {
+        text: '<b>Total: <?= $data['clientesAnio']['totalUsuarios'] ?></b>'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            autoRotation: [-45, -90],
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'CREDIMAST'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: ''
+    },
+    series: [{
+        name: 'Clientes',
+        colors: [
+            '#9b20d9', '#9215ac', '#861ec9', '#7a17e6', '#7010f9', '#691af3',
+            '#6225ed', '#5b30e7', '#533be1', '#4c46db', '#4551d5', '#3e5ccf',
+            '#3667c9', '#2f72c3'
+        ],
+        colorByPoint: true,
+        groupPadding: 0,
+        data: [
+          <?php 
+            foreach ($data['clientesAnio']['meses'] as $mes) {
+              echo "['".$mes['mes']."',".$mes['total']."],";
+            }
+          ?> 
+        ],
+        dataLabels: {
+            enabled: true,
+            rotation: -90,
+            color: '#FFFFFF',
+            inside: true,
+            verticalAlign: 'top',
+            y: 10, // 10 pixels down from the top
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
+});
+
+
 </script>

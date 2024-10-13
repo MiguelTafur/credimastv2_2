@@ -297,7 +297,8 @@ async function fntDeleteCliente(idpersona)
     return false;
 }
 
-//INFORMACIÓN DE LA GRÁGICA CLIENTE
+/** GRÁFICA **/
+//INFORMACIÓN DE CADA PUNTO DE LA GRÁGICA DEL CLIENTE
 async function fntInfoChartPersona(fecha) 
 {
     let fechaFormateada = fecha.join("-");
@@ -345,8 +346,7 @@ async function fntInfoChartPersona(fecha)
     return false;
 }
 
-//BUSCADOR
-//Buscador gráfica mensual
+//BUSCADOR MENSUAL
 async function fntSearchClientesMes()
 {
     let fecha = document.querySelector(".clientesMes").value;
@@ -381,6 +381,42 @@ async function fntSearchClientesMes()
     }
     divLoading.style.display = "none";
     return false;
+}
+
+//GRÁFICA ANUAL
+async function fntSearchClientesAnio(){
+    let anio = document.querySelector(".clientesAnio").value;
+    if(anio == ""){
+        swal("", "Digite el Año" , "error");
+        return false;
+    }else{
+
+        const formData = new FormData();
+        formData.append('anio', anio);
+
+        divLoading.style.display = "flex";
+        try {
+            let resp = await fetch(base_url+'/Clientes/clientesAnio', {
+                method: 'POST',
+                mode: 'cors',
+                cache: 'no-cache',
+                body: formData
+            });
+        
+            json = await resp.text();
+        
+            $("#graficaAnioClientes").html(json);
+        } catch (error) {
+            Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error interno"
+            });*/
+            console.log(error);
+        }
+        divLoading.style.display = "none";
+        return false;  
+    }
 }
 
 function openModal()

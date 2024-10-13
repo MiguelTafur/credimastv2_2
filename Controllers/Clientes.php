@@ -23,13 +23,15 @@ class Clientes extends Controllers{
 		//TRAE EL RESUMEN ANTERIOR CON ESTADO 0
 		$data['resumenAnterior'] = getResumenAnterior();
 
-		/*** Gráficas ***/ 
+		/*** GRÁFICAS ***/ 
 		$anio = date("Y");
 		$mes = date("m");
 
-		//Mensal
+		//MENSUAL
 		$data['clientesMDia'] = $this->model->selectClientesMes($anio,$mes);
 
+		//ANUAL
+		$data['clientesAnio'] = $this->model->selectUsuariosAnio($anio);
 
 		$data['page_functions_js'] = "functions_clientes.js";
 		$this->views->getView($this,"clientes",$data);
@@ -218,7 +220,7 @@ class Clientes extends Controllers{
 		die();
 	}
 
-	//Mostrar gráfica mensual
+	//MENSUAL
 	public function clientesMes()
 	{
 		if($_POST)
@@ -230,6 +232,18 @@ class Clientes extends Controllers{
 			$anio = $arrFecha[1];
 			$clientes = $this->model->selectClientesMes($anio,$mes);
 			$script = getFile("Template/Graficas/graficaClientesMes", $clientes);
+			echo $script;
+			die();
+		}
+	}
+
+	//ANUAL
+	public function clientesAnio(){
+		if($_POST){
+			$grafica = "clientesAnio";
+			$anio = intval($_POST['anio']);
+			$clientes = $this->model->selectUsuariosAnio($anio);
+			$script = getFile("Template/Graficas/graficaClientesAnio",$clientes);
 			echo $script;
 			die();
 		}

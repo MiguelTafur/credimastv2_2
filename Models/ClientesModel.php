@@ -124,7 +124,7 @@ class ClientesModel extends Mysql
 	}
 
 	/***** GRÁFICAS *****/
-	//MENSUAL DE CLIENTES
+	//MENSUAL
 	public function selectClientesMes(string $anio, string $mes)
 	{
 		$totalClientesMes = 0;
@@ -169,6 +169,44 @@ class ClientesModel extends Mysql
 		$request = $this->select_all($sql);
 
 		return $request;
+	}
+
+	//ANUAL
+	public function selectUsuariosAnio(string $anio) {
+		$arrMUsuarios = array();
+		$arrMeses = Meses();
+		$totalUsuarios = 0;
+		$ruta = $_SESSION['idRuta'];
+
+		for ($i=1; $i <= 12; $i++) {
+			$arrData = array('anio' => '', 'no_mes' => '', 'mes' => '');
+			$sql = "SELECT $anio AS anio, $i AS mes, COUNT(idpersona) AS total
+					FROM persona 
+					WHERE month(datecreated) = $i 
+					AND year(datecreated) = $anio 
+					AND status != 0 
+					AND rolid = 7 
+					AND codigoruta = $ruta
+					GROUP BY month(datecreated)";
+			$usuarioMes = $this->select($sql);
+			$arrData['mes'] = $arrMeses[$i-1];
+
+			if(empty($usuarioMes)){
+				$arrData['anio'] = $anio;
+				$arrData['no_mes'] = $i;
+				$arrData['total'] = 0;
+			}else{
+				$arrData['anio'] = $usuarioMes['anio'];
+				$arrData['no_mes'] = $usuarioMes['mes'];
+				$arrData['total'] = $usuarioMes['total'];
+				$totalUsuarios += $usuarioMes['total'];
+			}
+			array_push($arrMUsuarios, $arrData);
+		}
+
+		$arrUsuarios = array('totalUsuarios' => $totalUsuarios, 'anio' => $anio, 'meses' => $arrMUsuarios);
+		return $arrUsuarios;
+
 	}
 	
 }
