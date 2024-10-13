@@ -105,6 +105,8 @@ async function fntGuardarCliente()
             tableClientes.ajax.reload(null, false);
             $('#modalFormCliente').modal("hide");
             formCliente.reset();
+            $("#graficaMesClientes").html(json.graficaMes);
+            $("#graficaAnioClientes").html(json.graficaAnio);
             //Swal.fire("Roles de usuario", json.msg ,"success");
             Toast.fire({
                 icon: "success",

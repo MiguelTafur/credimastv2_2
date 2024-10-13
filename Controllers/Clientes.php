@@ -153,7 +153,13 @@ class Clientes extends Controllers{
 				if($request_user > 0)
 				{
 					if($option == 1){
-						$arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.');
+						$anio = date("Y");
+						$mes = date("m");
+						$clientes = $this->model->selectClientesMes($anio,$mes);
+						$clientes2 = $this->model->selectUsuariosAnio($anio);
+						$script = getFile("Template/Graficas/graficaClientesMes", $clientes);
+						$script2 = getFile("Template/Graficas/graficaClientesAnio", $clientes2);
+						$arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.','graficaMes' => $script,'graficaAnio' => $script2);
 					}else{
 						$arrResponse = array('status' => true, 'msg' => 'Datos actualizados correctamente.');
 					}

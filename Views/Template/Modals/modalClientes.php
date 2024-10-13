@@ -32,7 +32,7 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label" for="txtDireccion1">Dirección Negocio</label>
-                <input class="form-control valid validText" id="txtDireccion1" name="txtDireccion1" type="text" required placeholder="Dirección del Negocio" >
+                <input class="form-control valid" id="txtDireccion1" name="txtDireccion1" type="text" required placeholder="Dirección del Negocio" >
               </div>
               <div class="col-md-6 mb-3">
                 <label class="form-label" for="txtDireccion2">Dirección Casa</label>

@@ -64,43 +64,45 @@
     </div>
 
     <!-- DASHBOARD -->
-    <nav>
-      <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <button class="nav-link active" id="nav-mensual-tab" data-bs-toggle="tab" data-bs-target="#nav-mensual" type="button" role="tab" aria-controls="nav-mensual" aria-selected="true">Mensual</button>
-        <button class="nav-link" id="nav-anual-tab" data-bs-toggle="tab" data-bs-target="#nav-anual" type="button" role="tab" aria-controls="nav-anual" aria-selected="false">Anual</button>
-      </div>
-    </nav>
-    <div class="tab-content" id="nav-tabContent">
-      <div class="tab-pane fade show active" id="nav-mensual" role="tabpanel" aria-labelledby="nav-mensual-tab" tabindex="0">
-        <div class="tile">
-          <div class="container-title d-flex justify-content-between flex-wrap">
-            <h3 class="tile-title mb-0">Gráfica Mensual</h3>
-            <form>
-              <div class="input-group">
-                <input class="date-picker clientesMes form-control" name="clientesMes" id="clientesMes" placeholder="Mes y Año">
-                <button type="button" class="btn btn-warning btn-sm" id="button-addon2" onclick="fntSearchClientesMes()">
-                  <i class="bi bi-search me-0" title="Buscar fecha"></i>
-                </button>
-              </div>
-            </form>
-          </div>
+    <div class="tab-pane fade" id="dashboard-tab-pane" role="tabpanel" aria-labelledby="dashboard-tab" tabindex="0">
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <button class="nav-link active" id="nav-mensual-tab" data-bs-toggle="tab" data-bs-target="#nav-mensual" type="button" role="tab" aria-controls="nav-mensual" aria-selected="true">Mensual</button>
+          <button class="nav-link" id="nav-anual-tab" data-bs-toggle="tab" data-bs-target="#nav-anual" type="button" role="tab" aria-controls="nav-anual" aria-selected="false">Anual</button>
         </div>
-        <div id="graficaMesClientes"></div>
-      </div>
-      <div class="tab-pane fade" id="nav-anual" role="tabpanel" aria-labelledby="nav-anual-tab" tabindex="0">
-        <div class="tile">
-          <div class="container-title d-flex justify-content-between flex-wrap">
-            <h3 class="tile-title">Gráfica Anual</h3> 
-            <form>
-              <div class="input-group">
-                <input class="clientesAnio form-control" name="clientesAnio" id="clientesAnio" placeholder="Mes y Año">
-                <button type="button" class="btn btn-warning btn-sm" id="button-addon2" onclick="fntSearchClientesAnio()">
-                  <i class="bi bi-search me-0" title="Buscar fecha"></i>
-                </button>
-              </div>
-            </form>
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-mensual" role="tabpanel" aria-labelledby="nav-mensual-tab" tabindex="0">
+          <div class="tile">
+            <div class="container-title d-flex justify-content-between flex-wrap">
+              <h3 class="tile-title mb-0">Gráfica Mensual</h3>
+              <form>
+                <div class="input-group">
+                  <input class="date-picker clientesMes form-control" name="clientesMes" id="clientesMes" placeholder="Mes y Año">
+                  <button type="button" class="btn btn-warning btn-sm" id="button-addon2" onclick="fntSearchClientesMes()">
+                    <i class="bi bi-search me-0" title="Buscar fecha"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-          <div id="graficaAnioClientes"></div>  
+          <div id="graficaMesClientes"></div>
+        </div>
+        <div class="tab-pane fade" id="nav-anual" role="tabpanel" aria-labelledby="nav-anual-tab" tabindex="0">
+          <div class="tile">
+            <div class="container-title d-flex justify-content-between flex-wrap">
+              <h3 class="tile-title">Gráfica Anual</h3> 
+              <form>
+                <div class="input-group">
+                  <input class="clientesAnio form-control" name="clientesAnio" id="clientesAnio" placeholder="Mes y Año">
+                  <button type="button" class="btn btn-warning btn-sm" id="button-addon2" onclick="fntSearchClientesAnio()">
+                    <i class="bi bi-search me-0" title="Buscar fecha"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div id="graficaAnioClientes"></div>  
+          </div>
         </div>
       </div>
     </div>
