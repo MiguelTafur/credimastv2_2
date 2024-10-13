@@ -343,35 +343,44 @@ async function fntInfoChartPersona(fecha)
     }
     divLoading.style.display = "none";
     return false;
+}
 
-    /*divLoading.style.display = "flex";
-    let  request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-    let  ajaxUrl = base_url+'/Clientes/getDatosGraficaPersona';
-    let  formData = new FormData();
-    formData.append('fecha', date);
-    request.open("POST",ajaxUrl,true);
-    request.send(formData);
-    request.onreadystatechange = function()
+//BUSCADOR
+//Buscador gráfica mensual
+async function fntSearchClientesMes()
+{
+    let fecha = document.querySelector(".clientesMes").value;
+    if(fecha == "")
     {
-        if(request.readyState != 4) return;
-            if(request.status == 200)
-            {
-                let objData = JSON.parse(request.responseText);
-                if(objData.status)
-                {
-                    let tdAnotaciones = objData.data;
-                    let fecha = objData.fecha;
-                    
-                    document.querySelector("#listgraficaPersona").innerHTML = tdAnotaciones;
-                    document.querySelector("#datePersonaGrafica").textContent = fecha;
-                    $('#modalViewPersonaGrafica').modal('show');
-                } else {
-                    swal("Operação", objData.msg, "warning");
-                }
-            }
-            divLoading.style.display = "none";
-            return false;
-    }*/
+        Swal.fire("", "Selecione el mes y el año", "error");
+        return false;
+    }
+
+    const formData = new FormData();
+    formData.append('fecha', fecha);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Clientes/clientesMes', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.text();
+    
+        $("#graficaMesClientes").html(json);
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
 }
 
 function openModal()

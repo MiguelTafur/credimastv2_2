@@ -73,16 +73,16 @@
     <div class="tab-content" id="nav-tabContent">
       <div class="tab-pane fade show active" id="nav-mensual" role="tabpanel" aria-labelledby="nav-mensual-tab" tabindex="0">
         <div class="tile">
-          <div class="container-title d-flex justify-content-between flex-wrap ">
-            <h3 class="tile-title">Gráfica Mensual</h3>
-            <div class="dflex">
+          <div class="container-title d-flex justify-content-between flex-wrap">
+            <h3 class="tile-title mb-0">Gráfica Mensual</h3>
+            <div class="">
               <form action="">
                 <div class="input-group">
-                  <input class="date-picker clientesMes" name="clientesMes" id="clientesMes" placeholder="Mes y Año">
-                  <button type="submit" class="btn btn-warning btn-sm" id="button-addon2" onclick="fntSearchClientesMes()">
+                  <input class="date-picker clientesMes form-control" name="clientesMes" id="clientesMes" placeholder="Mes y Año">
+                  <button type="button" class="btn btn-warning btn-sm" id="button-addon2" onclick="fntSearchClientesMes()">
                     <i class="bi bi-search me-0" title="Buscar fecha"></i>
-                  <!-- </button> -->
-                <!-- </div> -->
+                  </button>
+                </div>
               </form>
             </div>
           </div>
@@ -148,8 +148,6 @@
       ?>
     ]
   },
-
-  
 
   plotOptions: {
       series: {

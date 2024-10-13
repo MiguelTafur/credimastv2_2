@@ -157,7 +157,7 @@ class ClientesModel extends Mysql
 		return $arrData;
 	}
 
-	//Información de la gráfica
+	//INFORMACIÓN DE CADA PUNTO DE LA GRÁFICA
 	public function datosGraficaPersona(string $fecha) 
 	{
 		$this->strFecha = $fecha;

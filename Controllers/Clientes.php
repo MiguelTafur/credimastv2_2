@@ -101,37 +101,6 @@ class Clientes extends Controllers{
 		die();
 	}
 
-	//TRAE LOS CLIENTES DEPENDIENDO DE LA FECHA
-	public function getDatosGraficaPersona()
-	{
-		if($_POST)
-		{
-			$fechaGrafica = $_POST['fecha'];
-			$arrData = $this->model->datosGraficaPersona($fechaGrafica);
-			$informacion_td = "";
-
-			foreach($arrData as $cliente)
-			{
-				$informacion_td .= "<tr>";
-				$informacion_td .= '<td class="font-weight-bold font-italic">'.$cliente['nombres'].'</td>';
-				$informacion_td .= '<td class="font-weight-bold font-italic">'.$cliente['apellidos'].'</td>';
-			}
-
-			$informacion_td .= "</tr>";
-			
-			if($arrData)
-			{
-				$fecha = $arrData[0]['fecha'];
-				$arrResponse = array('status' => true, 'data' => $informacion_td, 'fecha' => $fecha);	
-			} else {
-				$arrResponse = array('status' => false, 'msg' => 'Nenhum dado encontrado.');
-			}
-
-			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
-		}
-		die();
-	}
-
 	//REGISTRA Y EDITA EL CLIENTE
 	public function setCliente()
 	{
@@ -215,5 +184,54 @@ class Clientes extends Controllers{
 			}
 		}
 		die();
+	}
+
+	/** GRÁFICA **/
+	//TRAE LOS CLIENTES DEPENDIENDO DE LA FECHA
+	public function getDatosGraficaPersona()
+	{
+		if($_POST)
+		{
+			$fechaGrafica = $_POST['fecha'];
+			$arrData = $this->model->datosGraficaPersona($fechaGrafica);
+			$informacion_td = "";
+
+			foreach($arrData as $cliente)
+			{
+				$informacion_td .= "<tr>";
+				$informacion_td .= '<td class="font-weight-bold font-italic">'.$cliente['nombres'].'</td>';
+				$informacion_td .= '<td class="font-weight-bold font-italic">'.$cliente['apellidos'].'</td>';
+			}
+
+			$informacion_td .= "</tr>";
+			
+			if($arrData)
+			{
+				$fecha = $arrData[0]['fecha'];
+				$arrResponse = array('status' => true, 'data' => $informacion_td, 'fecha' => $fecha);	
+			} else {
+				$arrResponse = array('status' => false, 'msg' => 'Nenhum dado encontrado.');
+			}
+
+			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+		}
+		die();
+	}
+
+	//Mostrar gráfica mensual
+	public function clientesMes()
+	{
+		if($_POST)
+		{
+			$grafica = "clientesMes";
+			$nFecha = str_replace(" ", "", $_POST['fecha']);
+			$arrFecha = explode('-', $nFecha);
+			$mes = $arrFecha[0];
+			$anio = $arrFecha[1];
+			$clientes = $this->model->selectClientesMes($anio,$mes);
+			$script = getFile("Template/Graficas/graficaClientesMes", $clientes);
+			echo $script;
+			die();
+		}
 	}
 }
