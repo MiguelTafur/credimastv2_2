@@ -386,11 +386,11 @@ async function fntSearchClientesMes()
     return false;
 }
 
-//GRÁFICA ANUAL
+//BUSCADOR ANUAL
 async function fntSearchClientesAnio(){
     let anio = document.querySelector(".clientesAnio").value;
     if(anio == ""){
-        swal("", "Digite el Año" , "error");
+        Swal.fire("", "Digite el Año" , "error");
         return false;
     }else{
 

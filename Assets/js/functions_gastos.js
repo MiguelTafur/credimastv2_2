@@ -350,3 +350,39 @@ async function fntSearchGastosMes()
     divLoading.style.display = "none";
     return false;
 }
+
+//BUSCADOR ANUAL
+async function fntSearchGastosAnio(){
+    let anio = document.querySelector(".gastosAnio").value;
+    if(anio == ""){
+        Swal.fire("", "Digite el Año" , "error");
+        return false;
+    }else{
+
+        const formData = new FormData();
+        formData.append('anio', anio);
+
+        divLoading.style.display = "flex";
+        try {
+            let resp = await fetch(base_url+'/Gastos/gastosAnio', {
+                method: 'POST',
+                mode: 'cors',
+                cache: 'no-cache',
+                body: formData
+            });
+        
+            json = await resp.text();
+        
+            $("#graficaAnioGastos").html(json);
+        } catch (error) {
+            Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error interno"
+            });*/
+            console.log(error);
+        }
+        divLoading.style.display = "none";
+        return false;  
+    }
+}

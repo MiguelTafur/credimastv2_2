@@ -190,6 +190,42 @@ class GastosModel extends Mysql
 		return $request;
 	}
 
+    //ANUAL
+	public function selectGastosAnio(string $anio) {
+		$arrMGastos = array();
+		$arrMeses = Meses();
+		$totalGastos = 0;
+		$ruta = $_SESSION['idRuta'];
+
+		for ($i=1; $i <= 12; $i++) {
+			$arrData = array('anio' => '', 'no_mes' => '', 'mes' => '');
+			$sql = "SELECT $anio AS anio, $i AS mes, SUM(monto) AS total
+					FROM gastos 
+					WHERE month(datecreated) = $i 
+					AND year(datecreated) = $anio  
+					AND codigoruta = $ruta
+					GROUP BY month(datecreated)";
+			$gastoMes = $this->select($sql);
+			$arrData['mes'] = $arrMeses[$i-1];
+
+			if(empty($gastoMes)){
+				$arrData['anio'] = $anio;
+				$arrData['no_mes'] = $i;
+				$arrData['total'] = 0;
+			}else{
+				$arrData['anio'] = $gastoMes['anio'];
+				$arrData['no_mes'] = $gastoMes['mes'];
+				$arrData['total'] = $gastoMes['total'];
+				$totalGastos += $gastoMes['total'];
+			}
+			array_push($arrMGastos, $arrData);
+		}
+
+		$arrUsuarios = array('totalGastos' => $totalGastos, 'anio' => $anio, 'meses' => $arrMGastos);
+		return $arrUsuarios;
+
+	}
+
 }
 
  ?>

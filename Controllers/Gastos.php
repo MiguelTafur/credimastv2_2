@@ -25,6 +25,9 @@ class Gastos extends Controllers{
 		//MENSUAL
 		$data['gastosMDia'] = $this->model->selectGastosMes($anio,$mes);
 
+		//ANUAL
+		$data['gastosAnio'] = $this->model->selectGastosAnio($anio);
+
 		//TRAE EL RESUMEN ANTERIOR CON ESTADO 0
 		$data['resumenAnterior'] = getResumenAnterior();
 
@@ -248,6 +251,18 @@ class Gastos extends Controllers{
 			$anio = $arrFecha[1];
 			$gastos = $this->model->selectGastosMes($anio,$mes);
 			$script = getFile("Template/Graficas/graficaGastosMes", $gastos);
+			echo $script;
+			die();
+		}
+	}
+
+	//BUSCADOR ANUAL
+	public function gastosAnio(){
+		if($_POST){
+			$grafica = "gastosAnio";
+			$anio = intval($_POST['anio']);
+			$gastos = $this->model->selectGastosAnio($anio);
+			$script = getFile("Template/Graficas/graficaGastosAnio",$gastos);
 			echo $script;
 			die();
 		}
