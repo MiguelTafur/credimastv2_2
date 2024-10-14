@@ -259,5 +259,4 @@ Highcharts.chart('graficaAnioClientes', {
     }]
 });
 
-
 </script>
