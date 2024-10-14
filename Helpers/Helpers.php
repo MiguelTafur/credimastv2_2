@@ -235,6 +235,22 @@
         return $fechaPago.'|'.$idPago.'|'.$abono;
     }
 
+    function getFormatGastos(string $fecha)
+    {
+        require_once("Models/GastosModel.php");
+        $objPrestamos = new GastosModel();
+        $ruta = $_SESSION['idRuta'];
+        $request = $objPrestamos->selectGastosFecha($ruta, $fecha);
+        if(is_array($request))
+        {
+            $gasto = "";
+            for ($i=0; $i < count($request); $i++) {
+                $gasto .= strtoupper($request[$i]['nombre']).': '.$request[$i]['monto'].'<br>';
+            }
+            return $gasto;
+        }
+    }
+
     //Fecha formateada en linea recta
     function fechaInline(string $fecha) 
     {

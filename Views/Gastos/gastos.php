@@ -105,6 +105,7 @@
               </form>
             </div>
             <div id="graficaMesGastos"></div>
+            <button class="btn btn-warning btn-sm mt-4" onclick="fntViewDetalleGastos()"><i class="bi bi-calendar4-week"></i>Buscar Gastos por rango de fechas</button>
           </div>
         </div>
         <div class="tab-pane fade" id="nav-anual" role="tabpanel" aria-labelledby="nav-anual-tab" tabindex="0">

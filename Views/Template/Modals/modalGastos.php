@@ -73,3 +73,44 @@
     </div>
   </div>
 </div>
+
+<!-- Modal BUSCAR GASTOS POR RANGO DE FECHA -->
+<div class="modal fade" id="modalDetalleGastos" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titleModal">Gastos </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-10">
+            <input type="text" readonly class="form-control" id="fechaGastos" placeholder="Selecciona una fecha">
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn btn-warning mb-2" onclick="fntSearchGastosD()"><i class="bi bi-search me-0"></i></button>
+            </div>
+          </div>
+        </form>
+        <div id="divGastosD" class="d-none">
+          <table class="table">
+            <thead>
+            <tr class="text-center">
+                <th>REGISTRADO POR</th>
+                <th>FECHA</th>
+                <th>VALOR</th>
+                <th>INFO</th>
+              </tr>
+            </thead>
+            <tbody id="datosGastosD"></tbody>
+          </table>
+          <br>
+          <div class="tile-footer text-end" id="divGastosD">
+            <b>VALOR TOTAL: <i><mark id="markGastos"></mark></i></b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

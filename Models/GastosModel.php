@@ -5,6 +5,7 @@ class GastosModel extends Mysql
     PRIVATE $intIdGasto;
     PRIVATE $intIdRuta;
     PRIVATE $strFecha;
+    PRIVATE $strFecha2;
     PRIVATE $strNombre;
     PRIVATE $intMonto;
     PRIVATE $intIdUsuario;
@@ -19,7 +20,7 @@ class GastosModel extends Mysql
     {
         $this->intIdRuta = $ruta;
 
-        $sql = "SELECT * FROM gastos WHERE codigoruta = $this->intIdRuta AND nombre != '' ORDER BY datecreated DESC LIMIT 100";
+        $sql = "SELECT * FROM gastos WHERE codigoruta = $this->intIdRuta ORDER BY datecreated DESC LIMIT 100";
         $request = $this->select_all($sql);
 
         return $request;
@@ -191,7 +192,8 @@ class GastosModel extends Mysql
 	}
 
     //ANUAL
-	public function selectGastosAnio(string $anio) {
+	public function selectGastosAnio(string $anio) 
+    {
 		$arrMGastos = array();
 		$arrMeses = Meses();
 		$totalGastos = 0;
@@ -226,6 +228,38 @@ class GastosModel extends Mysql
 
 	}
 
+    //BUSCADOR DE RANGO DE FECHAS
+    public function selectGastosD(string $fechaI, string $fechaF, int $ruta)
+	{
+		$this->strFecha = $fechaI;
+		$this->strFecha2 = $fechaF;
+		$this->intIdRuta = $ruta;
+		$arrDatos = array();
+
+		$sql = "SELECT pe.nombres, ga.monto, ga.datecreated FROM gastos ga 
+                LEFT OUTER JOIN persona pe ON(ga.personaid = pe.idpersona)
+                WHERE ga.datecreated BETWEEN '{$this->strFecha}' AND '{$this->strFecha2}' AND ga.codigoruta = $ruta";
+		$request = $this->select_all($sql);
+
+		//dep($request);exit;
+
+		foreach ($request as $gastos)
+		{
+			$gastosD = $gastos['datecreated'];
+			$gastosD .= " | ";
+			$gastosD .= $gastos['monto'];
+			$gastosD .= " | ";
+			$gastosD .= getFormatGastos($gastos['datecreated']);
+            $gastosD .= " | ";
+			$gastosD .= $gastos['nombres'];
+			array_push($arrDatos, $gastosD);
+		}
+
+		$arrData = array("gastos" => $arrDatos);
+
+		return $arrData;
+
+	}
 }
 
  ?>

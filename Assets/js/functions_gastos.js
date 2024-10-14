@@ -386,3 +386,99 @@ async function fntSearchGastosAnio(){
         return false;  
     }
 }
+
+//DATERANGEPICKER
+function fntViewDetalleGastos()
+{
+    $('#modalDetalleGastos').modal('show');
+    $('#fechaGastos').daterangepicker({
+        "autoUpdateInput": false,
+        "locale": {
+            "format": "DD/MM/YYYY",
+            "separator": " - ",
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "daysOfWeek": [
+                "Dom",
+                "Seg",
+                "Ter",
+                "Qua",
+                "Qui",
+                "Sex",
+                "Sab"
+            ],
+            "monthNames": [
+                "Janeiro",
+                "Fevereiro",
+                "Março",
+                "Abil",
+                "Maio",
+                "Junho",
+                "Julho",
+                "Agosto",
+                "Setembro",
+                "Outubro",
+                "Novembro",
+                "Dezembro"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#fechaGastos').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+    });
+
+    $('#fechaGastos').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
+}
+//INFORMACIÓN DEL BUSCADOR DATERANGEPICKER
+async function fntSearchGastosD()
+{
+    let fecha = document.querySelector("#fechaGastos").value;
+    if(fecha == "")
+    {
+        swal("Error", "Seleccione la fecha", "error");
+        return false;
+    }
+
+    const formData = new FormData();
+    formData.append('fecha', fecha);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Gastos/getGastosD', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        arrGastos = json.gastosD;
+        totalG = json.totalGastos;
+
+        $(function () {
+            $('[data-bs-toggle="popover"]').popover({
+                container: "body",
+                trigger: "focus",
+                html: true
+            })
+        });
+
+        document.querySelector("#datosGastosD").innerHTML = arrGastos;
+        document.querySelector("#markGastos").innerHTML = totalG;
+        document.querySelector("#divGastosD").classList.remove("d-none");
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}

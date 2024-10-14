@@ -23,6 +23,9 @@
     <script type="text/javascript" src="<?= media(); ?>/js/plugins/sweetalert.min.js"></script>
     <!-- jquery-ui -->
     <script type="text/javascript" src="<?= media(); ?>/js/datepicker/jquery-ui.min.js"></script>
+    <!-- daterangepicker -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <!-- main js-->
     <script src="<?= media(); ?>/js/main.js"></script>
 
