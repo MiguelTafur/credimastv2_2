@@ -11,6 +11,7 @@ function iniciarApp() {
     fntNewCliente();
 }
 
+//MOSTRAR DATEPICKER EN EL BUSCADOR
 $('.date-picker').datepicker( {
     closeText: 'Cerrar',
     prevText: '<Ant',

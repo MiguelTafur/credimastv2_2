@@ -10,6 +10,24 @@ function iniciarApp() {
     fntNewGasto();
 }
 
+//MOSTRAR DATEPICKER EN EL BUSCADOR
+$('.date-picker').datepicker( {
+    closeText: 'Cerrar',
+    prevText: '<Ant',
+    nextText: 'Sig>',
+    currentText: 'Hoy',
+    monthNames: ['1 -', '2 -', '3 -', '4 -', '5 -', '6 -', '7 -', '8 -', '9 -', '10 -', '11 -', '12 -'],
+    monthNamesShort: ['Enero','Febrero','Marzo','Abril', 'Mayo','Junio','Julio','Agosto','Septiembre', 'Octubre','Noviembre','Diciembre'],
+    changeMonth: true,
+    changeYear: true,
+    showButtonPanel: true,
+    dateFormat: 'MM yy',
+    showDays: false,
+    onClose: function(dateText, inst) {
+        $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+    }
+});
+
 //TABLA DE LOS GASTOS
 function fntTableGastos()
 {
@@ -284,6 +302,43 @@ async function fntInfoChartGasto(fecha)
             });
             console.log(json.msg);
         }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+//BUSCADOR MENSUAL
+async function fntSearchGastosMes()
+{
+    let fecha = document.querySelector(".gastosMes").value;
+    if(fecha == "")
+    {
+        Swal.fire("", "Selecione el mes y el año", "error");
+        return false;
+    }
+
+    const formData = new FormData();
+    formData.append('fecha', fecha);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Gastos/gastosMes', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.text();
+    
+        $("#graficaMesGastos").html(json);
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
         /*Toast.fire({

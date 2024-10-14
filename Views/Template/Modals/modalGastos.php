@@ -53,9 +53,10 @@
           <table class="table table-striped text-center">
             <thead>
               <tr>
-                <th>REGISTRADO POR</th> 
+                <?php if($_SESSION['idRol'] == 1){echo '<th>REGISTRADO POR</th>';} ?>
                 <th>NOMBRE</th>
                 <th>VALOR</th>
+                <th>HORA</th>
               </tr>
             </thead>
             <tbody id="listgraficaGasto">

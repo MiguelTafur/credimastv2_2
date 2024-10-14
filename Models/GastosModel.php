@@ -182,7 +182,7 @@ class GastosModel extends Mysql
 		$this->strFecha = $fecha;
 		$rutaId = $_SESSION['idRuta'];
 
-		$sql = "SELECT ga.nombre, ga.monto, pe.nombres, DATE_FORMAT(ga.datecreated, '%d-%m-%Y') as fecha 
+		$sql = "SELECT ga.nombre, ga.monto, pe.nombres, ga.hora, DATE_FORMAT(ga.datecreated, '%d-%m-%Y') as fecha 
 				FROM gastos ga LEFT OUTER JOIN persona pe ON(ga.personaid = pe.idpersona) 
 				WHERE ga.datecreated = '{$this->strFecha}' AND ga.codigoruta = $rutaId";
 		$request = $this->select_all($sql);

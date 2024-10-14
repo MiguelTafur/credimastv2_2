@@ -226,7 +226,7 @@ class Clientes extends Controllers{
 		die();
 	}
 
-	//MENSUAL
+	//BUSCADOR MENSUAL
 	public function clientesMes()
 	{
 		if($_POST)
@@ -243,7 +243,7 @@ class Clientes extends Controllers{
 		}
 	}
 
-	//ANUAL
+	//BUSCADOR ANUAL
 	public function clientesAnio(){
 		if($_POST){
 			$grafica = "clientesAnio";

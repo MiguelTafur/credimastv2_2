@@ -211,9 +211,14 @@ class Gastos extends Controllers{
 			foreach($arrData as $gasto)
 			{
 				$informacion_td .= "<tr>";
-				$informacion_td .= '<td class="font-weight-bold font-italic">'.$gasto['nombres'].'</td>';
-				$informacion_td .= '<td class="font-weight-bold font-italic">'.$gasto['nombre'].'</td>';
-				$informacion_td .= '<td class="font-weight-bold font-italic">'.$gasto['monto'].'</td>';
+				if($_SESSION['idRol'] == 1){$informacion_td .= '<td>'.$gasto['nombres'].'</td>';}
+				$informacion_td .= '<td>'.$gasto['nombre'].'</td>';
+				$informacion_td .= '<td>'.$gasto['monto'].'</td>';
+				if($gasto['hora'] != '00:00:00') {
+					$informacion_td .= '<td>'.date('H:i', strtotime($gasto['hora'])).'</td>';
+				} else {
+					$informacion_td .= '<td></td>';
+				}
 			}
 
 			$informacion_td .= "</tr>";
@@ -229,6 +234,23 @@ class Gastos extends Controllers{
 			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		}
 		die();
+	}
+
+	//BUSCADOR MENSUAL
+	public function gastosMes()
+	{
+		if($_POST)
+		{
+			$grafica = "gastosMes";
+			$nFecha = str_replace(" ", "", $_POST['fecha']);
+			$arrFecha = explode('-', $nFecha);
+			$mes = $arrFecha[0];
+			$anio = $arrFecha[1];
+			$gastos = $this->model->selectGastosMes($anio,$mes);
+			$script = getFile("Template/Graficas/graficaGastosMes", $gastos);
+			echo $script;
+			die();
+		}
 	}
 
 }
