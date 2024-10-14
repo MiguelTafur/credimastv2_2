@@ -246,3 +246,52 @@ function openModal()
     document.querySelector("#formGasto").reset();
     $('#modalFormGastos').modal('show');
 }
+
+/** GRÁFICA **/
+//INFORMACIÓN DE CADA PUNTO DE LA GRÁGICA DEL GASTO
+async function fntInfoChartGasto(fecha) 
+{
+    let fechaFormateada = fecha.join("-");
+
+    const formData = new FormData();
+    formData.append('fecha', fechaFormateada);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Gastos/getDatosGraficaGasto', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            
+            let tdAnotaciones = json.data;
+            let fecha = json.fecha;
+            
+            document.querySelector("#listgraficaGasto").innerHTML = tdAnotaciones;
+            document.querySelector("#dateGastoGrafica").textContent = fecha;
+
+            $('#modalViewGastoGrafica').modal('show');
+        }else{
+            // Swal.fire("Error", json.msg, "error");
+            Toast.fire({
+                icon: "error",
+                title: "Sin datos"
+            });
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}

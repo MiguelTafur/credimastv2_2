@@ -141,6 +141,55 @@ class GastosModel extends Mysql
         
         return $return;
     }
+
+    /***** GRÁFICAS *****/
+	//MENSUAL
+	public function selectGastosMes(string $anio, string $mes)
+	{
+		$totalGastosMes = 0;
+		$arrGastosDias = array();
+		$rutaId = $_SESSION['idRuta'];
+		$dias = cal_days_in_month(CAL_GREGORIAN,$mes,$anio);
+		$n_dia = 1;
+		for ($i=0; $i < $dias; $i++)
+		{
+			$date = date_create($anio.'-'.$mes.'-'.$n_dia);
+			$fechaGasto = date_format($date, "Y-m-d");
+		
+			$sql = "SELECT DAY(datecreated) as dia FROM gastos WHERE DATE(datecreated) = '{$fechaGasto}' AND codigoruta = $rutaId";
+			$gastoDia = $this->select($sql);
+
+			$sqlTotal = "SELECT SUM(monto) as total FROM gastos WHERE DATE(datecreated) = '{$fechaGasto}' AND codigoruta = $rutaId";
+			$gastoDiaTotal = $this->select($sqlTotal);
+			$gastoDiaTotal = $gastoDiaTotal['total'];
+
+			$gastoDia['dia'] = $n_dia;
+			$gastoDia['gasto'] = $gastoDiaTotal;
+			$gastoDia['gasto'] = $gastoDia['gasto'] == "" ? 0 : $gastoDia['gasto'];
+			$totalGastosMes += $gastoDiaTotal;
+			array_push($arrGastosDias, $gastoDia);
+			$n_dia++;
+
+		}
+		$meses = Meses();
+		$arrData = array('anio' => $anio, 'mes' => $meses[intval($mes - 1)], 'numeroMes' => $mes, 'total' => $totalGastosMes, 'gastos' => $arrGastosDias);
+		return $arrData;
+	}
+
+    //INFORMACIÓN DE CADA PUNTO DE LA GRÁFICA
+	public function datosGraficaGasto(string $fecha) 
+	{
+		$this->strFecha = $fecha;
+		$rutaId = $_SESSION['idRuta'];
+
+		$sql = "SELECT ga.nombre, ga.monto, pe.nombres, DATE_FORMAT(ga.datecreated, '%d-%m-%Y') as fecha 
+				FROM gastos ga LEFT OUTER JOIN persona pe ON(ga.personaid = pe.idpersona) 
+				WHERE ga.datecreated = '{$this->strFecha}' AND ga.codigoruta = $rutaId";
+		$request = $this->select_all($sql);
+
+		return $request;
+	}
+
 }
 
  ?>

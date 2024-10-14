@@ -18,6 +18,13 @@ class Gastos extends Controllers{
 		$data['page_name'] = "Gastos";
 		$data['page_functions_js'] = "functions_gastos.js";
 
+		/*** GRÁFICAS ***/ 
+		$anio = date("Y");
+		$mes = date("m");
+
+		//MENSUAL
+		$data['gastosMDia'] = $this->model->selectGastosMes($anio,$mes);
+
 		//TRAE EL RESUMEN ANTERIOR CON ESTADO 0
 		$data['resumenAnterior'] = getResumenAnterior();
 
@@ -65,18 +72,6 @@ class Gastos extends Controllers{
 			echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
 		}
 		die();
-	}
-
-	public function getGastosFecha()
-	{
-		$ruta = $_SESSION['idRuta'];
-
-		//VALIDA SI HAY UN RESUMEN CON EL ESTADO 0 Y DEVUELVE LA FECHA, Si NO, LO CREA.
-		$fechaGasto = setDelResumenActual('set', $ruta)['datecreated'] ?? NOWDATE;
-
-		$arrData = $this->model->selectGastosFecha($_SESSION['idRuta'], $fechaGasto);
-
-		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
 	}
 
 	//TRAE UN GASTO ESPECÍFICO
@@ -199,6 +194,39 @@ class Gastos extends Controllers{
 				}
 				echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);	
 			}
+		}
+		die();
+	}
+
+	/** GRÁFICA **/
+	//TRAE LOS GASTOS DEPENDIENDO DE LA FECHA
+	public function getDatosGraficaGasto()
+	{
+		if($_POST)
+		{
+			$fechaGrafica = $_POST['fecha'];
+			$arrData = $this->model->datosGraficaGasto($fechaGrafica);
+			$informacion_td = "";
+
+			foreach($arrData as $gasto)
+			{
+				$informacion_td .= "<tr>";
+				$informacion_td .= '<td class="font-weight-bold font-italic">'.$gasto['nombres'].'</td>';
+				$informacion_td .= '<td class="font-weight-bold font-italic">'.$gasto['nombre'].'</td>';
+				$informacion_td .= '<td class="font-weight-bold font-italic">'.$gasto['monto'].'</td>';
+			}
+
+			$informacion_td .= "</tr>";
+			
+			if($arrData)
+			{
+				$fecha = $arrData[0]['fecha'];
+				$arrResponse = array('status' => true, 'data' => $informacion_td, 'fecha' => $fecha);	
+			} else {
+				$arrResponse = array('status' => false, 'msg' => 'Nenhum dado encontrado.');
+			}
+
+			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		}
 		die();
 	}

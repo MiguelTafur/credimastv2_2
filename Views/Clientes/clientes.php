@@ -75,7 +75,7 @@
         <div class="tab-pane fade show active" id="nav-mensual" role="tabpanel" aria-labelledby="nav-mensual-tab" tabindex="0">
           <div class="tile">
             <div class="container-title d-flex justify-content-between flex-wrap">
-              <h3 class="tile-title mb-0">Gráfica Mensual</h3>
+              <h3 class="tile-title">Gráfica Mensual</h3>
               <form>
                 <div class="input-group">
                   <input class="date-picker clientesMes form-control" name="clientesMes" id="clientesMes" placeholder="Mes y Año">
@@ -85,8 +85,8 @@
                 </div>
               </form>
             </div>
+            <div id="graficaMesClientes"></div>
           </div>
-          <div id="graficaMesClientes"></div>
         </div>
         <div class="tab-pane fade" id="nav-anual" role="tabpanel" aria-labelledby="nav-anual-tab" tabindex="0">
           <div class="tile">

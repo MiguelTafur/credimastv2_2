@@ -39,3 +39,36 @@
     </div>
   </div>
 </div>
+
+<!-- MODAL INFORMACIÓN EN LA GRÁFICA -->
+<div class="modal fade" id="modalViewGastoGrafica" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header header-primary">
+        <h5 class="modal-title" id="titleModal">Gastos: <span id="dateGastoGrafica" class="fst-italic fw-normal"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">  
+        <div class="table-responsive">
+          <table class="table table-striped text-center">
+            <thead>
+              <tr>
+                <th>REGISTRADO POR</th> 
+                <th>NOMBRE</th>
+                <th>VALOR</th>
+              </tr>
+            </thead>
+            <tbody id="listgraficaGasto">
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -84,9 +84,136 @@
       </div>
     </div>
     <div class="tab-pane fade" id="dashboard-tab-pane" role="tabpanel" aria-labelledby="dashboard-tab" tabindex="0">
-
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <button class="nav-link active" id="nav-mensual-tab" data-bs-toggle="tab" data-bs-target="#nav-mensual" type="button" role="tab" aria-controls="nav-mensual" aria-selected="true">Mensual</button>
+          <button class="nav-link" id="nav-anual-tab" data-bs-toggle="tab" data-bs-target="#nav-anual" type="button" role="tab" aria-controls="nav-anual" aria-selected="false">Anual</button>
+        </div>
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-mensual" role="tabpanel" aria-labelledby="nav-mensual-tab" tabindex="0">
+          <div class="tile">
+            <div class="container-title d-flex justify-content-between flex-wrap">
+              <h3 class="tile-title">Gráfica Mensual</h3>
+              <form>
+                <div class="input-group">
+                  <input class="date-picker gastosMes form-control" name="gastosMes" id="gastosMes" placeholder="Mes y Año">
+                  <button type="button" class="btn btn-warning btn-sm" id="button-addon2" onclick="fntSearchGastosMes()">
+                    <i class="bi bi-search me-0" title="Buscar fecha"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div id="graficaMesGastos"></div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="nav-anual" role="tabpanel" aria-labelledby="nav-anual-tab" tabindex="0">
+          <div class="tile">
+            <div class="container-title d-flex justify-content-between flex-wrap">
+              <h3 class="tile-title">Gráfica Anual</h3> 
+              <form>
+                <div class="input-group">
+                  <input class="gastosAnio form-control" name="gastosAnio" id="gastosAnio" placeholder="Mes y Año">
+                  <button type="button" class="btn btn-warning btn-sm" id="button-addon2" onclick="fntSearchGastosAnio()">
+                    <i class="bi bi-search me-0" title="Buscar fecha"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div id="graficaAnioGastos"></div>  
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </main>
 
 <?php footerAdmin($data); ?>
+
+<script>
+
+let mes = '<?= $data['gastosMDia']['numeroMes']; ?>';
+let ano = '<?= $data['gastosMDia']['anio']; ?>';
+
+//MENSUAL
+Highcharts.chart('graficaMesGastos', 
+{
+  chart: {
+      type: 'line',
+      scrollablePlotArea: {
+        minWidth: 700,
+        scrollPositionX: 1
+      }
+  },
+
+  title: {
+      text: '<?= $data['gastosMDia']['mes'].' de '.$data['gastosMDia']['anio']; ?>'
+  },
+
+  subtitle: {
+      text: '<b>Total: <?= $data['gastosMDia']['total']; ?></b>'
+  },
+
+  yAxis: {
+      title: {
+          text: 'CREDIMAST'
+      }
+  },
+
+  xAxis: {
+    categories: [
+      <?php 
+        foreach ($data['gastosMDia']['gastos'] as $dia) {
+          echo $dia['dia'].",";
+        }
+      ?>
+    ]
+  },
+
+  plotOptions: {
+      series: {
+        cursor: 'pointer',
+        events: {
+          click: function(event){
+            fntInfoChartGasto([ano, mes, event.point.category]);
+          }
+        }
+      },
+        line: {
+            dataLabels: {
+                enabled: true
+            },
+            enableMouseTracking: true
+        }
+    },
+
+  series: [{
+      name: 'Gastos',
+      data: [
+        <?php 
+          foreach ($data['gastosMDia']['gastos'] as $gasto) {
+            echo $gasto['gasto'].",";
+          }
+        ?>
+      ]
+  }],
+
+  responsive: {
+      rules: [{
+          condition: {
+              maxWidth: 500
+          },
+          chartOptions: {
+              legend: {
+                  layout: 'horizontal',
+                  align: 'center',
+                  verticalAlign: 'bottom'
+              }
+          }
+      }]
+  }
+});
+
+//ANUAL
+
+</script>
