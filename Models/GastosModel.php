@@ -20,7 +20,7 @@ class GastosModel extends Mysql
     {
         $this->intIdRuta = $ruta;
 
-        $sql = "SELECT * FROM gastos WHERE codigoruta = $this->intIdRuta ORDER BY datecreated DESC LIMIT 100";
+        $sql = "SELECT * FROM gastos WHERE codigoruta = $this->intIdRuta ORDER BY datecreated DESC LIMIT 50";
         $request = $this->select_all($sql);
 
         return $request;
@@ -249,7 +249,7 @@ class GastosModel extends Mysql
 			$gastosD .= " | ";
 			$gastosD .= $gastos['monto'];
 			$gastosD .= " | ";
-			$gastosD .= getFormatPrestamos($gastos['datecreated']);
+			$gastosD .= getFormatGastos($gastos['datecreated']);
             $gastosD .= " | ";
 			$gastosD .= $gastos['nombres'];
 			array_push($arrDatos, $gastosD);

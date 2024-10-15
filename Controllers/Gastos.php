@@ -68,7 +68,8 @@ class Gastos extends Controllers{
 					}
 				}
 
-				$arrData[$i]['datecreated'] = date("d/m/Y", strtotime($arrData[$i]['datecreated'])) . ' - ' . date("H:i", strtotime($arrData[$i]['hora']));
+				$hora = $arrData[$i]['hora'] != NULL ? date("H:i", strtotime($arrData[$i]['hora'])) : '--:--';
+				$arrData[$i]['datecreated'] = date("d/m/Y", strtotime($arrData[$i]['datecreated'])) . ' - ' . $hora;
 
 				$arrData[$i]['options'] = '<div class="text-center d-flex justify-content-center">'.$btnEdit.' '.$btnDelete.'</div>';
 			}
