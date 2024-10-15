@@ -700,6 +700,55 @@ function openModal()
     $('#modalFormPrestamo').modal('show');
 }
 
+/** GRÁFICA **/
+//INFORMACIÓN DE CADA PUNTO DE LA GRÁGICA DEL PRÉSTAMO
+async function fntInfoChartPrestamo(fecha) 
+{
+    let fechaFormateada = fecha.join("-");
+
+    const formData = new FormData();
+    formData.append('fecha', fechaFormateada);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Prestamos/getDatosGraficaPrestamo', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            
+            let tdAnotaciones = json.data;
+            let fecha = json.fecha;
+            
+            document.querySelector("#listgraficaPrestamo").innerHTML = tdAnotaciones;
+            document.querySelector("#datePrestamoGrafica").textContent = fecha;
+
+            $('#modalViewPrestamoGrafica').modal('show');
+        }else{
+            // Swal.fire("Error", json.msg, "error");
+            Toast.fire({
+                icon: "error",
+                title: "Sin datos"
+            });
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
 async function accion()
 {
     const formData = new FormData();

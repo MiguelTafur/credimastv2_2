@@ -217,7 +217,7 @@ class Gastos extends Controllers{
 				if($_SESSION['idRol'] == 1){$informacion_td .= '<td>'.$gasto['nombres'].'</td>';}
 				$informacion_td .= '<td>'.$gasto['nombre'].'</td>';
 				$informacion_td .= '<td>'.$gasto['monto'].'</td>';
-				if($gasto['hora'] != '00:00:00') {
+				if($gasto['hora'] != NULL) {
 					$informacion_td .= '<td>'.date('H:i', strtotime($gasto['hora'])).'</td>';
 				} else {
 					$informacion_td .= '<td>--:--</td>';

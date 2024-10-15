@@ -128,3 +128,37 @@
     </div>
   </div>
 </div>
+
+<!-- MODAL INFORMACIÓN EN LA GRÁFICA -->
+<div class="modal fade" id="modalViewPrestamoGrafica" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header header-primary">
+        <h5 class="modal-title" id="titleModal">Préstamos: <span id="datePrestamoGrafica" class="fst-italic fw-normal"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">  
+        <div class="table-responsive">
+          <table class="table table-striped text-center">
+            <thead>
+              <tr>
+                <?php if($_SESSION['idRol'] == 1){echo '<th>REGISTRADO POR</th>';} ?>
+                <th>CLIENTE</th>
+                <th>VALOR</th>
+                <th>HORA</th>
+              </tr>
+            </thead>
+            <tbody id="listgraficaPrestamo">
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

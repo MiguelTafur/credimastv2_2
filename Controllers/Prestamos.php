@@ -412,6 +412,44 @@ class Prestamos extends Controllers{
 		die();
 	}
 
+	/** GRÁFICA **/
+	//TRAE LOS PRÉSTAMOS DEPENDIENDO DE LA FECHA
+	public function getDatosGraficaPrestamo()
+	{
+		if($_POST)
+		{
+			$fechaGrafica = $_POST['fecha'];
+			$arrData = $this->model->datosGraficaPrestamo($fechaGrafica);
+			$informacion_td = "";
+
+			foreach($arrData as $prestamo)
+			{
+				$informacion_td .= "<tr>";
+				if($_SESSION['idRol'] == 1){$informacion_td .= '<td>'.$prestamo['usuario'].'</td>';}
+				$informacion_td .= '<td>'.$prestamo['nombres'].'</td>';
+				$informacion_td .= '<td>'.$prestamo['monto'].'</td>';
+				if($prestamo['hora'] != NULL) {
+					$informacion_td .= '<td>'.date('H:i', strtotime($prestamo['hora'])).'</td>';
+				} else {
+					$informacion_td .= '<td>--:--</td>';
+				}
+			}
+
+			$informacion_td .= "</tr>";
+			
+			if($arrData)
+			{
+				$fecha = $arrData[0]['fecha'];
+				$arrResponse = array('status' => true, 'data' => $informacion_td, 'fecha' => $fecha);	
+			} else {
+				$arrResponse = array('status' => false, 'msg' => 'Nenhum dado encontrado.');
+			}
+
+			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+		}
+		die();
+	}
+
 	public function accion()
 	{
 		if($_POST)

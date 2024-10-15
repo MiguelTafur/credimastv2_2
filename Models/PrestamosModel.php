@@ -239,6 +239,22 @@ class PrestamosModel extends Mysql
 		return $arrData;
 	}
 
+    //INFORMACIÓN DE CADA PUNTO DE LA GRÁFICA DE PRÉSTAMOS
+	public function datosGraficaPrestamo(string $fecha) 
+	{
+		$this->strFecha = $fecha;
+		$rutaId = $_SESSION['idRuta'];
+
+		$sql = "SELECT (SELECT nombres FROM persona WHERE idpersona = pr.usuarioid) as usuario, pr.monto, pe.nombres, pr.hora, DATE_FORMAT(pr.datecreated, '%d-%m-%Y') as fecha 
+				FROM prestamos pr LEFT OUTER JOIN persona pe ON(pr.personaid = pe.idpersona) 
+				WHERE pr.datecreated = '{$this->strFecha}' AND pr.codigoruta = $rutaId";
+		$request = $this->select_all($sql);
+
+		return $request;
+	}
+
+
+
     //ACTUALIZA LA COLUMNA PERSONAID DE LA TABLA PAGOS
     public function accionPagos(int $ruta)
     {

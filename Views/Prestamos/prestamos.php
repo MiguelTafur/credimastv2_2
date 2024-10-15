@@ -179,7 +179,7 @@ Highcharts.chart('graficaMesPrestamos',
         cursor: 'pointer',
         events: {
           click: function(event){
-            fntInfoChartGasto([ano, mes, event.point.category]);
+            fntInfoChartPrestamo([ano, mes, event.point.category]);
           }
         }
       },
