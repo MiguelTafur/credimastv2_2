@@ -253,6 +253,43 @@ class PrestamosModel extends Mysql
 		return $request;
 	}
 
+    //ANUAL
+	public function selectPrestamosAnio(string $anio) 
+    {
+		$arrMPrestamos = array();
+		$arrMeses = Meses();
+		$totalPrestamos = 0;
+		$ruta = $_SESSION['idRuta'];
+
+		for ($i=1; $i <= 12; $i++) {
+			$arrData = array('anio' => '', 'no_mes' => '', 'mes' => '');
+			$sql = "SELECT $anio AS anio, $i AS mes, SUM(monto) AS total
+					FROM prestamos 
+					WHERE month(datecreated) = $i 
+					AND year(datecreated) = $anio  
+					AND codigoruta = $ruta
+					GROUP BY month(datecreated)";
+			$prestamoMes = $this->select($sql);
+			$arrData['mes'] = $arrMeses[$i-1];
+
+			if(empty($prestamoMes)){
+				$arrData['anio'] = $anio;
+				$arrData['no_mes'] = $i;
+				$arrData['total'] = 0;
+			}else{
+				$arrData['anio'] = $prestamoMes['anio'];
+				$arrData['no_mes'] = $prestamoMes['mes'];
+				$arrData['total'] = $prestamoMes['total'];
+				$totalPrestamos += $prestamoMes['total'];
+			}
+			array_push($arrMPrestamos, $arrData);
+		}
+
+		$arrUsuarios = array('totalGastos' => $totalPrestamos, 'anio' => $anio, 'meses' => $arrMPrestamos);
+		return $arrUsuarios;
+
+	}
+
 
 
     //ACTUALIZA LA COLUMNA PERSONAID DE LA TABLA PAGOS

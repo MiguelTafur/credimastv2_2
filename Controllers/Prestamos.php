@@ -25,6 +25,9 @@ class Prestamos extends Controllers{
 		//MENSUAL
 		$data['prestamosMDia'] = $this->model->selectPrestamosMes($anio,$mes);
 
+		//ANUAL
+		$data['prestamosAnio'] = $this->model->selectPrestamosAnio($anio);
+
 		//TRAE EL RESUMEN ANTERIOR CON ESTADO 0
 		$data['resumenAnterior'] = getResumenAnterior();
 		
