@@ -118,7 +118,7 @@
               <h3 class="tile-title">Gráfica Anual</h3> 
               <form>
                 <div class="input-group">
-                  <input class="prestamosAnio form-control" name="prestamosAnio" id="prestamosAnio" placeholder="Mes y Año">
+                  <input class="prestamosAnio form-control" name="prestamosAnio" id="prestamosAnio" placeholder="Mes y Año" minlength="4" maxlength="4" onkeypress="return controlTag(event)">
                   <button type="button" class="btn btn-warning btn-sm" id="button-addon2" onclick="fntSearchPrestamosAnio()">
                     <i class="bi bi-search me-0" title="Buscar fecha"></i>
                   </button>

@@ -425,7 +425,6 @@ class Prestamos extends Controllers{
 			foreach($arrData as $prestamo)
 			{
 				$informacion_td .= "<tr>";
-				if($_SESSION['idRol'] == 1){$informacion_td .= '<td>'.$prestamo['usuario'].'</td>';}
 				$informacion_td .= '<td>'.$prestamo['nombres'].'</td>';
 				$informacion_td .= '<td>'.$prestamo['monto'].'</td>';
 				if($prestamo['hora'] != NULL) {
@@ -433,6 +432,7 @@ class Prestamos extends Controllers{
 				} else {
 					$informacion_td .= '<td>--:--</td>';
 				}
+				if($_SESSION['idRol'] == 1){$informacion_td .= '<td class="fst-italic">'.$prestamo['usuario'].'</td>';}
 			}
 
 			$informacion_td .= "</tr>";
@@ -449,6 +449,25 @@ class Prestamos extends Controllers{
 		}
 		die();
 	}
+
+	//BUSCADOR MENSUAL
+	public function prestamosMes()
+	{
+		if($_POST)
+		{
+			$grafica = "prestamosMes";
+			$nFecha = str_replace(" ", "", $_POST['fecha']);
+			$arrFecha = explode('-', $nFecha);
+			$mes = $arrFecha[0];
+			$anio = $arrFecha[1];
+			$prestamos = $this->model->selectPrestamosMes($anio,$mes);
+			$script = getFile("Template/Graficas/graficaPrestamosMes", $prestamos);
+			echo $script;
+			die();
+		}
+	}
+
+
 
 	public function accion()
 	{

@@ -142,10 +142,10 @@
           <table class="table table-striped text-center">
             <thead>
               <tr>
-                <?php if($_SESSION['idRol'] == 1){echo '<th>REGISTRADO POR</th>';} ?>
                 <th>CLIENTE</th>
                 <th>VALOR</th>
                 <th>HORA</th>
+                <?php if($_SESSION['idRol'] == 1){echo '<th>REGISTRADO POR</th>';} ?>
               </tr>
             </thead>
             <tbody id="listgraficaPrestamo">

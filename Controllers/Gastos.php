@@ -214,7 +214,6 @@ class Gastos extends Controllers{
 			foreach($arrData as $gasto)
 			{
 				$informacion_td .= "<tr>";
-				if($_SESSION['idRol'] == 1){$informacion_td .= '<td>'.$gasto['nombres'].'</td>';}
 				$informacion_td .= '<td>'.$gasto['nombre'].'</td>';
 				$informacion_td .= '<td>'.$gasto['monto'].'</td>';
 				if($gasto['hora'] != NULL) {
@@ -222,6 +221,7 @@ class Gastos extends Controllers{
 				} else {
 					$informacion_td .= '<td>--:--</td>';
 				}
+				if($_SESSION['idRol'] == 1){$informacion_td .= '<td class="fst-italic">'.$gasto['nombres'].'</td>';}
 			}
 
 			$informacion_td .= "</tr>";
