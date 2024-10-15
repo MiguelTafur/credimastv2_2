@@ -286,11 +286,24 @@ class Gastos extends Controllers{
 
 			for ($i=0; $i < COUNT($gastosD['gastos']); $i++)
 			{ 
-				$arrExplode = explode("|",$gastosD['gastos'][$i]);
-				$detalles .= '<tr class="text-center">';
-				$detalles .= '<td>'.$arrExplode[3].'</td>';
-				$detalles .= '<td>'.$dias[date('w', strtotime($arrExplode[0]))].'</td>';
-				$detalles .= '<td>'.$arrExplode[1].'</td>';
+				$arrExplode = explode("|",$gastosD['gastos'][$i]);/*CONVIRTIENDO STRING A UN ARRAY*/
+				$fechaF = $dias[date('w', strtotime($arrExplode[0]))];/*FECHA FORMATEADA*/
+				$detalles .= '<tr class="text-center">'; 
+				$detalles .= '<td>'.$arrExplode[3].'</td>';/*USUARIO*/
+				// $detalles .= '<td>'.$dias[date('w', strtotime($arrExplode[0]))].'</td>';
+				$detalles .= '<td>
+								<a 
+									tabindex="0" role="button" 
+									class="btn btn-secondary btn-sm" 
+									data-bs-toggle="popover" 
+									data-bs-placement="left" 
+									data-bs-content="'.date('d-m-Y', strtotime($arrExplode[0])).'" 
+									title="'.$fechaF.'">
+									<i class="bi bi-calendar4-event me-0"></i>
+								</a>
+								</td>';
+				$detalles .= '<td>'.$arrExplode[1].'</td>';/*VALOR*/
+				/*INFO*/
 				if($arrExplode[1] == 0)
 				{
 					$detalles .= '<td>
@@ -306,10 +319,10 @@ class Gastos extends Controllers{
 									data-bs-toggle="popover" 
 									data-bs-placement="left" 
 									data-bs-content="'.$arrExplode[2].'" 
-									title="GASTOS">
+									title="GASTOS / HORA">
 									<i class="bi bi-info-circle me-0"></i>
 								</a>
-								</td>';	
+								</td>';
 				}
 				$detalles .= '</tr>';
 				$totalGastos += $arrExplode[1];

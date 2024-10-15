@@ -235,6 +235,8 @@
         return $fechaPago.'|'.$idPago.'|'.$abono;
     }
 
+    /**** GASTOS ****/
+    //TRAE EL NOMBRE Y EL MONTO DE LOS GASTOS DEPENDIENDO DE LA FECHA
     function getFormatGastos(string $fecha)
     {
         require_once("Models/GastosModel.php");
@@ -245,7 +247,8 @@
         {
             $gasto = "";
             for ($i=0; $i < count($request); $i++) {
-                $gasto .= strtoupper($request[$i]['nombre']).': '.$request[$i]['monto'].'<br>';
+                $hora = $request[$i]['hora'] != '00:00:00' ? ' / '.date('H:i', strtotime($request[$i]['hora'])) : '';
+                $gasto .= strtoupper($request[$i]['nombre']).': '.$request[$i]['monto'].' '.$hora.'<br>';
             }
             return $gasto;
         }

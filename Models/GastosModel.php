@@ -236,9 +236,9 @@ class GastosModel extends Mysql
 		$this->intIdRuta = $ruta;
 		$arrDatos = array();
 
-		$sql = "SELECT pe.nombres, ga.monto, ga.datecreated FROM gastos ga 
+		$sql = "SELECT pe.nombres, SUM(ga.monto) AS monto, ga.hora, ga.datecreated FROM gastos ga 
                 LEFT OUTER JOIN persona pe ON(ga.personaid = pe.idpersona)
-                WHERE ga.datecreated BETWEEN '{$this->strFecha}' AND '{$this->strFecha2}' AND ga.codigoruta = $ruta";
+                WHERE ga.datecreated BETWEEN '{$this->strFecha}' AND '{$this->strFecha2}' AND ga.codigoruta = $ruta GROUP BY ga.datecreated";
 		$request = $this->select_all($sql);
 
 		//dep($request);exit;
@@ -252,6 +252,8 @@ class GastosModel extends Mysql
 			$gastosD .= getFormatGastos($gastos['datecreated']);
             $gastosD .= " | ";
 			$gastosD .= $gastos['nombres'];
+            $gastosD .= " | ";
+			$gastosD .= $gastos['hora'];
 			array_push($arrDatos, $gastosD);
 		}
 

@@ -439,7 +439,7 @@ async function fntSearchGastosD()
     let fecha = document.querySelector("#fechaGastos").value;
     if(fecha == "")
     {
-        swal("Error", "Seleccione la fecha", "error");
+        Swal.fire("Error", "Seleccione la fecha", "error");
         return false;
     }
 
