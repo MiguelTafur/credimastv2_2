@@ -99,6 +99,19 @@ class Gastos extends Controllers{
 		}
 	}
 
+	//TRAE LOS GASTOS DEPENDIENDO DE LA FECHA
+	public function getGastosFecha()
+	{
+		$ruta = $_SESSION['idRuta'];
+
+		//VALIDA SI HAY UN RESUMEN CON EL ESTADO 0 Y DEVUELVE LA FECHA, Si NO, LO CREA.
+		$fechaGasto = setDelResumenActual('set', $ruta)['datecreated'] ?? NOWDATE;
+
+		$arrData = $this->model->selectGastosFecha($_SESSION['idRuta'], $fechaGasto);
+
+		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
+	}
+
 	//REGISTRAR GASTO
 	public function setGastos()
     {
@@ -191,8 +204,15 @@ class Gastos extends Controllers{
 						} else {
 							$status = false;
 						}	
+
+						$anio = date("Y");
+						$mes = date("m");
+						$gastos = $this->model->selectGastosMes($anio,$mes);
+						$gastos2 = $this->model->selectGastosAnio($anio);
+						$script = getFile("Template/Graficas/graficaGastosMes", $gastos);
+						$script2 = getFile("Template/Graficas/graficaGastosAnio", $gastos2);
 						
-						$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el Préstamo.', 'statusAnterior' => $status);
+						$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el Préstamo.', 'statusAnterior' => $status, 'graficaMes' => $script,'graficaAnio' => $script2);
 					} else if($requestDelete == '0')
 					{
 						$arrResponse = array('status' => false, 'msg' => 'El Préstamo tiene pagamentos asociados.');

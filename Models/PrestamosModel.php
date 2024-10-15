@@ -185,9 +185,8 @@ class PrestamosModel extends Mysql
 
         if(empty($pagamento[1]))
         {
-            $sql = "UPDATE prestamos SET status = ? WHERE idprestamo = $this->intIdPrestamo";
-            $arrData = array(0);
-            $request = $this->update($sql, $arrData);
+            $sql = "DELETE FROM prestamos WHERE idprestamo = $this->intIdPrestamo";
+            $request = $this->delete($sql);
 
             if(!empty($request))
             {

@@ -558,6 +558,8 @@ async function fntDeletePrestamo(idprestamo)
             } else {
                 //Swal.fire("Eliminar!", json.msg , "success");
                 tablePrestamos.ajax.reload(null, false);
+                $("#graficaMesPrestamos").html(json.graficaMes);
+                $("#graficaAnioPrestamos").html(json.graficaAnio);
                 Toast.fire({
                     icon: "success",
                     title: json.msg

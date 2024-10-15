@@ -404,8 +404,15 @@ class Prestamos extends Controllers{
 						} else {
 							$status = false;
 						}	
+
+						$anio = date("Y");
+						$mes = date("m");
+						$prestamos = $this->model->selectPrestamosMes($anio,$mes);
+						$prestamos2 = $this->model->selectPrestamosAnio($anio);
+						$script = getFile("Template/Graficas/graficaPrestamosMes", $prestamos);
+						$script2 = getFile("Template/Graficas/graficaPrestamosAnio", $prestamos2);
 						
-						$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el Préstamo.', 'statusAnterior' => $status);
+						$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el Préstamo.', 'statusAnterior' => $status, 'graficaMes' => $script,'graficaAnio' => $script2);
 					} else if($requestDelete == '0')
 					{
 						$arrResponse = array('status' => false, 'msg' => 'El Préstamo tiene pagamentos asociados.');

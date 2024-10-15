@@ -232,6 +232,8 @@ async function fntDeleteGasto(idgasto)
             } else {
                 //Swal.fire("Eliminar!", json.msg , "success");
                 tableGastos.ajax.reload(null, false);
+                $("#graficaMesGastos").html(json.graficaMes);
+                $("#graficaAnioGastos").html(json.graficaAnio);
                 Toast.fire({
                     icon: "success",
                     title: json.msg
