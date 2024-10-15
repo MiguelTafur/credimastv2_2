@@ -57,7 +57,7 @@
     },
 
   series: [{
-      name: 'Clientes nuevos',
+      name: 'Gastos',
       data: [
         <?php 
           foreach ($gastosMes['gastos'] as $gasto) {

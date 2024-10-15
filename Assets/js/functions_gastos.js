@@ -106,7 +106,9 @@ async function fntRegistrarGasto()
             tableGastos.ajax.reload(null, false);
             $('#modalFormGastos').modal("hide");
             formGasto.reset();
-            //Swal.fire("Roles de usuario", json.msg ,"success");
+            $("#graficaMesGastos").html(json.graficaMes);
+            $("#graficaAnioGastos").html(json.graficaAnio);
+            //Swal.fire("Gastos", json.msg ,"success");
             Toast.fire({
                 icon: "success",
                 title: json.msg

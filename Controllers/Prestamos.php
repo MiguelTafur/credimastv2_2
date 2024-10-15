@@ -350,9 +350,16 @@ class Prestamos extends Controllers{
 					
 					if($request_prestamo > 0)
 					{
+						$anio = date("Y");
+						$mes = date("m");
+						$prestamos = $this->model->selectPrestamosMes($anio,$mes);
+						$prestamos2 = $this->model->selectPrestamosAnio($anio);
+						$script = getFile("Template/Graficas/graficaPrestamosMes", $prestamos);
+						$script2 = getFile("Template/Graficas/graficaPrestamosAnio", $prestamos2);
+
 						$arrResumen = getResumenActual($fechaPrestamo);
 
-						$arrResponse = $option == 1 ? array('status' => true, 'msg' => 'Préstamo registrado.', 'resumen' => $arrResumen)
+						$arrResponse = $option == 1 ? array('status' => true, 'msg' => 'Préstamo registrado.', 'resumen' => $arrResumen, 'graficaMes' => $script,'graficaAnio' => $script2)
 													: array('status' => true, 'msg' => 'Préstamo actualizado.', 'resumen' => $arrResumen);
 					}else if($request_prestamo == '0')
 					{

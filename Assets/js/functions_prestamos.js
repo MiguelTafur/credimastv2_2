@@ -251,7 +251,9 @@ async function fntRegistrarPrestamo()
             formPrestamos.reset();
             $('#listClientes').val(null).trigger('change');
             $('#listFormato').val(null).trigger('change');
-            //Swal.fire("Roles de usuario", json.msg ,"success");
+            $("#graficaMesPrestamos").html(json.graficaMes);
+            $("#graficaAnioPrestamos").html(json.graficaAnio);
+            //Swal.fire("Préstamos", json.msg ,"success");
             Toast.fire({
                 icon: "success",
                 title: json.msg

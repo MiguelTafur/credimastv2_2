@@ -137,10 +137,17 @@ class Gastos extends Controllers{
 
 					if($request_user > 0)
 					{
+						$anio = date("Y");
+						$mes = date("m");
+						$gastos = $this->model->selectGastosMes($anio,$mes);
+						$gastos2 = $this->model->selectGastosAnio($anio);
+						$script = getFile("Template/Graficas/graficaGastosMes", $gastos);
+						$script2 = getFile("Template/Graficas/graficaGastosAnio", $gastos2);
+
 						$arrResumen = getResumenActual($fechaGasto);
 
 						if($option === 1){
-							$arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.', 'resumen' => $arrResumen);
+							$arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.', 'resumen' => $arrResumen, 'graficaMes' => $script,'graficaAnio' => $script2);
 						}else{
 							$arrResponse = array('status' => true, 'msg' => 'Datos actualizados correctamente.', 'resumen' => $arrResumen);
 						}
