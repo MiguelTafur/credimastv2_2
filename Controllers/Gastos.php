@@ -319,7 +319,7 @@ class Gastos extends Controllers{
 									data-bs-toggle="popover" 
 									data-bs-placement="left" 
 									data-bs-content="'.$arrExplode[2].'" 
-									title="GASTOS / HORA">
+									title="HORA / GASTOS">
 									<i class="bi bi-info-circle me-0"></i>
 								</a>
 								</td>';

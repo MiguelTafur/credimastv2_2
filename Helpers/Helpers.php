@@ -247,8 +247,8 @@
         {
             $gasto = "";
             for ($i=0; $i < count($request); $i++) {
-                $hora = $request[$i]['hora'] != '00:00:00' ? ' / '.date('H:i', strtotime($request[$i]['hora'])) : '';
-                $gasto .= strtoupper($request[$i]['nombre']).': '.$request[$i]['monto'].' '.$hora.'<br>';
+                $hora = $request[$i]['hora'] != '00:00:00' ? date('H:i', strtotime($request[$i]['hora'])) . ' / ' : '--:-- / ';
+                $gasto .= $hora.strtoupper($request[$i]['nombre']).': '.$request[$i]['monto'].'<br>';
             }
             return $gasto;
         }

@@ -98,7 +98,7 @@
             <thead>
             <tr class="text-center">
                 <th>REGISTRADO POR</th>
-                <th>FECHA</th>
+                <th>DIA</th>
                 <th>VALOR</th>
                 <th>INFO</th>
               </tr>
