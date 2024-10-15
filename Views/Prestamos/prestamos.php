@@ -88,6 +88,41 @@
       </div>
     </div>
     <div class="tab-pane fade" id="dashboard-tab-pane" role="tabpanel" aria-labelledby="dashboard-tab" tabindex="0">
+      <div class="row">
+        <div class="col-3">
+          <div class="widget-small light "><i class="icon bi bi-cash fs-1"></i>
+            <div class="info">
+              <h4>VALOR ACTIVO</h4>
+              <p><span class="fst-italic">10</span></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="widget-small light "><i class="icon bi bi-coin fs-1"></i>
+            <div class="info">
+              <h4>COBRADO ESTIMADO</h4>
+              <p><span class="fst-italic">10</span></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="widget-small light "><i class="icon bi bi-wallet2 fs-1"></i>
+            <div class="info">
+              <h4>CARTERA</h4>
+              <p><span class="fst-italic">10</span></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="widget-small light "><i class="icon bi bi-piggy-bank-fill fs-1"></i>
+            <div class="info">
+              <h4>CAJA</h4>
+              <p><span class="fst-italic">10</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="border border-warning border-1 mb-4">
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <button class="nav-link active" id="nav-mensual-tab" data-bs-toggle="tab" data-bs-target="#nav-mensual" type="button" role="tab" aria-controls="nav-mensual" aria-selected="true">Mensual</button>

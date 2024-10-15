@@ -7,6 +7,7 @@
     --bs-warning-border-subtle: #d9a300;
     --bs-secondary-select2-disabled: #ccc;
     --cm-list-group-active-color: #343a40;
+    --cm-widget-color: #343a40;
 }
 
 [data-bs-theme=dark] {
@@ -16,6 +17,7 @@
     --bs-warning-border-subtle: #d9a300;
     --bs-secondary-select2-disabled: #343a40;
     --cm-list-group-active-color: #ccc;
+    --cm-widget-color: #eee;
 }
 
 /*** ICONO DARKMODE ***/
@@ -224,4 +226,9 @@ svg.bi {
 /*** DATEPICKER ***/
 .ui-datepicker-calendar {
     display: none;
+}
+
+/*** WIDGET ***/
+.widget-small {
+    color: var(--cm-widget-color);
 }
