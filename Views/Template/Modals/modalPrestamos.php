@@ -129,7 +129,7 @@
   </div>
 </div>
 
-<!-- MODAL INFORMACIÓN EN LA GRÁFICA -->
+<!-- MODAL INFORMACIÓN EN LA GRÁFICA DE PRÉSTAMOS -->
 <div class="modal fade" id="modalViewPrestamoGrafica" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -158,6 +158,47 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Cerrar
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL BUSCAR PRÉSTAMOS POR RANGO DE FECHA -->
+<div class="modal fade" id="modalDetallePrestamos" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titleModal">Prestamos </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-10">
+            <input type="text" readonly class="form-control" id="fechaPrestamos" placeholder="Selecciona una fecha">
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn btn-warning mb-2" onclick="fntSearchPrestamosD()"><i class="bi bi-search me-0"></i></button>
+            </div>
+          </div>
+        </form>
+        <div id="divPrestamosD" class="d-none">
+          <table class="table">
+            <thead>
+            <tr class="text-center">
+              <th>DIA</th>
+              <th>VALOR</th>
+              <th>INFO</th>
+              <?php if($_SESSION['idRol'] == 1){echo '<th>REGISTRADO POR</th>';} ?>
+              </tr>
+            </thead>
+            <tbody id="datosPrestamosD"></tbody>
+          </table>
+          <br>
+          <div class="tile-footer text-end" id="divPrestamosD">
+            <b>VALOR TOTAL: <i><mark id="markPrestamos"></mark></i></b>
+          </div>
+        </div>
       </div>
     </div>
   </div>

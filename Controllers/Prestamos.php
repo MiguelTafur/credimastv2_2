@@ -471,7 +471,8 @@ class Prestamos extends Controllers{
 	}
 
 	//BUSCADOR ANUAL
-	public function prestamosAnio(){
+	public function prestamosAnio()
+	{
 		if($_POST){
 			$grafica = "prestamosAnio";
 			$anio = intval($_POST['anio']);
@@ -482,6 +483,70 @@ class Prestamos extends Controllers{
 		}
 	}
 
+	//BUSCADOR DE RANGO DE FECHAS
+	public function getPrestamosD()
+	{
+		if($_POST)
+		{
+			$arrayFechas = explode("-", $_POST['fecha']);
+			$fechaI = date("Y-m-d", strtotime(str_replace("/", "-", $arrayFechas[0])));
+			$fechaF = date("Y-m-d", strtotime(str_replace("/", "-", $arrayFechas[1])));
+			$ruta = $_SESSION['idRuta'];
+			$detalles = '';
+			$arrExplode = '';
+			$totalPrestamos = 0;
+			$dias = array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
+
+			$prestamosD = $this->model->selectPrestamosD($fechaI, $fechaF, $ruta);
+
+			for ($i=0; $i < COUNT($prestamosD['prestamos']); $i++)
+			{ 
+				$arrExplode = explode("|",$prestamosD['prestamos'][$i]);/*CONVIRTIENDO STRING A UN ARRAY*/
+				$fechaF = $dias[date('w', strtotime($arrExplode[0]))];/*FECHA FORMATEADA*/
+				$detalles .= '<tr class="text-center">'; 
+				$detalles .= '<td>
+								<a 
+									tabindex="0" role="button" 
+									class="btn btn-secondary btn-sm" 
+									data-bs-toggle="popover" 
+									data-bs-placement="left" 
+									data-bs-content="'.date('d-m-Y', strtotime($arrExplode[0])).'" 
+									title="'.$fechaF.'">
+									<i class="bi bi-calendar4-event me-0"></i>
+								</a>
+								</td>';
+				$detalles .= '<td>'.$arrExplode[1].'</td>';/*VALOR*/
+				/*INFO*/
+				if($arrExplode[1] == 0)
+				{
+					$detalles .= '<td>
+								<a style="cursor: not-allowed;opacity: 0.65;" tabindex="0" role="button" class="btn btn-secondary btn-sm">
+									<i class="bi bi-info-circle me-0"></i>
+								</a>
+								</td>';	
+				}else{
+					$detalles .= '<td>
+								<a 
+									tabindex="0" role="button" 
+									class="btn btn-secondary btn-sm" 
+									data-bs-toggle="popover" 
+									data-bs-placement="left" 
+									data-bs-content="'.$arrExplode[2].'" 
+									title="HORA / PRÉSTAMO">
+									<i class="bi bi-info-circle me-0"></i>
+								</a>
+								</td>';
+				}
+				if($_SESSION['idRol'] == 1){$detalles .= '<td class="fst-italic">'.$arrExplode[4].'</td>';}/*USUARIO*/
+				$detalles .= '</tr>';
+				$totalPrestamos += $arrExplode[1];
+			}
+			
+			$arrResponse = array('prestamosD' => $detalles, 'totalPrestamos' => $totalPrestamos);
+
+			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+		}
+	}
 
 
 	public function accion()

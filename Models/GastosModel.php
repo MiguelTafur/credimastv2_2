@@ -249,11 +249,9 @@ class GastosModel extends Mysql
 			$gastosD .= " | ";
 			$gastosD .= $gastos['monto'];
 			$gastosD .= " | ";
-			$gastosD .= getFormatGastos($gastos['datecreated']);
+			$gastosD .= getFormatPrestamos($gastos['datecreated']);
             $gastosD .= " | ";
 			$gastosD .= $gastos['nombres'];
-            $gastosD .= " | ";
-			$gastosD .= $gastos['hora'];
 			array_push($arrDatos, $gastosD);
 		}
 

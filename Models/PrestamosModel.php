@@ -51,7 +51,7 @@ class PrestamosModel extends Mysql
         $this->intIdRuta = $ruta;
         $this->strFecha = $fecha;
 
-        $sql = "SELECT pe.nombres, pe.apellidos, pr.monto
+        $sql = "SELECT pe.nombres, pe.apellidos, pr.monto, pr.hora
                 FROM prestamos pr 
                 LEFT OUTER JOIN persona pe 
                 ON (pr.personaid = pe.idpersona)
@@ -285,8 +285,43 @@ class PrestamosModel extends Mysql
 			array_push($arrMPrestamos, $arrData);
 		}
 
-		$arrUsuarios = array('totalGastos' => $totalPrestamos, 'anio' => $anio, 'meses' => $arrMPrestamos);
+		$arrUsuarios = array('totalPrestamos' => $totalPrestamos, 'anio' => $anio, 'meses' => $arrMPrestamos);
 		return $arrUsuarios;
+
+	}
+
+    //BUSCADOR DE RANGO DE FECHAS
+    public function selectPrestamosD(string $fechaI, string $fechaF, int $ruta)
+	{
+		$this->strFecha = $fechaI;
+		$this->strFecha2 = $fechaF;
+		$this->intIdRuta = $ruta;
+		$arrDatos = array();
+
+		$sql = "SELECT (SELECT nombres FROM persona WHERE idpersona = pr.usuarioid) as usuario, SUM(pr.monto) AS monto, pr.hora, pr.datecreated FROM prestamos pr 
+                LEFT OUTER JOIN persona pe ON(pr.personaid = pe.idpersona)
+                WHERE pr.datecreated BETWEEN '{$this->strFecha}' AND '{$this->strFecha2}' AND pr.codigoruta = $ruta GROUP BY pr.datecreated";
+		$request = $this->select_all($sql);
+
+		//dep($request);exit;
+
+		foreach ($request as $prestamos)
+		{
+			$prestamosD = $prestamos['datecreated'];
+			$prestamosD .= " | ";
+			$prestamosD .= $prestamos['monto'];
+			$prestamosD .= " | ";
+			$prestamosD .= getFormatPrestamos($prestamos['datecreated']);
+            $prestamosD .= " | ";
+			$prestamosD .= $prestamos['hora'];
+            $prestamosD .= " | ";
+			$prestamosD .= $prestamos['usuario'];
+			array_push($arrDatos, $prestamosD);
+		}
+
+		$arrData = array("prestamos" => $arrDatos);
+
+		return $arrData;
 
 	}
 

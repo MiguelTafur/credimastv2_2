@@ -289,7 +289,7 @@ class Gastos extends Controllers{
 				$arrExplode = explode("|",$gastosD['gastos'][$i]);/*CONVIRTIENDO STRING A UN ARRAY*/
 				$fechaF = $dias[date('w', strtotime($arrExplode[0]))];/*FECHA FORMATEADA*/
 				$detalles .= '<tr class="text-center">'; 
-				$detalles .= '<td>'.$arrExplode[3].'</td>';/*USUARIO*/
+				if($_SESSION['idRol'] == 1){$detalles .= '<td>'.$arrExplode[3].'</td>';}/*USUARIO*/
 				// $detalles .= '<td>'.$dias[date('w', strtotime($arrExplode[0]))].'</td>';
 				$detalles .= '<td>
 								<a 

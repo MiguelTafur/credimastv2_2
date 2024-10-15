@@ -12,7 +12,7 @@
             text: '<?= $prestamosAnio['anio']; ?>'
         },
         subtitle: {
-            text: '<b>Total: <?= $prestamosAnio['totalGastos']; ?></b>'
+            text: '<b>Total: <?= $prestamosAnio['totalPrestamos']; ?></b>'
         },
         xAxis: {
             type: 'category',

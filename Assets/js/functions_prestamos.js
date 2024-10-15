@@ -840,6 +840,104 @@ async function fntSearchPrestamosAnio(){
     }
 }
 
+//DATERANGEPICKER
+function fntViewDetallePrestamos()
+{
+    $('#modalDetallePrestamos').modal('show');
+    $('#fechaPrestamos').daterangepicker({
+        "autoUpdateInput": false,
+        "locale": {
+            "format": "DD/MM/YYYY",
+            "separator": " - ",
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "daysOfWeek": [
+                "Dom",
+                "Seg",
+                "Ter",
+                "Qua",
+                "Qui",
+                "Sex",
+                "Sab"
+            ],
+            "monthNames": [
+                "Janeiro",
+                "Fevereiro",
+                "Março",
+                "Abil",
+                "Maio",
+                "Junho",
+                "Julho",
+                "Agosto",
+                "Setembro",
+                "Outubro",
+                "Novembro",
+                "Dezembro"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#fechaPrestamos').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+    });
+
+    $('#fechaPrestamos').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
+}
+//INFORMACIÓN DEL BUSCADOR DATERANGEPICKER
+async function fntSearchPrestamosD()
+{
+    let fecha = document.querySelector("#fechaPrestamos").value;
+    if(fecha == "")
+    {
+        Swal.fire("Error", "Seleccione la fecha", "error");
+        return false;
+    }
+
+    const formData = new FormData();
+    formData.append('fecha', fecha);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Prestamos/getPrestamosD', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        arrPrestamos = json.prestamosD;
+        totalP = json.totalPrestamos;
+
+        $(function () {
+            $('[data-bs-toggle="popover"]').popover({
+                container: "body",
+                trigger: "focus",
+                html: true
+            })
+        });
+
+        document.querySelector("#datosPrestamosD").innerHTML = arrPrestamos;
+        document.querySelector("#markPrestamos").innerHTML = totalP;
+        document.querySelector("#divPrestamosD").classList.remove("d-none");
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+
+
 async function accion()
 {
     const formData = new FormData();

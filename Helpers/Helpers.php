@@ -190,15 +190,6 @@
         return $total;
     }
 
-    //TRAE LA SUMA DE TODOS LOS PRÉSTAMOS
-    /*function sumaPrestamos(int $idruta)
-    {
-        require_once("Models/PrestamosModel.php");
-        $objPrestamos = new PrestamosModel();
-        $request = $objPrestamos->sumaPrestamos($idruta);
-        return $request;
-    }*/
-
     //CALCULA EL SALDO DEL PRÉSTAMO
     function saldoPrestamo(int $idprestamo)
     {
@@ -206,6 +197,24 @@
         $totalPrestamo = valorTotalPrestamo($idprestamo);
         $saldo = $totalPrestamo - $pagamentos;
         return $saldo;
+    }
+
+    //TRAE EL CLIENTE Y EL MONTO DE LOS PRÉSTAMOS DEPENDIENDO DE LA FECHA
+    function getFormatPrestamos(string $fecha)
+    {
+        require_once("Models/PrestamosModel.php");
+        $objPrestamos = new PrestamosModel();
+        $ruta = $_SESSION['idRuta'];
+        $request = $objPrestamos->selectPrestamosFecha($ruta, $fecha);
+        if(is_array($request))
+        {
+            $prestamo = "";
+            for ($i=0; $i < count($request); $i++) {
+                $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])) . ' / ' : '--:-- / ';
+                $prestamo .= $hora.strtoupper($request[$i]['nombres']).': '.$request[$i]['monto'].'<br>';
+            }
+            return $prestamo;
+        }
     }
 
     /**** PAGOS ****/

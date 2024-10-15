@@ -227,7 +227,7 @@ Highcharts.chart('graficaAnioPrestamos', {
         text: '<?= $data['prestamosAnio']['anio']; ?>'
     },
     subtitle: {
-        text: '<b>Total: <?= $data['prestamosAnio']['totalGastos']; ?></b>'
+        text: '<b>Total: <?= $data['prestamosAnio']['totalPrestamos']; ?></b>'
     },
     xAxis: {
         type: 'category',
