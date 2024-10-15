@@ -220,3 +220,8 @@ svg.bi {
 .myModal{
     background-color: rgba(0,0,0, 1) !important;
 }
+
+/*** DATEPICKER ***/
+.ui-datepicker-calendar {
+    display: none;
+}
