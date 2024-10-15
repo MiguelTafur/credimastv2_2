@@ -18,6 +18,13 @@ class Prestamos extends Controllers{
 		$data['page_name'] = "prestamos";
 		$data['page_functions_js'] = "functions_prestamos.js";
 
+		/*** GRÁFICAS ***/ 
+		$anio = date("Y");
+		$mes = date("m");
+
+		//MENSUAL
+		$data['prestamosMDia'] = $this->model->selectPrestamosMes($anio,$mes);
+
 		//TRAE EL RESUMEN ANTERIOR CON ESTADO 0
 		$data['resumenAnterior'] = getResumenAnterior();
 		
@@ -178,6 +185,7 @@ class Prestamos extends Controllers{
 		die();
 	}
 
+	//TRAE LOS PRÉSTAMOS CON UNA FECHA DEFINIDA	
 	public function getPrestamosFecha()
 	{
 		$ruta = $_SESSION['idRuta'];

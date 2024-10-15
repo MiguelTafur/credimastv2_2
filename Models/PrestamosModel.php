@@ -205,6 +205,40 @@ class PrestamosModel extends Mysql
         return $return;
     }
 
+    /***** GRÁFICAS *****/
+	//MENSUAL
+	public function selectPrestamosMes(string $anio, string $mes)
+	{
+		$totalPrestamosMes = 0;
+		$arrPrestamosDias = array();
+		$rutaId = $_SESSION['idRuta'];
+		$dias = cal_days_in_month(CAL_GREGORIAN,$mes,$anio);
+		$n_dia = 1;
+		for ($i=0; $i < $dias; $i++)
+		{
+			$date = date_create($anio.'-'.$mes.'-'.$n_dia);
+			$fechaPrestamo = date_format($date, "Y-m-d");
+		
+			$sql = "SELECT DAY(datecreated) as dia FROM prestamos WHERE DATE(datecreated) = '{$fechaPrestamo}' AND codigoruta = $rutaId";
+			$prestamoDia = $this->select($sql);
+
+			$sqlTotal = "SELECT SUM(monto) as total FROM prestamos WHERE DATE(datecreated) = '{$fechaPrestamo}' AND codigoruta = $rutaId";
+			$prestamoDiaTotal = $this->select($sqlTotal);
+			$prestamoDiaTotal = $prestamoDiaTotal['total'];
+
+			$prestamoDia['dia'] = $n_dia;
+			$prestamoDia['prestamo'] = $prestamoDiaTotal;
+			$prestamoDia['prestamo'] = $prestamoDia['prestamo'] == "" ? 0 : $prestamoDia['prestamo'];
+			$totalPrestamosMes += $prestamoDiaTotal;
+			array_push($arrPrestamosDias, $prestamoDia);
+			$n_dia++;
+
+		}
+		$meses = Meses();
+		$arrData = array('anio' => $anio, 'mes' => $meses[intval($mes - 1)], 'numeroMes' => $mes, 'total' => $totalPrestamosMes, 'prestamos' => $arrPrestamosDias);
+		return $arrData;
+	}
+
     //ACTUALIZA LA COLUMNA PERSONAID DE LA TABLA PAGOS
     public function accionPagos(int $ruta)
     {

@@ -88,9 +88,133 @@
       </div>
     </div>
     <div class="tab-pane fade" id="dashboard-tab-pane" role="tabpanel" aria-labelledby="dashboard-tab" tabindex="0">
-
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <button class="nav-link active" id="nav-mensual-tab" data-bs-toggle="tab" data-bs-target="#nav-mensual" type="button" role="tab" aria-controls="nav-mensual" aria-selected="true">Mensual</button>
+          <button class="nav-link" id="nav-anual-tab" data-bs-toggle="tab" data-bs-target="#nav-anual" type="button" role="tab" aria-controls="nav-anual" aria-selected="false">Anual</button>
+        </div>
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-mensual" role="tabpanel" aria-labelledby="nav-mensual-tab" tabindex="0">
+          <div class="tile">
+            <div class="container-title d-flex justify-content-between flex-wrap">
+              <h3 class="tile-title">Gráfica Mensual</h3>
+              <form>
+                <div class="input-group">
+                  <input class="date-picker prestamosMes form-control" name="prestamosMes" id="prestamosMes" placeholder="Mes y Año">
+                  <button type="button" class="btn btn-warning btn-sm" id="button-addon2" onclick="fntSearchPrestamosMes()">
+                    <i class="bi bi-search me-0" title="Buscar fecha"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div id="graficaMesPrestamos"></div>
+            <button class="btn btn-warning btn-sm mt-4" onclick="fntViewDetallePrestamos()"><i class="bi bi-calendar4-week"></i>Buscar Préstamos por rango de fechas</button>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="nav-anual" role="tabpanel" aria-labelledby="nav-anual-tab" tabindex="0">
+          <div class="tile">
+            <div class="container-title d-flex justify-content-between flex-wrap">
+              <h3 class="tile-title">Gráfica Anual</h3> 
+              <form>
+                <div class="input-group">
+                  <input class="prestamosAnio form-control" name="prestamosAnio" id="prestamosAnio" placeholder="Mes y Año">
+                  <button type="button" class="btn btn-warning btn-sm" id="button-addon2" onclick="fntSearchPrestamosAnio()">
+                    <i class="bi bi-search me-0" title="Buscar fecha"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div id="graficaAnioPrestamos"></div>  
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </main>
 
 <?php footerAdmin($data); ?>
+
+<script>
+  let mes = '<?= $data['prestamosMDia']['numeroMes']; ?>';
+  let ano = '<?= $data['prestamosMDia']['anio']; ?>';
+
+//MENSUAL
+Highcharts.chart('graficaMesPrestamos', 
+{
+  chart: {
+      type: 'line',
+      scrollablePlotArea: {
+        minWidth: 700,
+        scrollPositionX: 1
+      }
+  },
+
+  title: {
+      text: '<?= $data['prestamosMDia']['mes'].' de '.$data['prestamosMDia']['anio']; ?>'
+  },
+
+  subtitle: {
+      text: '<b>Total: <?= $data['prestamosMDia']['total']; ?></b>'
+  },
+
+  yAxis: {
+      title: {
+          text: 'CREDIMAST'
+      }
+  },
+
+  xAxis: {
+    categories: [
+      <?php 
+        foreach ($data['prestamosMDia']['prestamos'] as $dia) {
+          echo $dia['dia'].",";
+        }
+      ?>
+    ]
+  },
+
+  plotOptions: {
+      series: {
+        cursor: 'pointer',
+        events: {
+          click: function(event){
+            fntInfoChartGasto([ano, mes, event.point.category]);
+          }
+        }
+      },
+        line: {
+            dataLabels: {
+                enabled: true
+            },
+            enableMouseTracking: true
+        }
+    },
+
+  series: [{
+      name: 'Préstamos',
+      data: [
+        <?php 
+          foreach ($data['prestamosMDia']['prestamos'] as $prestamo) {
+            echo $prestamo['prestamo'].",";
+          }
+        ?>
+      ]
+  }],
+
+  responsive: {
+      rules: [{
+          condition: {
+              maxWidth: 500
+          },
+          chartOptions: {
+              legend: {
+                  layout: 'horizontal',
+                  align: 'center',
+                  verticalAlign: 'bottom'
+              }
+          }
+      }]
+  }
+});
+</script>
