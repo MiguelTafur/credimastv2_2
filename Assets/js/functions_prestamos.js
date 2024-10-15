@@ -804,6 +804,42 @@ async function fntSearchPrestamosMes()
     return false;
 }
 
+//BUSCADOR ANUAL
+async function fntSearchPrestamosAnio(){
+    let anio = document.querySelector(".prestamosAnio").value;
+    if(anio == ""){
+        Swal.fire("", "Digite el Año" , "error");
+        return false;
+    }else{
+
+        const formData = new FormData();
+        formData.append('anio', anio);
+
+        divLoading.style.display = "flex";
+        try {
+            let resp = await fetch(base_url+'/Prestamos/prestamosAnio', {
+                method: 'POST',
+                mode: 'cors',
+                cache: 'no-cache',
+                body: formData
+            });
+        
+            json = await resp.text();
+        
+            $("#graficaAnioPrestamos").html(json);
+        } catch (error) {
+            Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error interno"
+            });*/
+            console.log(error);
+        }
+        divLoading.style.display = "none";
+        return false;  
+    }
+}
+
 async function accion()
 {
     const formData = new FormData();

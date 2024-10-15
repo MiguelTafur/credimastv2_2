@@ -470,6 +470,18 @@ class Prestamos extends Controllers{
 		}
 	}
 
+	//BUSCADOR ANUAL
+	public function prestamosAnio(){
+		if($_POST){
+			$grafica = "prestamosAnio";
+			$anio = intval($_POST['anio']);
+			$prestamos = $this->model->selectPrestamosAnio($anio);
+			$script = getFile("Template/Graficas/graficaPrestamosAnio",$prestamos);
+			echo $script;
+			die();
+		}
+	}
+
 
 
 	public function accion()
