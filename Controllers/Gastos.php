@@ -220,7 +220,7 @@ class Gastos extends Controllers{
 				if($gasto['hora'] != '00:00:00') {
 					$informacion_td .= '<td>'.date('H:i', strtotime($gasto['hora'])).'</td>';
 				} else {
-					$informacion_td .= '<td></td>';
+					$informacion_td .= '<td>--:--</td>';
 				}
 			}
 
