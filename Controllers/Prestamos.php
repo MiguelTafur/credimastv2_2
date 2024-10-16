@@ -18,15 +18,17 @@ class Prestamos extends Controllers{
 		$data['page_name'] = "prestamos";
 		$data['page_functions_js'] = "functions_prestamos.js";
 
-		/*** GRÁFICAS ***/ 
+		/*** INICIO GRÁFICAS ***/ 
 		$anio = date("Y");
 		$mes = date("m");
-
 		//MENSUAL
 		$data['prestamosMDia'] = $this->model->selectPrestamosMes($anio,$mes);
-
 		//ANUAL
 		$data['prestamosAnio'] = $this->model->selectPrestamosAnio($anio);
+		/*** FIN GRÁFICAS ***/
+
+		//TRAE TODOS LOS PRÉSTAMOS CON EL ESTADO 1
+		$data['prestamos_all'] = $this->model->selectPrestamosFecha($_SESSION['idRuta']);
 
 		//TRAE EL RESUMEN ANTERIOR CON ESTADO 0
 		$data['resumenAnterior'] = getResumenAnterior();

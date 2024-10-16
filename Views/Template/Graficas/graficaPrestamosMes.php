@@ -57,7 +57,7 @@ Highcharts.chart('graficaMesPrestamos',
     },
 
   series: [{
-      name: 'Préstamos',
+      name: 'Ventas',
       data: [
         <?php 
           foreach ($prestamosMes['prestamos'] as $prestamo) {

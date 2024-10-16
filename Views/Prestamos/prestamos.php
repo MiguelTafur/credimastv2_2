@@ -89,35 +89,37 @@
     </div>
     <div class="tab-pane fade" id="dashboard-tab-pane" role="tabpanel" aria-labelledby="dashboard-tab" tabindex="0">
       <div class="row">
-        <div class="col-3">
+        <!-- CALCULANDO VALOR ACTIVO Y COBRADO ESTIMADO -->
+        <?php 
+          $sumaPrestamos = 0;
+          $sumaParcelas = 0;
+          if(!empty($data['prestamos_all'])){
+            foreach ($data['prestamos_all'] as $prestamo) {
+              $totalPrestamo = $prestamo['monto'] + ($prestamo['monto'] * ($prestamo['taza'] * 0.01));
+              $sumaPrestamos += $totalPrestamo;
+              if($prestamo['formato'] == 1) {
+                $sumaParcelas += $totalPrestamo / $prestamo['plazo'];
+              }
+            } 
+          }
+        ?>
+        <div class="col-lg-6">
           <div class="widget-small light "><i class="icon bi bi-cash fs-1"></i>
             <div class="info">
               <h4>VALOR ACTIVO</h4>
-              <p><span class="fst-italic">10</span></p>
+              <p>
+                <span class="fst-italic">
+                  <?= $sumaPrestamos; ?>
+                </span>
+              </p>
             </div>
           </div>
         </div>
-        <div class="col-3">
+        <div class="col-lg-6">
           <div class="widget-small light "><i class="icon bi bi-coin fs-1"></i>
             <div class="info">
               <h4>COBRADO ESTIMADO</h4>
-              <p><span class="fst-italic">10</span></p>
-            </div>
-          </div>
-        </div>
-        <div class="col-3">
-          <div class="widget-small light "><i class="icon bi bi-wallet2 fs-1"></i>
-            <div class="info">
-              <h4>CARTERA</h4>
-              <p><span class="fst-italic">10</span></p>
-            </div>
-          </div>
-        </div>
-        <div class="col-3">
-          <div class="widget-small light "><i class="icon bi bi-piggy-bank-fill fs-1"></i>
-            <div class="info">
-              <h4>CAJA</h4>
-              <p><span class="fst-italic">10</span></p>
+              <p><span class="fst-italic"><?= $sumaParcelas; ?></span></p>
             </div>
           </div>
         </div>
@@ -227,7 +229,7 @@ Highcharts.chart('graficaMesPrestamos',
     },
 
   series: [{
-      name: 'Préstamos',
+      name: 'Ventas',
       data: [
         <?php 
           foreach ($data['prestamosMDia']['prestamos'] as $prestamo) {
