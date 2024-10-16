@@ -23,15 +23,24 @@ class PagosModel extends Mysql
         return $request;
     }
 
-    //TRAE LA SUMA DE LOS TODOS PAGAMENTOS(CON LA FECHA ACTUAL) DEL PRÉSTAMO
-    public function sumaPagamentosFechaActual(string $fecha, int $ruta)
+    //TRAE LA SUMA DE TODOS LOS PAGAMENTOS(CON LA FECHA ACTUAL O DE TODAS LAS FECHAS) DE LOS PRÉSTAMO
+    public function sumaPagamentos2(string $fecha = NULL, int $ruta)
     {
         $this->intIdRuta = $ruta;
         $this->strFecha = $fecha;
 
-        $sql = "SELECT SUM(pa.abono) as sumaPagos FROM pagos pa LEFT OUTER JOIN prestamos pr ON(pa.prestamoid = pr.idprestamo)
-                LEFT OUTER JOIN persona pe ON(pr.personaid = pe.idpersona) 
-                WHERE pe.codigoruta = $this->intIdRuta AND pr.status != 0 AND pa.datecreated = '{$this->strFecha}'";
+        $whereFecha = "";
+        $whereStatus2 = " AND pr.status = 1";
+
+        if($this->strFecha != NULL)
+        {
+            $whereFecha = " AND pa.datecreated = " . $this->strFecha;
+            $whereStatus2 = " AND pr.status != 0";
+        }
+
+        $sql = "SELECT SUM(pa.abono) as sumaPagos FROM pagos pa 
+                LEFT OUTER JOIN prestamos pr ON(pa.prestamoid = pr.idprestamo)
+                WHERE pr.codigoruta = $this->intIdRuta " . $whereStatus2 . $whereFecha;
         $request = $this->select($sql);
         return $request;
     }
@@ -96,7 +105,7 @@ class PagosModel extends Mysql
                     }
 
                     //TRAE LA SUMA DE LOS PAGAMENTOS DEL PRÉSTAMO
-                    $sumaPagamentos = $this->sumaPagamentosFechaActual($this->strFecha, $this->intIdRuta)['sumaPagos'];
+                    $sumaPagamentos = $this->sumaPagamentos2($this->strFecha, $this->intIdRuta)['sumaPagos'];
 
                     //ACTUALIZA LA COLUMNA "COBRADO" DE LA TABLA RESUMEN
                     setUpdateResumen($this->intIdRuta, $sumaPagamentos, 2, $this->strFecha);
@@ -134,7 +143,7 @@ class PagosModel extends Mysql
             $return = $requestU;
 
             //TRAE LA SUMA DE LOS PAGAMENTOS DEL PRÉSTAMO
-            $sumaPagamentos = $this->sumaPagamentosFechaActual($requestDate['datecreated'], $this->intIdRuta)['sumaPagos'];
+            $sumaPagamentos = $this->sumaPagamentos2($requestDate['datecreated'], $this->intIdRuta)['sumaPagos'];
 
             //ACTUALIZA LA COLUMNA "COBRADO" DE LA TABLA RESUMEN
             setUpdateResumen($this->intIdRuta, $sumaPagamentos, 2, $requestDate['datecreated']);

@@ -174,15 +174,25 @@
       </div>
     </div>
     <div class="tab-pane fade" id="dashboard-tab-pane" role="tabpanel" aria-labelledby="dashboard-tab" tabindex="0">
-    <button 
-      class="btn btn-secondary btn-sm" 
-      onClick="fntViewPagamentos()" 
-      title="Ver Pagamentos" 
-      data-bs-toggle="offcanvas" 
-      data-bs-target="#offcanvasRight" 
-      aria-controls="offcanvasRight">
-      <i class="bi bi-cash-stack me-0"></i>
-    </button>
+      <div class="row">
+        <div class="col-3">
+          <div class="widget-small light "><i class="icon bi bi-wallet2 fs-1"></i>
+            <div class="info">
+              <h4>CARTERA</h4>
+              <p><span class="fst-italic">10</span></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="widget-small light "><i class="icon bi bi-piggy-bank-fill fs-1"></i>
+            <div class="info">
+              <h4>CAJA</h4>
+              <p><span class="fst-italic">10</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="border border-warning border-1 mb-4">
     </div>
   </div>
 </main>

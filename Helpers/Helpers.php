@@ -227,6 +227,15 @@
         return $request['sumaPagos'];
     }
 
+    //TRAE LA SUMA DE TODOS LOS PAGAMENTOS DE LOS PRÉSTAMOS
+    function totalPagamentosPrestamos(int $ruta)
+    {
+        require_once("Models/PagosModel.php");
+        $objPrestamos = new PagosModel();
+        $request = $objPrestamos->sumaPagamentos2(NULL, $ruta);
+        return $request['sumaPagos'];
+    }
+
     //TRAE UN ARRAY CON EL ÚLTIMO PAGAMENTO DEL PRÉSTAMO
     function getUltimoPagamento(int $idprestamo)
     {

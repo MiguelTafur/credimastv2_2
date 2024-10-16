@@ -29,6 +29,8 @@ class Prestamos extends Controllers{
 
 		//TRAE TODOS LOS PRÉSTAMOS CON EL ESTADO 1
 		$data['prestamos_all'] = $this->model->selectPrestamosFecha($_SESSION['idRuta']);
+		//TRAE LA SUMA DE TODOS LOS PAGAMENTOS
+		$data['totalPagamentos'] = totalPagamentosPrestamos($_SESSION['idRuta']);
 
 		//TRAE EL RESUMEN ANTERIOR CON ESTADO 0
 		$data['resumenAnterior'] = getResumenAnterior();
