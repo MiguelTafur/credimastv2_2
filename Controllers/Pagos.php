@@ -38,7 +38,12 @@ class Pagos extends Controllers{
 
 					if($request_pago > 0)
 					{
-						$arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.');
+						$valorActivo = valorActivoYEstimadoPrstamos()['valorActivo'];
+						$cobradoEstimado = valorActivoYEstimadoPrstamos()['cobradoEstimado'];
+						$arrResponse = array('status' => true, 
+											'msg' => 'Datos guardados correctamente.', 
+											'valorActivo' => $valorActivo,
+											'cobradoEstimado' => $cobradoEstimado);
 
 					}else if($request_pago == '0')
 					{
@@ -128,7 +133,14 @@ class Pagos extends Controllers{
 							$status = false;
 						}	
 
-						$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el pago.', 'statusAnterior' => $status);
+						$valorActivo = valorActivoYEstimadoPrstamos()['valorActivo'];
+						$cobradoEstimado = valorActivoYEstimadoPrstamos()['cobradoEstimado'];
+
+						$arrResponse = array('status' => true, 
+						'msg' => 'Se ha eliminado el pago.', 
+						'statusAnterior' => $status,
+						'valorActivo' => $valorActivo,
+						'cobradoEstimado' => $cobradoEstimado);
 					}else{
 						$arrResponse = array('status' => false, 'msg' => 'Error al eliminar el Pago.');
 					}

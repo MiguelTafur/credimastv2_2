@@ -249,8 +249,11 @@ async function fntRegistrarPrestamo()
             tablePrestamos.ajax.reload(null, false);
             $('#modalFormPrestamo').modal("hide");
             formPrestamos.reset();
+            document.querySelector('#valorActivo').textContent = json.valorActivo;
+            document.querySelector('#cobradoEstimado').textContent = json.cobradoEstimado;
             $('#listClientes').val(null).trigger('change');
             $('#listFormato').val(null).trigger('change');
+
             $("#graficaMesPrestamos").html(json.graficaMes);
             $("#graficaAnioPrestamos").html(json.graficaAnio);
             //Swal.fire("Préstamos", json.msg ,"success");
@@ -482,6 +485,8 @@ async function fntRegistrarPagoPrestamo(idprestamo, pagoprestamo)
         if(json.status){
             //Swal.fire("Eliminar!", json.msg , "success");
             tablePrestamos.ajax.reload(null, false);
+            document.querySelector('#valorActivo').textContent = json.valorActivo;
+            document.querySelector('#cobradoEstimado').textContent = json.cobradoEstimado;
             Toast.fire({
                 icon: "success",
                 title: json.msg
@@ -558,6 +563,8 @@ async function fntDeletePrestamo(idprestamo)
             } else {
                 //Swal.fire("Eliminar!", json.msg , "success");
                 tablePrestamos.ajax.reload(null, false);
+                document.querySelector('#valorActivo').textContent = json.valorActivo;
+                document.querySelector('#cobradoEstimado').textContent = json.cobradoEstimado;
                 $("#graficaMesPrestamos").html(json.graficaMes);
                 $("#graficaAnioPrestamos").html(json.graficaAnio);
                 Toast.fire({
@@ -672,6 +679,8 @@ async function fntDeletePago(idpago, idprestamo)
             } else {
                 //Swal.fire("Eliminar!", json.msg , "success");
                 tablePrestamos.ajax.reload(null, false);
+                document.querySelector('#valorActivo').textContent = json.valorActivo;
+                document.querySelector('#cobradoEstimado').textContent = json.cobradoEstimado;
                 Toast.fire({
                     icon: "success",
                     title: json.msg

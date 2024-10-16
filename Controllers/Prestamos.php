@@ -27,11 +27,6 @@ class Prestamos extends Controllers{
 		$data['prestamosAnio'] = $this->model->selectPrestamosAnio($anio);
 		/*** FIN GRÁFICAS ***/
 
-		//TRAE TODOS LOS PRÉSTAMOS CON EL ESTADO 1
-		$data['prestamos_all'] = $this->model->selectPrestamosFecha($_SESSION['idRuta']);
-		//TRAE LA SUMA DE TODOS LOS PAGAMENTOS
-		$data['totalPagamentos'] = totalPagamentosPrestamos($_SESSION['idRuta']);
-
 		//TRAE EL RESUMEN ANTERIOR CON ESTADO 0
 		$data['resumenAnterior'] = getResumenAnterior();
 		
@@ -363,8 +358,21 @@ class Prestamos extends Controllers{
 
 						$arrResumen = getResumenActual($fechaPrestamo);
 
-						$arrResponse = $option == 1 ? array('status' => true, 'msg' => 'Préstamo registrado.', 'resumen' => $arrResumen, 'graficaMes' => $script,'graficaAnio' => $script2)
-													: array('status' => true, 'msg' => 'Préstamo actualizado.', 'resumen' => $arrResumen);
+						$valorActivo = valorActivoYEstimadoPrstamos()['valorActivo'];
+						$cobradoEstimado = valorActivoYEstimadoPrstamos()['cobradoEstimado'];
+
+						$arrResponse = $option == 1 ? array('status' => true, 
+															'msg' => 'Préstamo registrado.', 
+															'resumen' => $arrResumen, 
+															'graficaMes' => $script,
+															'graficaAnio' => $script2,
+															'valorActivo' => $valorActivo,
+															'cobradoEstimado' => $cobradoEstimado)
+													: array('status' => true, 
+															'msg' => 'Préstamo actualizado.', 
+															'resumen' => $arrResumen, 
+															'valorActivo' => $valorActivo,
+															'cobradoEstimado' => $cobradoEstimado);
 					}else if($request_prestamo == '0')
 					{
 						$arrResponse = array('status' => false, 'msg' => 'Atencion! No es posible registrar el préstamo.');
@@ -415,8 +423,16 @@ class Prestamos extends Controllers{
 						$prestamos2 = $this->model->selectPrestamosAnio($anio);
 						$script = getFile("Template/Graficas/graficaPrestamosMes", $prestamos);
 						$script2 = getFile("Template/Graficas/graficaPrestamosAnio", $prestamos2);
+						$valorActivo = valorActivoYEstimadoPrstamos()['valorActivo'];
+						$cobradoEstimado = valorActivoYEstimadoPrstamos()['cobradoEstimado'];
 						
-						$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el Préstamo.', 'statusAnterior' => $status, 'graficaMes' => $script,'graficaAnio' => $script2);
+						$arrResponse = array('status' => true, 
+											 'msg' => 'Se ha eliminado el Préstamo.', 
+											 'statusAnterior' => $status, 
+											 'graficaMes' => $script,
+											 'graficaAnio' => $script2,
+											 'valorActivo' => $valorActivo,
+											 'cobradoEstimado' => $cobradoEstimado);
 					} else if($requestDelete == '0')
 					{
 						$arrResponse = array('status' => false, 'msg' => 'El Préstamo tiene pagamentos asociados.');

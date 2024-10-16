@@ -200,6 +200,7 @@
     }
 
     //TRAE EL CLIENTE Y EL MONTO DE LOS PRÉSTAMOS DEPENDIENDO DE LA FECHA
+    //DEVUELVE UN STRING CON EL NOMBRE Y EL MONTO
     function getFormatPrestamos(string $fecha)
     {
         require_once("Models/PrestamosModel.php");
@@ -215,6 +216,34 @@
             }
             return $prestamo;
         }
+    }
+
+    //CALCULA EL VALOR ACTIVO Y EL COBRADO ESTIMADO
+    function valorActivoYEstimadoPrstamos()
+    {
+        require_once("Models/PrestamosModel.php");
+        $objPrestamos = new PrestamosModel();
+        $ruta = $_SESSION['idRuta'];
+        $request = $objPrestamos->selectPrestamosFecha($ruta);
+
+        $sumaPrestamos = 0;
+        $sumaParcelas = 0;
+        if(!empty($request)){
+            foreach ($request as $prestamo) {
+                $totalPrestamo = $prestamo['monto'] + ($prestamo['monto'] * ($prestamo['taza'] * 0.01));
+                $sumaPrestamos += $totalPrestamo;
+                if($prestamo['formato'] == 1) {
+                $sumaParcelas += $totalPrestamo / $prestamo['plazo'];
+                }
+            } 
+        }
+
+        $pagamentos = totalPagamentosPrestamos($ruta);
+        $sumaPrestamos -= $pagamentos;
+
+        $arrData = array('valorActivo' => $sumaPrestamos, 'cobradoEstimado' => round($sumaParcelas, 0, PHP_ROUND_HALF_UP));
+
+        return $arrData;
     }
 
     /**** PAGOS ****/

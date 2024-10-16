@@ -107,11 +107,7 @@
           <div class="widget-small light "><i class="icon bi bi-cash fs-1"></i>
             <div class="info">
               <h4>VALOR ACTIVO</h4>
-              <p>
-                <span class="fst-italic">
-                  <?= $sumaPrestamos - $data['totalPagamentos']; ?>
-                </span>
-              </p>
+              <p><span class="fst-italic" id="valorActivo"><?= valorActivoYEstimadoPrstamos()['valorActivo']; ?></span></p>
             </div>
           </div>
         </div>
@@ -119,7 +115,7 @@
           <div class="widget-small light "><i class="icon bi bi-coin fs-1"></i>
             <div class="info">
               <h4>COBRADO ESTIMADO</h4>
-              <p><span class="fst-italic"><?= round($sumaParcelas, 0, PHP_ROUND_HALF_UP); ?></span></p>
+              <p><span class="fst-italic" id="cobradoEstimado"><?= valorActivoYEstimadoPrstamos()['cobradoEstimado']; ?></span></p>
             </div>
           </div>
         </div>
