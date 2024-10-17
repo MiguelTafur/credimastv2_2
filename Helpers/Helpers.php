@@ -112,6 +112,74 @@
         return $request;
     }
 
+    //TRAE LOS ÚLTIMOS RESUMENES Y DEVUELVE UN STRING
+    function getUltimosResumenes()
+    {
+        require_once("Models/ResumenModel.php");
+        $objResumen = new ResumenModel();
+        $request = $objResumen->selectUltimosResumen($_SESSION['idRuta']);
+        $resumenes = '';
+
+        foreach ($request as $resumen) 
+        {
+            $getCobrado = getFormatCobrado($resumen['datecreated']);
+            $getVentas = getFormatPrestamos($resumen['datecreated']);
+            $getGastos = getFormatGastos($resumen['datecreated']);
+            $cobrado = $resumen['cobrado'] == 0 ? '<button class="btn btn-link btn-sm link-warning link-underline-opacity-0" style="font-size: inherit;">'.round($resumen['cobrado'], 0).'</button>' 
+                                                : '<button 
+                                                    class="btn btn-link btn-sm link-warning link-underline-opacity-0" 
+                                                    style="font-size: inherit;"
+                                                    data-bs-toggle="popover" 
+                                                    data-bs-placement="left" 
+                                                    data-bs-content="'.$getCobrado.'" 
+                                                    title="USUARIO - HORA - CLIENTE: VALOR">
+                                                    '.round($resumen['cobrado'], 0).'
+                                                    </button>';
+            $ventas = $resumen['ventas'] == 0 ? '<button class="btn btn-link btn-sm link-warning link-underline-opacity-0" style="font-size: inherit;">'.round($resumen['ventas'], 0).'</button>' 
+                                              : '<button 
+                                                 class="btn btn-link btn-sm link-warning link-underline-opacity-0" 
+                                                 style="font-size: inherit;"
+                                                 data-bs-toggle="popover" 
+                                                 data-bs-placement="left" 
+                                                 data-bs-content="'.$getVentas.'" 
+                                                 title="USUARIO - HORA - CLIENTE: VALOR">
+                                                 '.round($resumen['ventas'], 0).'
+                                                 </button>';
+            $gastos = $resumen['gastos'] == 0 ? '<button class="btn btn-link btn-sm link-warning link-underline-opacity-0" style="font-size: inherit;">'.round($resumen['gastos'], 0).'</button>'
+                                              : '<button 
+                                                 class="btn btn-link btn-sm link-warning link-underline-opacity-0" 
+                                                 style="font-size: inherit;" 
+                                                 data-bs-toggle="popover" 
+                                                 data-bs-placement="left" 
+                                                 data-bs-content="'.$getGastos.'" 
+                                                 title="USUARIO - HORA - NOMBRE: VALOR">
+                                                 '.round($resumen['gastos'], 0).'
+                                                 </button>';
+            $resumenes .= '<tr>';
+            $resumenes .= '<td>';
+            $resumenes .= date("d-m-Y", strtotime($resumen['datecreated']));
+            $resumenes .= '</td>';
+            $resumenes .= '<td>';
+            $resumenes .= round($resumen['base'], 0);
+            $resumenes .= '</td>';
+            $resumenes .= '<td>';
+            $resumenes .= $cobrado;
+            $resumenes .= '</td>';
+            $resumenes .= '<td>';
+            $resumenes .= '<p class="h6">'.$ventas.'</p>';
+            $resumenes .= '</td>';
+            $resumenes .= '<td>';
+            $resumenes .= '<p class="h6">'.$gastos.'</p>';
+            $resumenes .= '</td>';
+            $resumenes .= '<td>';
+            $resumenes .= '<p class="h6">'.$resumen['total'].'</p>';
+            $resumenes .= '</td>';
+            $resumenes .= '</tr>';   
+        }
+
+        return $resumenes;
+    }
+
     //INSERTA O ELIMINA EL RESUMEN
     function setDelResumenActual(string $tipo, int $ruta)
     {
@@ -178,6 +246,7 @@
         $request = $objResumen->deleteResumen($idresumen);
         return $request;
     }
+    /**** FIN RESUMEN ****/
 
     /**** PRESTAMOS ****/
     //CALCULA EL TOTAL DEL PRESTAMO
@@ -211,8 +280,8 @@
         {
             $prestamo = "";
             for ($i=0; $i < count($request); $i++) {
-                $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])) . ' / ' : '--:-- / ';
-                $prestamo .= $hora.strtoupper($request[$i]['nombres']).': '.$request[$i]['monto'].'<br>';
+                $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])) . '  -  ' : ' --:--  -  ';
+                $prestamo .= $request[$i]['usuario'].'  -  '.$hora.strtoupper($request[$i]['nombres']).': '.$request[$i]['monto'].'<br>';
             }
             return $prestamo;
         }
@@ -282,20 +351,36 @@
         return $fechaPago.'|'.$idPago.'|'.$abono;
     }
 
+    //TRAE UN ARRAY CON TODOS LOS PAGAMENTOS DEL PRÉSTAMO Y DEVUELVE UN STRING
+    function getFormatCobrado(string $fecha)
+    {
+        require_once("Models/PagosModel.php");
+        $ruta = $_SESSION['idRuta'];
+        $objPagos = new PagosModel();
+        $request = $objPagos->selectPagamentosFecha($fecha, $ruta);
+
+        $pagos = "";
+        for ($i=0; $i < count($request); $i++) {
+            $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])) . '  -  ' : ' --:--  -  ';
+            $pagos .= $request[$i]['usuario'].'  -  '.$hora.strtoupper($request[$i]['nombres']).': '.$request[$i]['abono'].'<br>';
+        }
+        return $pagos;
+    }
+
     /**** GASTOS ****/
     //TRAE EL NOMBRE Y EL MONTO DE LOS GASTOS DEPENDIENDO DE LA FECHA
     function getFormatGastos(string $fecha)
     {
         require_once("Models/GastosModel.php");
-        $objPrestamos = new GastosModel();
+        $objGastos = new GastosModel();
         $ruta = $_SESSION['idRuta'];
-        $request = $objPrestamos->selectGastosFecha($ruta, $fecha);
+        $request = $objGastos->selectGastosFecha($ruta, $fecha);
         if(is_array($request))
         {
             $gasto = "";
             for ($i=0; $i < count($request); $i++) {
-                $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])) . ' / ' : '--:-- / ';
-                $gasto .= $hora.strtoupper($request[$i]['nombre']).': '.$request[$i]['monto'].'<br>';
+                $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])) . '  -  ' : ' --:--  -  ';
+                $gasto .= $request[$i]['usuario'].'  -  '.$hora.strtoupper($request[$i]['nombre']).': '.$request[$i]['monto'].'<br>';
             }
             return $gasto;
         }

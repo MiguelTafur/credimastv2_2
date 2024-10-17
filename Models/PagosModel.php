@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class PagosModel extends Mysql
 {
@@ -38,7 +38,7 @@ class PagosModel extends Mysql
             $whereStatus2 = " AND pr.status != 0";
         }
 
-        $sql = "SELECT SUM(pa.abono) as sumaPagos FROM pagos pa 
+        $sql = "SELECT SUM(pa.abono) as sumaPagos FROM pagos pa
                 LEFT OUTER JOIN prestamos pr ON(pa.prestamoid = pr.idprestamo)
                 WHERE pr.codigoruta = $this->intIdRuta " . $whereStatus2 . $whereFecha;
         $request = $this->select($sql);
@@ -46,10 +46,24 @@ class PagosModel extends Mysql
     }
 
     //TRAE TODOS LOS PAGAMENTOS DEL PRÉSTAMO
-    public function selectPagamentos(int $idprestamo) 
+    public function selectPagamentos(int $idprestamo)
     {
         $this->intIdPrestamo = $idprestamo;
         $sql = "SELECT idpago, abono, hora, datecreated FROM pagos WHERE prestamoid = $this->intIdPrestamo ORDER BY datecreated DESC";
+        $request = $this->select_all($sql);
+        return $request;
+    }
+
+    //TRAE TODOS LOS PAGAMENTOS DE LA FECHA CORRESPONDIENTE
+    public function selectPagamentosFecha(string $fecha, int $ruta)
+    {
+        $this->strFecha = $fecha;
+        $this->intIdRuta = $ruta;
+
+        $sql = "SELECT pe.nombres, pe.apellidos, pa.abono, pa.hora, (SELECT nombres FROM persona WHERE idpersona = pa.personaid) as usuario FROM pagos pa
+                LEFT OUTER JOIN prestamos pr ON(pa.prestamoid = pr.idprestamo)
+                LEFT OUTER JOIN persona pe ON(pr.personaid = pe.idpersona)
+                WHERE pa.datecreated = '{$this->strFecha}' AND pr.codigoruta = $this->intIdRuta";
         $request = $this->select_all($sql);
         return $request;
     }
@@ -152,7 +166,7 @@ class PagosModel extends Mysql
             //ERROR AL REGISTRAR EL PAGAMENTO
             $return = "0";
         }
-        
+
         return $return;
     }
 }

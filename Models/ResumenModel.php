@@ -59,6 +59,15 @@ class ResumenModel extends Mysql
         return $request;
     }
 
+    public function selectUltimosResumen(int $ruta)
+    {
+        $this->intIdRuta = $ruta;
+
+        $sql = "SELECT * FROM resumen WHERE codigoruta = $this->intIdRuta ORDER BY datecreated DESC LIMIT 8";
+        $request = $this->select_all($sql);
+        return $request;
+    }
+
     //DEVUELVE EL TOTAL DEL ÚLTIMO RESUMEN SE NO INGRESÓ UNA BASE
     public function selectResumenUltimo(int $ruta)
     {

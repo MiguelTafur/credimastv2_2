@@ -203,7 +203,29 @@
       </div>
       <hr class="border border-warning border-1 mb-4">
       <!-- TABLA DE ÚLTIMOS RESUMENES -->
-       
+       <div class="tile">
+        <h3 class="tile-tittle text-center mb-4">ÚLTIMOS RESUMENES</h3>
+
+        <div class="tile-body">
+          <div class="table-responsive">
+            <table class="table table-striped align-middle">
+              <thead>
+                <tr>
+                  <th>DIA</th>
+                  <th>BASE</th>
+                  <th>COBRADO</th>
+                  <th>VENTAS</th>
+                  <th>GASTOS</th>
+                  <th>TOTAL</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider" id="ultimosResumenes">
+                <?= getUltimosResumenes(); ?>
+              </tbody>
+            </table>
+          </div>
+        </div>
+       </div>
     </div>
   </div>
 </main>

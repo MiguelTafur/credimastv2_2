@@ -8,6 +8,13 @@ document.addEventListener('DOMContentLoaded', function(){
 function iniciarApp() {
     fntNewResumen();
     fntBase();
+    $(function () {
+        $('[data-bs-toggle="popover"]').popover({
+            container: "body",
+            trigger: "focus",
+            html: true
+        })
+    });
 }
 
 //CONSULTA SI HAY UNA BASE REGISTRADA
