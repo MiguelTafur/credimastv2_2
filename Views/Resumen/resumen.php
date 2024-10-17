@@ -85,8 +85,9 @@
                         </tbody>
                         <caption class="text-end mt-3">TOTAL :&nbsp;&nbsp;&nbsp;
                           <span id="totalResumen">
-                            <?= 
-                              $data['resumenAnterior']['total'] ?? $data['resumenActual']['total'] ?? $data['resumenCerrado']['total'] ?? 0;
+                            <?php 
+                              $caja = $data['resumenAnterior']['total'] ?? $data['resumenActual']['total'] ?? $data['resumenCerrado']['total'] ?? 0;
+                              echo $caja;
                             ?>
                           </span>
                         </caption>
@@ -174,25 +175,35 @@
       </div>
     </div>
     <div class="tab-pane fade" id="dashboard-tab-pane" role="tabpanel" aria-labelledby="dashboard-tab" tabindex="0">
+      <!-- WIDGETS -->
       <div class="row">
-        <div class="col-3">
+        <div class="col-md-6">
           <div class="widget-small light "><i class="icon bi bi-wallet2 fs-1"></i>
             <div class="info">
               <h4>CARTERA</h4>
-              <p><span class="fst-italic">10</span></p>
+              <p>
+                <span class="fst-italic">
+                  <?php
+                    $valorActivo = valorActivoYEstimadoPrstamos()['valorActivo'];
+                    echo $valorActivo + $caja;
+                  ?>
+                </span>
+              </p>
             </div>
           </div>
         </div>
-        <div class="col-3">
+        <div class="col-md-6">
           <div class="widget-small light "><i class="icon bi bi-piggy-bank-fill fs-1"></i>
             <div class="info">
               <h4>CAJA</h4>
-              <p><span class="fst-italic">10</span></p>
+              <p><span class="fst-italic"><?= $caja ?></span></p>
             </div>
           </div>
         </div>
       </div>
       <hr class="border border-warning border-1 mb-4">
+      <!-- TABLA DE ÚLTIMOS RESUMENES -->
+       
     </div>
   </div>
 </main>

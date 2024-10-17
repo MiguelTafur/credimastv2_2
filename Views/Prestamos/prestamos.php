@@ -88,21 +88,8 @@
       </div>
     </div>
     <div class="tab-pane fade" id="dashboard-tab-pane" role="tabpanel" aria-labelledby="dashboard-tab" tabindex="0">
+      <!-- WIDGETS -->
       <div class="row">
-        <!-- CALCULANDO VALOR ACTIVO Y COBRADO ESTIMADO -->
-        <?php 
-          $sumaPrestamos = 0;
-          $sumaParcelas = 0;
-          if(!empty($data['prestamos_all'])){
-            foreach ($data['prestamos_all'] as $prestamo) {
-              $totalPrestamo = $prestamo['monto'] + ($prestamo['monto'] * ($prestamo['taza'] * 0.01));
-              $sumaPrestamos += $totalPrestamo;
-              if($prestamo['formato'] == 1) {
-                $sumaParcelas += $totalPrestamo / $prestamo['plazo'];
-              }
-            } 
-          }
-        ?>
         <div class="col-lg-6">
           <div class="widget-small light "><i class="icon bi bi-cash fs-1"></i>
             <div class="info">
@@ -121,6 +108,7 @@
         </div>
       </div>
       <hr class="border border-warning border-1 mb-4">
+      <!-- GRÁFICAS -->
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
           <button class="nav-link active" id="nav-mensual-tab" data-bs-toggle="tab" data-bs-target="#nav-mensual" type="button" role="tab" aria-controls="nav-mensual" aria-selected="true">Mensual</button>
@@ -169,8 +157,8 @@
 <?php footerAdmin($data); ?>
 
 <script>
-  let mes = '<?= $data['prestamosMDia']['numeroMes']; ?>';
-  let ano = '<?= $data['prestamosMDia']['anio']; ?>';
+let mes = '<?= $data['prestamosMDia']['numeroMes']; ?>';
+let ano = '<?= $data['prestamosMDia']['anio']; ?>';
 
 //MENSUAL
 Highcharts.chart('graficaMesPrestamos', 

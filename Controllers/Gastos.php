@@ -212,13 +212,13 @@ class Gastos extends Controllers{
 						$script = getFile("Template/Graficas/graficaGastosMes", $gastos);
 						$script2 = getFile("Template/Graficas/graficaGastosAnio", $gastos2);
 						
-						$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el Préstamo.', 'statusAnterior' => $status, 'graficaMes' => $script,'graficaAnio' => $script2);
+						$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado el Gasto.', 'statusAnterior' => $status, 'graficaMes' => $script,'graficaAnio' => $script2);
 					} else if($requestDelete == '0')
 					{
-						$arrResponse = array('status' => false, 'msg' => 'El Préstamo tiene pagamentos asociados.');
+						$arrResponse = array('status' => false, 'msg' => 'Error al eliminar el Gasto.');
 					}
 					else{
-						$arrResponse = array('status' => false, 'msg' => 'Error al eliminar el Préstamo.');
+						$arrResponse = array('status' => false, 'msg' => 'Error al eliminar el Gasto.');
 					}
 				} else {
 					$arrResponse = array('status' => false, 'msg' => 'Resumen finalizado. No es posible eliminar el Gasto.');
