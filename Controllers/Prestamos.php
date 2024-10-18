@@ -481,7 +481,7 @@ class Prestamos extends Controllers{
 				if($prestamo['hora'] != NULL) {
 					$informacion_td .= '<td>'.date('H:i', strtotime($prestamo['hora'])).'</td>';
 				} else {
-					$informacion_td .= '<td>--:--</td>';
+					$informacion_td .= '<td><i class="bi bi-watch"></i></td>';
 				}
 				if($_SESSION['idRol'] == 1){$informacion_td .= '<td class="fst-italic">'.$prestamo['usuario'].'</td>';}
 			}

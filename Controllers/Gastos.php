@@ -265,7 +265,7 @@ class Gastos extends Controllers{
 				if($gasto['hora'] != NULL) {
 					$informacion_td .= '<td>'.date('H:i', strtotime($gasto['hora'])).'</td>';
 				} else {
-					$informacion_td .= '<td>--:--</td>';
+					$informacion_td .= '<td><i class="bi bi-watch"></i></td>';
 				}
 				if($_SESSION['idRol'] == 1){$informacion_td .= '<td class="fst-italic">'.$gasto['nombres'].'</td>';}
 			}
@@ -363,7 +363,7 @@ class Gastos extends Controllers{
 									data-bs-toggle="popover" 
 									data-bs-placement="left" 
 									data-bs-content="'.$arrExplode[2].'" 
-									title="USUARIO - HORA - GASTOS">
+									title="GASTOS - HORA - USUARIO">
 									<i class="bi bi-info-circle me-0"></i>
 								</a>
 								</td>';

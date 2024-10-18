@@ -311,8 +311,8 @@
         {
             $prestamo = "";
             for ($i=0; $i < count($request); $i++) {
-                $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])) . '  -  ' : ' --:--  -  ';
-                $prestamo .= $request[$i]['usuario'].'  -  '.$hora.strtoupper($request[$i]['nombres']).': '.$request[$i]['monto'].'<br>';
+                $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])) . '  -  ' : " <i class='bi bi-watch'></i>  -  ";
+                $prestamo .= $hora . '  -  ' . strtoupper($request[$i]['nombres']) . ': ' . $request[$i]['monto'] . $request[$i]['usuario'] . '<br>';
             }
             return $prestamo;
         }
@@ -392,7 +392,7 @@
 
         $pagos = "";
         for ($i=0; $i < count($request); $i++) {
-            $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])) . '  -  ' : ' --:--  -  ';
+            $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])) . '  -  ' : " <i class='bi bi-watch'></i>  -  ";
             $pagos .= $request[$i]['usuario'].'  -  '.$hora.strtoupper($request[$i]['nombres']).': '.$request[$i]['abono'].'<br>';
         }
         return $pagos;
@@ -410,8 +410,8 @@
         {
             $gasto = "";
             for ($i=0; $i < count($request); $i++) {
-                $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])) . '  -  ' : ' --:--  -  ';
-                $gasto .= $request[$i]['usuario'].'  -  '.$hora.strtoupper($request[$i]['nombre']).': '.$request[$i]['monto'].'<br>';
+                $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])) . "  &nbsp;<div class='vr'></div>&nbsp;  " : " <i class='bi bi-watch'></i>  &nbsp;<div class='vr'></div>&nbsp;  ";
+                $gasto .= strtoupper($request[$i]['nombre']) . '= ' . $request[$i]['monto'] . "  &nbsp;<div class='vr'></div>&nbsp;  " .$hora . $request[$i]['usuario'] . '<br>';
             }
             return $gasto;
         }

@@ -110,8 +110,8 @@
                     <?php } else { ?>
                     <div class="btn-group" role="group" aria-label="base">
                       <button 
-                        class="btn btn-secondary btn-sm me-1" disabled>
-                        <i class="bi bi-pencil-square me-1"></i>
+                        class="btn btn-success btn-sm me-1" disabled>
+                        <i class="bi bi-check-circle-fill me-1"></i>
                         Base
                       </button>
                       <button 
@@ -138,7 +138,8 @@
                         id="btnViewPrestamos" 
                         data-bs-toggle="offcanvas" 
                         data-bs-target="#offcanvasPrestamos" 
-                        aria-controls="offcanvasRight">
+                        aria-controls="offcanvasRight"
+                        onclick="fntViewPrestamos()">
                         <i class="bi bi-eye me-0"></i>
                       </button>
                     </div>
