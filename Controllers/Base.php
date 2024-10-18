@@ -30,7 +30,17 @@ class Base extends Controllers{
 
             if($request_user > 0)
             {
-                $arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.', 'idbase' => $request_user);
+                /** DASHBOARD DEL RESUMEN **/
+                $cajaResumen = getResumenAnterior1();
+                $carteraResumen = valorActivoYEstimadoPrstamos()['valorActivo'] + $cajaResumen;
+                $ultimosResumenes = getUltimosResumenes();
+
+                $arrResponse = array('status' => true, 
+                                     'msg' => 'Datos guardados correctamente.', 
+                                     'idbase' => $request_user,
+                                     'cajaResumen' => $cajaResumen,
+									 'carteraResumen' => $carteraResumen,
+									 'ultimosResumenes' => $ultimosResumenes);
             } else if($request_user == '0'){
                 $arrResponse = array("status" => false, "msg" => 'Base ya ingresada.');
             }else{

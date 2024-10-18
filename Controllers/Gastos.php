@@ -165,8 +165,8 @@ class Gastos extends Controllers{
 						/** DASHBOARD DEL RESUMEN **/
 						$resumenAnterior = getResumenAnterior();
 						$resumenActual = getResumenActual();
-						$resumenActual = getResumenActual1();
-						$cajaResumen = $resumenAnterior['total'] ?? $resumenActual['total'] ?? $resumenActual['total'] ?? 0;
+						$resumenActual1 = getResumenActual1();
+						$cajaResumen = $resumenAnterior['total'] ?? $resumenActual['total'] ?? $resumenActual1['total'] ?? 0;
 						$carteraResumen = valorActivoYEstimadoPrstamos()['valorActivo'] + $cajaResumen;
 						$ultimosResumenes = getUltimosResumenes();
 

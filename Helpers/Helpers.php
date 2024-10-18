@@ -112,6 +112,15 @@
         return $request;
     }
 
+    //TRAE EL ÚLTIMO RESUMEN REGISTRADO
+    function getResumenAnterior1()
+    {
+        require_once("Models/ResumenModel.php");
+        $objResumen = new ResumenModel();
+        $request = $objResumen->selectResumenUltimo($_SESSION['idRuta']);
+        return $request;
+    }
+
     //TRAE LOS ÚLTIMOS RESUMENES Y DEVUELVE UN STRING
     function getUltimosResumenes()
     {

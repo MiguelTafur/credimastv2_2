@@ -102,6 +102,16 @@ async function fntRegistrarBaseResumenAnterior(base, total)
         if(json.status) {
             document.querySelector("#totalResumen").firstChild.textContent = base + total;
             document.querySelector("#baseResumen").firstChild.textContent = base;
+            document.querySelector('#carteraResumen').textContent = json.carteraResumen;
+            document.querySelector('#cajaResumen').textContent = json.cajaResumen;
+            document.querySelector('#ultimosResumenes').innerHTML = json.ultimosResumenes;
+            $(function () {
+                $('[data-bs-toggle="popover"]').popover({
+                    container: "body",
+                    trigger: "focus",
+                    html: true
+                })
+            });
         } else {
             Swal.fire("Error", json.msg , "error");
             /*Toast.fire({
