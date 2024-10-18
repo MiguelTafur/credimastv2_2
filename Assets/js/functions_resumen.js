@@ -306,6 +306,16 @@ async function fntRegistrarPrestamo()
             document.querySelector('#prestamoResumen').textContent = json.resumen.ventas;
             document.querySelector('#totalResumen').textContent = json.resumen.total;
             document.querySelector('#idResumen').value = json.resumen.idresumen;
+            document.querySelector('#carteraResumen').textContent = json.carteraResumen;
+            document.querySelector('#cajaResumen').textContent = json.cajaResumen;
+            document.querySelector('#ultimosResumenes').innerHTML = json.ultimosResumenes;
+            $(function () {
+                $('[data-bs-toggle="popover"]').popover({
+                    container: "body",
+                    trigger: "focus",
+                    html: true
+                })
+            });
             $('#modalFormPrestamo').modal("hide");
             formPrestamos.reset();
             $('#listClientes').val(null).trigger('change');

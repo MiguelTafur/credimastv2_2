@@ -15,6 +15,15 @@ class ResumenModel extends Mysql
         parent::__construct();
     }
 
+    //TRAE EL RESUMEN CON EL ESTADO 0 Y CON LA FECHA ACTUAL DIFERENTE
+    public function selectResumenAnterior(int $ruta)
+    {
+        $this->intIdRuta = $ruta;
+
+        $sql = "SELECT * FROM resumen WHERE codigoruta = $this->intIdRuta AND status = 0 AND datecreated != '".NOWDATE."'";
+        $request = $this->select($sql);
+        return $request;
+    }
 
     //TRAE EL RESUMEN DE LA FECHA ACTUAL Y EL STATUS 0
     public function selectResumenActual(int $ruta, string $fecha = NULL)
@@ -23,16 +32,6 @@ class ResumenModel extends Mysql
         $this->strFecha = $fecha ?? NOWDATE;
         
         $sql = "SELECT * FROM resumen WHERE codigoruta = $this->intIdRuta AND status = 0 AND datecreated = '{$this->strFecha}'";
-        $request = $this->select($sql);
-        return $request;
-    }
-
-    //TRAE EL RESUMEN CON EL ESTADO 0 Y CON LA FECHA ACTUAL DIFERENTE
-    public function selectResumenAnterior(int $ruta)
-    {
-        $this->intIdRuta = $ruta;
-
-        $sql = "SELECT * FROM resumen WHERE codigoruta = $this->intIdRuta AND status = 0 AND datecreated != '".NOWDATE."'";
         $request = $this->select($sql);
         return $request;
     }
@@ -48,17 +47,7 @@ class ResumenModel extends Mysql
         return $request;
     }
 
-    //TRAE EL RESUMEN CON LA FECHA INDICADA Y EL STATUS 1
-    public function selectResumenCerrado(int $ruta, string $fecha)
-    {
-        $this->intIdRuta = $ruta;
-        $this->strFecha = $fecha;
-        
-        $sql = "SELECT * FROM resumen WHERE codigoruta = $this->intIdRuta AND status = 1 AND datecreated = '{$this->strFecha}'";
-        $request = $this->select($sql);
-        return $request;
-    }
-
+    //TRAE LOS ULTIMOS 8 RESUMENES 
     public function selectUltimosResumen(int $ruta)
     {
         $this->intIdRuta = $ruta;

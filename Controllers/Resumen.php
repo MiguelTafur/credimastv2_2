@@ -28,7 +28,7 @@ class Resumen extends Controllers{
 		$data['resumenActual'] = $this->model->selectResumenActual($_SESSION['idRuta']);
 
 		//TRAE EL RESUMEN CON LA FECHA ACTUAL Y EL STATUS 1
-		$data['resumenCerrado'] = $this->model->selectResumenCerrado($_SESSION['idRuta'], NOWDATE);
+		$data['resumenCerrado'] = $this->model->selectResumenActual1($_SESSION['idRuta']);
 
 		//TRAE EL ÚLTIMO RESUMEN CON STATUS 1
 		$data['resumenUltimo'] = $this->model->selectResumenUltimo($_SESSION['idRuta']);

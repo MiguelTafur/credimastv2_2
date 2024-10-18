@@ -349,17 +349,26 @@ class Prestamos extends Controllers{
 					
 					if($request_prestamo > 0)
 					{
+						/** GRÁFICAS DEL PRÉSTAMO**/
 						$anio = date("Y");
 						$mes = date("m");
 						$prestamos = $this->model->selectPrestamosMes($anio,$mes);
 						$prestamos2 = $this->model->selectPrestamosAnio($anio);
 						$script = getFile("Template/Graficas/graficaPrestamosMes", $prestamos);
 						$script2 = getFile("Template/Graficas/graficaPrestamosAnio", $prestamos2);
-
-						$arrResumen = getResumenActual($fechaPrestamo);
-
+						/** DASHBOARD DEL PRÉSTAMO **/
 						$valorActivo = valorActivoYEstimadoPrstamos()['valorActivo'];
 						$cobradoEstimado = valorActivoYEstimadoPrstamos()['cobradoEstimado'];
+
+						/** RESUMEN **/
+						$arrResumen = getResumenActual($fechaPrestamo);
+						/** DASHBOARD DEL RESUMEN **/
+						$resumenAnterior = getResumenAnterior();
+						$resumenActual = getResumenActual();
+						$resumenActual = getResumenActual1();
+						$cajaResumen = $resumenAnterior['total'] ?? $resumenActual['total'] ?? $resumenActual['total'] ?? 0;
+						$carteraResumen = valorActivoYEstimadoPrstamos()['valorActivo'] + $cajaResumen;
+						$ultimosResumenes = getUltimosResumenes();
 
 						$arrResponse = $option == 1 ? array('status' => true, 
 															'msg' => 'Préstamo registrado.', 
@@ -367,12 +376,20 @@ class Prestamos extends Controllers{
 															'graficaMes' => $script,
 															'graficaAnio' => $script2,
 															'valorActivo' => $valorActivo,
-															'cobradoEstimado' => $cobradoEstimado)
+															'cobradoEstimado' => $cobradoEstimado,
+															'cajaResumen' => $cajaResumen,
+															'carteraResumen' => $carteraResumen,
+															'ultimosResumenes' => $ultimosResumenes)
 													: array('status' => true, 
 															'msg' => 'Préstamo actualizado.', 
 															'resumen' => $arrResumen, 
+															'graficaMes' => $script,
+															'graficaAnio' => $script2,
 															'valorActivo' => $valorActivo,
-															'cobradoEstimado' => $cobradoEstimado);
+															'cobradoEstimado' => $cobradoEstimado,
+															'cajaResumen' => $cajaResumen,
+															'carteraResumen' => $carteraResumen,
+															'ultimosResumenes' => $ultimosResumenes);
 					}else if($request_prestamo == '0')
 					{
 						$arrResponse = array('status' => false, 'msg' => 'Atencion! No es posible registrar el préstamo.');

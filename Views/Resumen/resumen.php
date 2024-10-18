@@ -182,10 +182,10 @@
             <div class="info">
               <h4>CARTERA</h4>
               <p>
-                <span class="fst-italic">
+                <span class="fst-italic" id="carteraResumen">
                   <?php
-                    $valorActivo = valorActivoYEstimadoPrstamos()['valorActivo'];
-                    echo $valorActivo + $caja;
+                    $carteraResumen = valorActivoYEstimadoPrstamos()['valorActivo'];
+                    echo $carteraResumen + $caja;
                   ?>
                 </span>
               </p>
@@ -196,7 +196,7 @@
           <div class="widget-small light "><i class="icon bi bi-piggy-bank-fill fs-1"></i>
             <div class="info">
               <h4>CAJA</h4>
-              <p><span class="fst-italic"><?= $caja ?></span></p>
+              <p><span class="fst-italic" id="cajaResumen"><?= $caja ?></span></p>
             </div>
           </div>
         </div>
