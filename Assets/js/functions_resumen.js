@@ -392,6 +392,16 @@ async function fntRegistrarGasto()
             document.querySelector('#gastosResumen').textContent = json.resumen.gastos;
             document.querySelector('#totalResumen').textContent = json.resumen.total;
             document.querySelector('#idResumen').value = json.resumen.idresumen;
+            document.querySelector('#carteraResumen').textContent = json.carteraResumen;
+            document.querySelector('#cajaResumen').textContent = json.cajaResumen;
+            document.querySelector('#ultimosResumenes').innerHTML = json.ultimosResumenes;
+            $(function () {
+                $('[data-bs-toggle="popover"]').popover({
+                    container: "body",
+                    trigger: "focus",
+                    html: true
+                })
+            });
             $('#modalFormGastos').modal("hide");
             formGasto.reset();
             //Swal.fire("Roles de usuario", json.msg ,"success");

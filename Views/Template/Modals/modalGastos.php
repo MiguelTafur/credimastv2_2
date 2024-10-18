@@ -97,7 +97,6 @@
           <table class="table">
             <thead>
             <tr class="text-center">
-                <?php if($_SESSION['idRol'] == 1){echo '<th>REGISTRADO POR</th>';} ?>
                 <th>DIA</th>
                 <th>VALOR</th>
                 <th>INFO</th>

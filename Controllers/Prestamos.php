@@ -372,7 +372,7 @@ class Prestamos extends Controllers{
 
 						$arrResponse = $option == 1 ? array('status' => true, 
 															'msg' => 'Préstamo registrado.', 
-															'resumen' => $arrResumen, 
+															'resumen' => $arrResumen,
 															'graficaMes' => $script,
 															'graficaAnio' => $script2,
 															'valorActivo' => $valorActivo,
@@ -381,15 +381,12 @@ class Prestamos extends Controllers{
 															'carteraResumen' => $carteraResumen,
 															'ultimosResumenes' => $ultimosResumenes)
 													: array('status' => true, 
-															'msg' => 'Préstamo actualizado.', 
-															'resumen' => $arrResumen, 
+															'msg' => 'Préstamo actualizado.',
+															'resumen' => $arrResumen,
 															'graficaMes' => $script,
 															'graficaAnio' => $script2,
 															'valorActivo' => $valorActivo,
-															'cobradoEstimado' => $cobradoEstimado,
-															'cajaResumen' => $cajaResumen,
-															'carteraResumen' => $carteraResumen,
-															'ultimosResumenes' => $ultimosResumenes);
+															'cobradoEstimado' => $cobradoEstimado);
 					}else if($request_prestamo == '0')
 					{
 						$arrResponse = array('status' => false, 'msg' => 'Atencion! No es posible registrar el préstamo.');

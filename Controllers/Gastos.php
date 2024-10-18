@@ -151,6 +151,7 @@ class Gastos extends Controllers{
 
 					if($request_user > 0)
 					{
+						/** GRÁFICAS DE LOS GASTOS **/
 						$anio = date("Y");
 						$mes = date("m");
 						$gastos = $this->model->selectGastosMes($anio,$mes);
@@ -158,10 +159,26 @@ class Gastos extends Controllers{
 						$script = getFile("Template/Graficas/graficaGastosMes", $gastos);
 						$script2 = getFile("Template/Graficas/graficaGastosAnio", $gastos2);
 
+						/** RESUMEN **/
 						$arrResumen = getResumenActual($fechaGasto);
 
+						/** DASHBOARD DEL RESUMEN **/
+						$resumenAnterior = getResumenAnterior();
+						$resumenActual = getResumenActual();
+						$resumenActual = getResumenActual1();
+						$cajaResumen = $resumenAnterior['total'] ?? $resumenActual['total'] ?? $resumenActual['total'] ?? 0;
+						$carteraResumen = valorActivoYEstimadoPrstamos()['valorActivo'] + $cajaResumen;
+						$ultimosResumenes = getUltimosResumenes();
+
 						if($option === 1){
-							$arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.', 'resumen' => $arrResumen, 'graficaMes' => $script,'graficaAnio' => $script2);
+							$arrResponse = array('status' => true, 
+												 'msg' => 'Datos guardados correctamente.', 
+												 'resumen' => $arrResumen, 
+												 'graficaMes' => $script,
+												 'graficaAnio' => $script2,
+												 'cajaResumen' => $cajaResumen,
+												 'carteraResumen' => $carteraResumen,
+												 'ultimosResumenes' => $ultimosResumenes);
 						}else{
 							$arrResponse = array('status' => true, 'msg' => 'Datos actualizados correctamente.', 'resumen' => $arrResumen);
 						}
@@ -205,6 +222,7 @@ class Gastos extends Controllers{
 							$status = false;
 						}	
 
+						/** GRÁFICAS DE LOS GASTOS **/
 						$anio = date("Y");
 						$mes = date("m");
 						$gastos = $this->model->selectGastosMes($anio,$mes);
@@ -317,8 +335,6 @@ class Gastos extends Controllers{
 				$arrExplode = explode("|",$gastosD['gastos'][$i]);/*CONVIRTIENDO STRING A UN ARRAY*/
 				$fechaF = $dias[date('w', strtotime($arrExplode[0]))];/*FECHA FORMATEADA*/
 				$detalles .= '<tr class="text-center">'; 
-				if($_SESSION['idRol'] == 1){$detalles .= '<td>'.$arrExplode[3].'</td>';}/*USUARIO*/
-				// $detalles .= '<td>'.$dias[date('w', strtotime($arrExplode[0]))].'</td>';
 				$detalles .= '<td>
 								<a 
 									tabindex="0" role="button" 
@@ -347,7 +363,7 @@ class Gastos extends Controllers{
 									data-bs-toggle="popover" 
 									data-bs-placement="left" 
 									data-bs-content="'.$arrExplode[2].'" 
-									title="HORA / GASTOS">
+									title="USUARIO - HORA - GASTOS">
 									<i class="bi bi-info-circle me-0"></i>
 								</a>
 								</td>';
