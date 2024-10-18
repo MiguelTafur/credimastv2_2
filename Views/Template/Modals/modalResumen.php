@@ -42,3 +42,30 @@
     </div>
   </div>
 </div>
+
+<!-- CANVAS VER GASTOS -->
+<?php 
+  if(getBaseActualAnterior() != 0) {
+    $baseAnterior = getBaseActualAnterior()['anterior'];
+    $baseActual = getBaseActualAnterior()['actual'];
+    $idBaseActual = getBaseActualAnterior()['idBaseActual'];
+  }
+?>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasBase" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasRightLabel">Base</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <h6 class="text-end mb-4">Anterior:  <span class="h6 fw-bold fst-italic" id="baseAnterior"><?= $baseAnterior ?></span></h6>
+    <ul class="list-group">
+      <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-warning">
+        <span id="baseActual">Actual: <?= $baseActual ?></span>
+        <form id="formDelBase">
+          <input type="hidden" name="idBaseActual" value="<?= $idBaseActual ?>">
+          <button type="submit" class="btn btn-danger btn-sm" title="Eliminar Base"><i class="bi bi-trash3-fill me-0"></i></button>
+        </form>
+      </li>
+    </ul>
+  </div>
+</div>

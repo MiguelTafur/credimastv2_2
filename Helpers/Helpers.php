@@ -84,6 +84,28 @@
         return $cliente;
     }
 
+    function getBaseActualAnterior()
+    {
+        require_once("Models/BaseModel.php");
+        $objBase = new BaseModel();
+        $request = $objBase->selectBaseActualAnterior($_SESSION['idRuta']);
+
+        if(COUNT($request) > 1)
+        {   
+            for ($i=0; $i < COUNT($request) ; $i++) { 
+                $baseAnterior = $request[0]['monto'];
+                $baseActual = $request[1]['monto'];
+                $idBaseActual = $request[1]['idbase'];
+            }
+    
+            $request = array('anterior' => $baseAnterior, 'actual' => $baseActual, 'idBaseActual' => $idBaseActual);
+    
+            return $request;
+        } else {
+            return 0;
+        }
+    }
+
     /**** RESUMEN ****/
     //TRAE EL RESUMEN CON EL ESTADO 0 Y CON LA FECHA ACTUAL DIFERENTE
     function getResumenAnterior()

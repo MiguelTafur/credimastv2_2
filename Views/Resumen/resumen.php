@@ -98,14 +98,32 @@
                 <!-- BOTONES DE BASE, PRÉSTAMOS Y GASTOS -->
                 <div class="card-footer">
                   <div class="d-grid d-md-flex gap-2 justify-content-md-around">
-                    <button 
-                      title="Editar Base" 
-                      class="btn btn-secondary btn-sm me-1 
-                      <?= !empty($data['resumenCerrado']['status']) && $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" 
-                      onclick="fntEditBase()">
-                      <i class="bi bi-pencil-square me-1"></i>
-                      Base
-                    </button>
+                    <?php if(getBaseActualAnterior() == 0) {  ?>
+                      <button 
+                        title="Editar Base" 
+                        class="btn btn-secondary btn-sm me-1 
+                        <?= !empty($data['resumenCerrado']['status']) && $data['resumenCerrado']['status'] == 1 ? 'disabled' : ''; ?>" 
+                        onclick="fntEditBase()">
+                        <i class="bi bi-pencil-square me-1"></i>
+                        Base
+                      </button>
+                    <?php } else { ?>
+                    <div class="btn-group" role="group" aria-label="base">
+                      <button 
+                        class="btn btn-secondary btn-sm me-1" disabled>
+                        <i class="bi bi-pencil-square me-1"></i>
+                        Base
+                      </button>
+                      <button 
+                        class="btn btn-secondary btn-sm" 
+                        id="btnViewBase" 
+                        data-bs-toggle="offcanvas" 
+                        data-bs-target="#offcanvasBase" 
+                        aria-controls="offcanvasRight">
+                        <i class="bi bi-eye me-0"></i>
+                      </button>
+                    </div>
+                    <?php } ?>
                     <div class="btn-group" role="group" aria-label="prestamos">
                       <button 
                         title="Registrar Préstamo" 
@@ -120,12 +138,11 @@
                         id="btnViewPrestamos" 
                         data-bs-toggle="offcanvas" 
                         data-bs-target="#offcanvasPrestamos" 
-                        aria-controls="offcanvasRight"
-                        onclick="fntViewPrestamos()">
+                        aria-controls="offcanvasRight">
                         <i class="bi bi-eye me-0"></i>
                       </button>
                     </div>
-                    <div class="btn-group" role="group" aria-label="prestamos">
+                    <div class="btn-group" role="group" aria-label="gastos">
                       <button 
                         title="Registrar Gasto" 
                         class="btn btn-secondary btn-sm me-1 

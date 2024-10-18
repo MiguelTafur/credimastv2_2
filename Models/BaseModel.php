@@ -54,9 +54,13 @@ class BaseModel extends Mysql
         $this->intMonto = $monto;
         $this->strFecha = $fecha;
 
-        $sql = "UPDATE base SET personaid = ?, monto = ?, hora = ? WHERE codigoruta = $this->intIdRuta AND datecreated = '{$this->strFecha}'";
+        /*$sql = "UPDATE base SET personaid = ?, monto = ?, hora = ? WHERE codigoruta = $this->intIdRuta AND datecreated = '{$this->strFecha}'";
         $arrData = array($this->intIdUsuario, $this->intMonto, NOWTIME);
-        $request = $this->update($sql, $arrData);
+        $request = $this->update($sql, $arrData);*/
+
+        $sql = "INSERT INTO base(personaid, codigoruta, monto, hora, datecreated, status) VALUES(?,?,?,?,?,?)";
+        $arrData = array($this->intIdUsuario, $this->intIdRuta, $this->intMonto, NOWTIME, $this->strFecha, 1);
+        $request = $this->insert($sql, $arrData);
 
         if(!empty($request))
         {
@@ -80,17 +84,15 @@ class BaseModel extends Mysql
         
     }
 
-    public function selectMontoBase(int $ruta, int $base)
+    public function selectBaseActualAnterior(int $ruta)
     {
         $this->intIdRuta = $ruta;
-        $this->intMonto = $base;
 
         $fecha = getResumenAnterior($this->intIdRuta)['datecreated'] ?? NOWDATE;
 
-        $sql = "SELECT * FROM base WHERE codigoruta = $this->intIdRuta AND datecreated = '{$fecha}' AND monto = $this->intMonto";
-        $request = $this->select($sql);
+        $sql = "SELECT * FROM base WHERE codigoruta = $this->intIdRuta AND datecreated = '{$fecha}'";
+        $request = $this->select_all($sql);
 
         return $request;
-        
     }
 }

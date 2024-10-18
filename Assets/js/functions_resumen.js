@@ -529,14 +529,6 @@ async function fntEditBase()
         {
             e.preventDefault();
 
-            let intValor = document.querySelector("#txtValor").value;
-
-            if(intValor == '')
-            {
-                Swal.fire("Atención", "El valor es obligatorio.", "error");
-                return false;
-            }
-
             let ElementsValid = document.getElementsByClassName("valid");
             for (let i = 0; i < ElementsValid.length; i++) {
                 if(ElementsValid[i].classList.contains('is-invalid')){
@@ -563,15 +555,31 @@ async function fntEditarBase()
         });
         json = await resp.json();
         if(json.status) {
-            document.querySelector('#baseResumen').textContent = json.resumen.base;
+            /*document.querySelector('#baseResumen').textContent = json.resumen.base;
             document.querySelector('#totalResumen').textContent = json.resumen.total;
+            document.querySelector('#carteraResumen').textContent = json.carteraResumen;
+            document.querySelector('#cajaResumen').textContent = json.cajaResumen;
+            document.querySelector('#ultimosResumenes').innerHTML = json.ultimosResumenes;
             $('#modalFormBase').modal("hide");
             formBase.reset();
             //Swal.fire("Roles de usuario", json.msg ,"success");
             Toast.fire({
                 icon: "success",
                 title: json.msg
+            });*/
+
+            Swal.fire({
+                title: json.msg,
+                text: '',
+                icon: "success",
+                confirmButtonColor: "#d9a300",
+                confirmButtonText: "Continuar",
+            }).then((result) => {
+            if (result.isConfirmed) {
+                location.reload();
+            }
             });
+
         } else {
             Swal.fire("Error", json.msg , "error");
             /*Toast.fire({
@@ -683,6 +691,49 @@ async function fntViewGastos()
     return false;
 }
 
+//VISTA PARA VER LA BASE
+// async function fntViewBase()
+// {
+//     const formData = new FormData();
+//     formData.append('idRuta', ruta);
+
+//     divLoading.style.display = "flex";
+//     try {
+//         let resp = await fetch(base_url+'/Base/getBase', {
+//             method: 'POST',
+//             mode: 'cors',
+//             cache: 'no-cache',
+//             body: formData
+//         });
+
+//         json = await resp.json();
+
+//         let trGasto = '';
+//         json.forEach(function(gasto) {
+//             trGasto += `
+//                 <tr>
+//                     <td>${gasto.nombre}</td>    
+//                     <td>${gasto.monto}</td>
+//                 </tr>`
+//             ;
+//         });
+//         if(trGasto){
+
+//             document.querySelector("#tbodyGastos").innerHTML = trGasto;
+//         } else {
+//             document.querySelector("#tbodyGastos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="2">Sin Gastos</td></tr>';
+//         }
+//     } catch (error) {
+//         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+//         /*Toast.fire({
+//             icon: "error",
+//             title: "Ocurrió un error interno"
+//         });*/
+//         console.log(error);
+//     }
+//     divLoading.style.display = "none";
+//     return false;
+//}
 
 
 //EDITAR EL PRÉSTAMO

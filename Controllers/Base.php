@@ -91,7 +91,17 @@ class Base extends Controllers{
                 //TRAE LOS DATOS DEL RESUMEN
                 $arrResumen = getResumenActual($fechaBase);
 
-                $arrResponse = array('status' => true, 'resumen' => $arrResumen);
+                //TRAE LOS DATOS DEL DASHBOARD DEL RESUMEN
+                $cajaResumen = $arrResumen['total'];
+                $carteraResumen = valorActivoYEstimadoPrstamos()['valorActivo'] + $cajaResumen;
+                $ultimosResumenes = getUltimosResumenes();
+
+                $arrResponse = array('status' => true, 
+                                     'msg' => 'Base actualizada',
+                                     'resumen' => $arrResumen,
+                                     'cajaResumen' => $cajaResumen,
+									 'carteraResumen' => $carteraResumen,
+									 'ultimosResumenes' => $ultimosResumenes);
 
                 echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
             } else {
