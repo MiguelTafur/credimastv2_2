@@ -110,4 +110,40 @@ class Base extends Controllers{
         }
         die();
     }
+
+    //ELIMINAR BASE
+    //ELIMINAR GASTO
+	public function delBase()
+	{
+		if($_POST)
+		{
+			if($_SESSION['permisosMod']['d']){
+
+				$intIdBase = intval($_POST['idBase']);
+                $ruta = $_SESSION['idRuta'];
+
+				//VERIFICANDO SI HAY UN RESUMEN CON EL ESTADO 1
+				$estadoResumen = getResumenActual1($ruta)['status'] ?? 0;
+
+				if($estadoResumen === 0)
+				{	
+					$requestDelete = $this->model->deleteBase($intIdBase, $ruta);
+					if($requestDelete > 0)
+					{
+						$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado la Base.');
+					} else if($requestDelete == '0')
+					{
+						$arrResponse = array('status' => false, 'msg' => 'Error al eliminar la Base.');
+					}
+					else{
+						$arrResponse = array('status' => false, 'msg' => 'Error al eliminar la Base.');
+					}
+				} else {
+					$arrResponse = array('status' => false, 'msg' => 'Resumen finalizado. No es posible eliminar la Base.');
+				}
+				echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);	
+			}
+		}
+		die();
+	}
 }

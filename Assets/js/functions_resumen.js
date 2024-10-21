@@ -519,7 +519,7 @@ async function fntRegistrarClientePrestamo()
 }
 
 //VISTA PARA EDITAR LA BASE
-async function fntEditBase()
+function fntEditBase()
 {
     $('#modalFormBase').modal('show');
 
@@ -593,6 +593,73 @@ async function fntEditarBase()
         /*Toast.fire({
             icon: "error",
             title: "Sua sesión expiró, recarga la página para entrar nuevamente"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+//VISTA PARA ELIMINAR LA BASE 
+function fntDelBase(idbase)
+{
+    Swal.fire({
+        title: " Base",
+        text: "¿Realmente quiere la Base?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d9a300",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, Eliminar!",
+        cancelButtonText: "No, cancelar!",
+    }).then((result) => {
+    if (result.isConfirmed) {
+        fntElminarBase();
+    }
+    });
+}
+
+async function fntElminarBase()
+{
+    const formData = new FormData();
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Base/delBase', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            //Swal.fire("Eliminar!", json.msg , "success");
+            Swal.fire({
+                title: json.msg,
+                text: '',
+                icon: "success",
+                confirmButtonColor: "#d9a300",
+                confirmButtonText: "Continuar",
+            }).then((result) => {
+            if (result.isConfirmed) {
+                location.reload();
+            }
+            });
+        }else{
+            Swal.fire("Error", json.msg, "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error"
+            });*/
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
         });*/
         console.log(error);
     }

@@ -59,11 +59,9 @@
   <div class="offcanvas-body">
     <h6 class="text-end mb-4">Anterior:  <span class="h6 fw-bold fst-italic" id="baseAnterior"><?= $baseAnterior ?></span></h6>
     <ul class="list-group">
-      <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-warning">
+      <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary">
         <span id="baseActual">Actual: <?= $baseActual ?></span>
-        <form id="formDelBase">
-          <input type="hidden" name="idBaseActual" value="<?= $idBaseActual ?>">
-          <button type="submit" class="btn btn-danger btn-sm" title="Eliminar Base"><i class="bi bi-trash3-fill me-0"></i></button>
+          <button class="btn btn-danger btn-sm" title="Eliminar Base" onclick="fntDelBase(<?= $idBaseActual; ?>)"><i class="bi bi-trash3-fill me-0"></i></button>
         </form>
       </li>
     </ul>
