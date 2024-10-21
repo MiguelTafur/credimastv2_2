@@ -242,6 +242,9 @@
               </tbody>
             </table>
           </div>
+          <button class="btn btn-warning btn-sm mt-4" onclick="fntViewDetalleResumen()"><i class="bi bi-calendar4-week"></i>
+            Buscar Resumen por rango de fechas
+          </button>
         </div>
        </div>
     </div>

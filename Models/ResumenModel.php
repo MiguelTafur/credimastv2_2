@@ -141,6 +141,43 @@ class ResumenModel extends Mysql
 
         return $request;
     }
+
+    //BUSCADOR DE RANGO DE FECHAS
+    public function selectResumenD(string $fechaI, string $fechaF, int $ruta)
+	{
+		$this->strFecha = $fechaI;
+		$this->strFecha2 = $fechaF;
+		$this->intIdRuta = $ruta;
+		$arrDatos = array();
+
+		$sql = "SELECT  base, 
+                        cobrado,
+                        ventas,
+                        gastos,
+                        total,
+                        hora, 
+                        datecreated 
+                FROM resumen
+                WHERE datecreated BETWEEN '{$this->strFecha}' AND '{$this->strFecha2}' AND codigoruta = $this->intIdRuta ORDER BY datecreated DESC";
+		$request = $this->select_all($sql);
+
+		/*foreach ($request as $gastos)
+		{
+			$gastosD = $gastos['datecreated'];
+			$gastosD .= " | ";
+			$gastosD .= $gastos['monto'];
+			$gastosD .= " | ";
+			$gastosD .= getFormatGastos($gastos['datecreated']);
+            $gastosD .= " | ";
+			$gastosD .= $gastos['nombres'];
+			array_push($arrDatos, $gastosD);
+		}
+
+		$arrData = array("gastos" => $arrDatos);*/
+
+		return $request;
+
+	}
     
 
     //ACTUALIZA LOS GASTOS EN LA TABLA RESUMEN

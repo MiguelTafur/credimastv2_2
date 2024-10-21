@@ -48,7 +48,6 @@ async function fntBase()
     divLoading.style.display = "none";
     return false;
 }
-
 //TRAE EL TOTAL DEL ULTIMO RESUMEN CON ESTADO 1
 async function fntTotalUltimoResumenCerrado(total)
 {
@@ -197,6 +196,100 @@ async function fntRegistrarResumen()
         /*Toast.fire({
             icon: "error",
             title: "Sua sesión expiró, recarga la página para entrar nuevamente"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+//DATERANGEPICKER 
+function fntViewDetalleResumen()
+{
+    $('#modalDetalleResumen').modal('show');
+    $('#fechaResumen').daterangepicker({
+        "autoUpdateInput": false,
+        "locale": {
+            "format": "DD/MM/YYYY",
+            "separator": " - ",
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "daysOfWeek": [
+                "Dom",
+                "Seg",
+                "Ter",
+                "Qua",
+                "Qui",
+                "Sex",
+                "Sab"
+            ],
+            "monthNames": [
+                "Janeiro",
+                "Fevereiro",
+                "Março",
+                "Abil",
+                "Maio",
+                "Junho",
+                "Julho",
+                "Agosto",
+                "Setembro",
+                "Outubro",
+                "Novembro",
+                "Dezembro"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#fechaResumen').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+    });
+
+    $('#fechaResumen').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
+}
+//INFORMACIÓN DEL BUSCADOR DATERANGEPICKER
+async function fntSearchResumenD()
+{
+    let fecha = document.querySelector("#fechaResumen").value;
+    if(fecha == "")
+    {
+        Swal.fire("Error", "Seleccione la fecha", "error");
+        return false;
+    }
+
+    const formData = new FormData();
+    formData.append('fecha', fecha);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Resumen/getResumenD', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        arrResumen = json.resumenD;
+
+        $(function () {
+            $('[data-bs-toggle="popover"]').popover({
+                container: "body",
+                trigger: "focus",
+                html: true
+            })
+        });
+
+        document.querySelector("#datosResumenD").innerHTML = arrResumen;
+        document.querySelector("#divResumenD").classList.remove("d-none");
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
         });*/
         console.log(error);
     }
@@ -555,19 +648,6 @@ async function fntEditarBase()
         });
         json = await resp.json();
         if(json.status) {
-            /*document.querySelector('#baseResumen').textContent = json.resumen.base;
-            document.querySelector('#totalResumen').textContent = json.resumen.total;
-            document.querySelector('#carteraResumen').textContent = json.carteraResumen;
-            document.querySelector('#cajaResumen').textContent = json.cajaResumen;
-            document.querySelector('#ultimosResumenes').innerHTML = json.ultimosResumenes;
-            $('#modalFormBase').modal("hide");
-            formBase.reset();
-            //Swal.fire("Roles de usuario", json.msg ,"success");
-            Toast.fire({
-                icon: "success",
-                title: json.msg
-            });*/
-
             Swal.fire({
                 title: json.msg,
                 text: '',
@@ -618,7 +698,7 @@ function fntDelBase(idbase)
     }
     });
 }
-
+//ELIMINAR BASE
 async function fntElminarBase()
 {
     const formData = new FormData();

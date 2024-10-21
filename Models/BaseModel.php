@@ -84,13 +84,17 @@ class BaseModel extends Mysql
         
     }
 
-    public function selectBaseActualAnterior(int $ruta)
+    public function selectBaseActualAnterior(int $ruta, string $fecha = NULL)
     {
         $this->intIdRuta = $ruta;
 
-        $fecha = getResumenAnterior($this->intIdRuta)['datecreated'] ?? NOWDATE;
+        if($fecha == NULL) {
+            $fechaBase = getResumenAnterior($this->intIdRuta)['datecreated'] ?? NOWDATE;
+        } else {
+            $fechaBase = $fecha;
+        } 
 
-        $sql = "SELECT * FROM base WHERE codigoruta = $this->intIdRuta AND datecreated = '{$fecha}'";
+        $sql = "SELECT * FROM base WHERE codigoruta = $this->intIdRuta AND datecreated = '{$fechaBase}'";
         $request = $this->select_all($sql);
 
         return $request;

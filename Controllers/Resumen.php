@@ -76,4 +76,117 @@ class Resumen extends Controllers{
 			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 		}
 	}
+
+	//BUSCADOR DE RANGO DE FECHAS
+	public function getResumenD()
+	{
+		if($_POST)
+		{
+			$arrayFechas = explode("-", $_POST['fecha']);
+			$fechaI = date("Y-m-d", strtotime(str_replace("/", "-", $arrayFechas[0])));
+			$fechaF = date("Y-m-d", strtotime(str_replace("/", "-", $arrayFechas[1])));
+			$ruta = $_SESSION['idRuta'];
+			$detalles = '';
+			$arrExplode = '';
+			$totalGastos = 0;
+			$dias = array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
+
+			$resumenD = $this->model->selectResumenD($fechaI, $fechaF, $ruta);
+			//dep($resumenD);exit;
+
+			foreach ($resumenD as $resumen) {
+				$cobrado = $resumen['cobrado'] ?? 0;
+				$ventas = $resumen['ventas'] ?? 0;
+				$gastos = $resumen['gastos'] ?? 0;
+
+				$base = getBaseActualAnterior($resumen['datecreated']) != 0 ? getBaseActualAnterior($resumen['datecreated'])['actual'] : $resumen['base'];
+
+				$basePopover = getBaseActualAnterior($resumen['datecreated']) == 0 
+											? $resumen['base']
+                                    	  	: '<button 
+                                             class="btn btn-link btn-sm link-warning link-underline-opacity-0" 
+                                             style="font-size: inherit;"
+                                             data-bs-toggle="popover" 
+                                             data-bs-placement="left" 
+                                             data-bs-content=" Anterior: '.round(getBaseActualAnterior($resumen['datecreated'])['anterior'], 0). 
+												"  &nbsp;<div class='vr'></div>&nbsp;" . ' '.getBaseActualAnterior($resumen['datecreated'])['horaAnterior'].'
+												'.getBaseActualAnterior($resumen['datecreated'])['usuarioAnterior'].'" 
+                                             title="BASE MODIFICADA">
+                                             ' . getBaseActualAnterior($resumen['datecreated'])['actual'] . ' 
+                                             </button>';
+
+				$cobradoPopover = $cobrado == 0 
+											? $cobrado
+                                    	  : '<button 
+                                             class="btn btn-link btn-sm link-warning link-underline-opacity-0" 
+                                             style="font-size: inherit;"
+                                             data-bs-toggle="popover" 
+                                             data-bs-placement="left" 
+                                             data-bs-content="'.getFormatCobrado($resumen['datecreated']).'" 
+                                             title="COBRADO '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' HORA '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' USUARIO">
+                                             '.round($cobrado, 0).'
+                                             </button>';
+
+				$ventasPopover = $ventas == 0 ? $ventas
+										: '<button 
+											class="btn btn-link btn-sm link-warning link-underline-opacity-0" 
+											style="font-size: inherit;"
+											data-bs-toggle="popover" 
+											data-bs-placement="left" 
+											data-bs-content="'.getFormatPrestamos($resumen['datecreated']).'" 
+											title="VENTA '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' HORA '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' USUARIO">
+											'.round($ventas, 0).'
+											</button>';
+
+				$gastosPopover = $gastos == 0 ? $gastos
+										: '<button 
+											class="btn btn-link btn-sm link-warning link-underline-opacity-0" 
+											style="font-size: inherit;"
+											data-bs-toggle="popover" 
+											data-bs-placement="left" 
+											data-bs-content="'.getFormatGastos($resumen['datecreated']).'" 
+											title="GASTO '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' HORA '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' USUARIO">
+											'.round($gastos, 0).'
+											</button>';
+
+				$detalles .= '<tr class="text-center">'; 
+				$detalles .= '<td>'.$resumen['datecreated'].'</td>';
+				$detalles .= '<td>'.$basePopover.'</td>';
+				$detalles .= '<td>'.$cobradoPopover.'</td>';
+				$detalles .= '<td>'.$ventasPopover.'</td>';
+				$detalles .= '<td>'.$gastosPopover.'</td>';
+				$detalles .= '<td>'.$resumen['total'] ?? '0'.'</td>';
+					
+				$detalles .= '</tr>';
+			}
+
+			/*for ($i=0; $i < COUNT($resumenD); $i++)
+			{ 
+				$detalles .= '<tr class="text-center">'; 
+				$detalles .= '<td>';
+					$resumenD[$i]['datecreated'];
+				$detalles .= '</td>';
+				$detalles .= '<td>';
+					$resumenD[$i]['base'];
+				$detalles .= '</td>';
+				$detalles .= '<td>';
+					$resumenD[$i]['cobrado'];
+				$detalles .= '</td>';
+				$detalles .= '<td>';
+					$resumenD[$i]['ventas'];
+				$detalles .= '</td>';
+				$detalles .= '<td>';
+					$resumenD[$i]['gastos'];
+				$detalles .= '</td>';
+				$detalles .= '<td>';
+					$resumenD[$i]['total'];
+				$detalles .= '</td>';
+				$detalles .= '</tr>';
+			}*/
+			
+			$arrResponse = array('resumenD' => $detalles);
+
+			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+		}
+	}
 }

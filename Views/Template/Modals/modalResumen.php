@@ -67,3 +67,42 @@
     </ul>
   </div>
 </div>
+
+<!-- MODAL BUSCAR RESUMEN POR RANGO DE FECHA -->
+<div class="modal fade" id="modalDetalleResumen" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titleModal">Resumen</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-10">
+            <input type="text" readonly class="form-control" id="fechaResumen" placeholder="Selecciona una fecha">
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn btn-warning mb-2" onclick="fntSearchResumenD()"><i class="bi bi-search me-0"></i></button>
+            </div>
+          </div>
+        </form>
+        <div id="divResumenD" class="d-none">
+          <table class="table align-middle">
+            <thead>
+            <tr class="text-center">
+                <th>DIA</th>
+                <th>BASE</th>
+                <th>COBRADO</th>
+                <th>VENTAS</th>
+                <th>GASTOS</th>
+                <th>TOTAL</th>
+              </tr>
+            </thead>
+            <tbody id="datosResumenD"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

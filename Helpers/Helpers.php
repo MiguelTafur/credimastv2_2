@@ -84,21 +84,32 @@
         return $cliente;
     }
 
-    function getBaseActualAnterior()
+    /**** RESUMEN ****/
+    function getBaseActualAnterior(string $fecha = NULL)
     {
         require_once("Models/BaseModel.php");
         $objBase = new BaseModel();
-        $request = $objBase->selectBaseActualAnterior($_SESSION['idRuta']);
+        $request = $objBase->selectBaseActualAnterior($_SESSION['idRuta'], $fecha);
 
         if(COUNT($request) > 1)
         {   
             for ($i=0; $i < COUNT($request) ; $i++) { 
                 $baseAnterior = $request[0]['monto'];
+                $usuarioAnterior = $request[0]['personaid'];
+                $horaAnterior = date('H:i', strtotime($request[0]['hora']));
                 $baseActual = $request[1]['monto'];
+                $usuarioActual = $request[1]['personaid'];
+                $horaActual = $request[1]['hora'];
                 $idBaseActual = $request[1]['idbase'];
             }
     
-            $request = array('anterior' => $baseAnterior, 'actual' => $baseActual, 'idBaseActual' => $idBaseActual);
+            $request = array('anterior' => $baseAnterior,
+                             'usuarioAnterior' => $usuarioAnterior,
+                             'horaAnterior' => $horaAnterior, 
+                             'actual' => $baseActual, 
+                             'idBaseActual' => $idBaseActual,
+                             'usuarioActual' => $usuarioActual,
+                             'horaActual' => $horaActual);
     
             return $request;
         } else {
@@ -106,7 +117,6 @@
         }
     }
 
-    /**** RESUMEN ****/
     //TRAE EL RESUMEN CON EL ESTADO 0 Y CON LA FECHA ACTUAL DIFERENTE
     function getResumenAnterior()
     {
@@ -311,8 +321,8 @@
         {
             $prestamo = "";
             for ($i=0; $i < count($request); $i++) {
-                $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])) . '  -  ' : " <i class='bi bi-watch'></i>  -  ";
-                $prestamo .= $hora . '  -  ' . strtoupper($request[$i]['nombres']) . ': ' . $request[$i]['monto'] . $request[$i]['usuario'] . '<br>';
+                $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])): " <i class='bi bi-watch'></i>";
+                $prestamo .= strtoupper($request[$i]['nombres']) . ': ' . $request[$i]['monto'] . "  &nbsp;<div class='vr'></div>&nbsp;  " . $hora . "  &nbsp;<div class='vr'></div>&nbsp;  <i>" .  $request[$i]['usuario'] . '</i><br>';
             }
             return $prestamo;
         }
@@ -392,8 +402,8 @@
 
         $pagos = "";
         for ($i=0; $i < count($request); $i++) {
-            $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])) . '  -  ' : " <i class='bi bi-watch'></i>  -  ";
-            $pagos .= $request[$i]['usuario'].'  -  '.$hora.strtoupper($request[$i]['nombres']).': '.$request[$i]['abono'].'<br>';
+            $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])) : " <i class='bi bi-watch'></i>";
+            $pagos .= strtoupper($request[$i]['nombres']) . ': ' . $request[$i]['abono'] . "  &nbsp;<div class='vr'></div>&nbsp;  " . $hora . "  &nbsp;<div class='vr'></div>&nbsp;  <i>" . $request[$i]['usuario'] . '</i><br>';
         }
         return $pagos;
     }
@@ -411,7 +421,7 @@
             $gasto = "";
             for ($i=0; $i < count($request); $i++) {
                 $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])) . "  &nbsp;<div class='vr'></div>&nbsp;  " : " <i class='bi bi-watch'></i>  &nbsp;<div class='vr'></div>&nbsp;  ";
-                $gasto .= strtoupper($request[$i]['nombre']) . '= ' . $request[$i]['monto'] . "  &nbsp;<div class='vr'></div>&nbsp;  " .$hora . $request[$i]['usuario'] . '<br>';
+                $gasto .= strtoupper($request[$i]['nombre']) . '= ' . $request[$i]['monto'] . "  &nbsp;<div class='vr'></div>&nbsp;  <i>" .$hora . $request[$i]['usuario'] . '</i><br>';
             }
             return $gasto;
         }
