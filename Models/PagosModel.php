@@ -34,7 +34,7 @@ class PagosModel extends Mysql
 
         if($this->strFecha != NULL)
         {
-            $whereFecha = " AND pa.datecreated = " . $this->strFecha;
+            $whereFecha = " AND pa.datecreated = " . "'{$this->strFecha}'";
             $whereStatus2 = " AND pr.status != 0";
         }
 
@@ -115,7 +115,6 @@ class PagosModel extends Mysql
                         $query_update = "UPDATE prestamos SET datefinal = ?, status = ? WHERE idprestamo = $this->intIdPrestamo";
                         $arrData = array(NOWDATE, $estado);
                         $request = $this->update($query_update,$arrData);
-                        $return = $request;
                     }
 
                     //TRAE LA SUMA DE LOS PAGAMENTOS DEL PRÉSTAMO

@@ -112,7 +112,6 @@ class Base extends Controllers{
     }
 
     //ELIMINAR BASE
-    //ELIMINAR GASTO
 	public function delBase()
 	{
 		if($_POST)
@@ -131,10 +130,7 @@ class Base extends Controllers{
 					if($requestDelete > 0)
 					{
 						$arrResponse = array('status' => true, 'msg' => 'Se ha eliminado la Base.');
-					} else if($requestDelete == '0')
-					{
-						$arrResponse = array('status' => false, 'msg' => 'Error al eliminar la Base.');
-					}
+					} 
 					else{
 						$arrResponse = array('status' => false, 'msg' => 'Error al eliminar la Base.');
 					}
@@ -146,4 +142,4 @@ class Base extends Controllers{
 		}
 		die();
 	}
-}
+}   

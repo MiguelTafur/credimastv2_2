@@ -54,17 +54,13 @@ class BaseModel extends Mysql
         $this->intMonto = $monto;
         $this->strFecha = $fecha;
 
-        /*$sql = "UPDATE base SET personaid = ?, monto = ?, hora = ? WHERE codigoruta = $this->intIdRuta AND datecreated = '{$this->strFecha}'";
-        $arrData = array($this->intIdUsuario, $this->intMonto, NOWTIME);
-        $request = $this->update($sql, $arrData);*/
-
         $sql = "INSERT INTO base(personaid, codigoruta, monto, hora, datecreated, status) VALUES(?,?,?,?,?,?)";
         $arrData = array($this->intIdUsuario, $this->intIdRuta, $this->intMonto, NOWTIME, $this->strFecha, 1);
         $request = $this->insert($sql, $arrData);
 
         if(!empty($request))
         {
-            //ACTUALIZA LA COLUMNA "VENTAS" DE LA TABLA RESUMEN
+            //ACTUALIZA LA COLUMNA "BASE" DE LA TABLA RESUMEN
             setUpdateResumen($this->intIdRuta, $this->intMonto, 1, $this->strFecha);
         }
 
@@ -98,5 +94,24 @@ class BaseModel extends Mysql
         $request = $this->select_all($sql);
 
         return $request;
+    }
+
+    public function deleteBase(int $idbase, int $ruta)
+    {
+        $this->intIdRuta = $ruta;
+        $this->intIdBase = $idbase;
+
+        $request_delete = "DELETE FROM base WHERE idbase = $this->intIdBase AND codigoruta = $this->intIdRuta";
+        $request = $this->delete($request_delete);
+
+        if(!empty($request)){
+            $resumen = $this->selectBase($this->intIdRuta);
+            //ACTUALIZA LA COLUMNA "BASE" DE LA TABLA RESUMEN
+            setUpdateResumen($this->intIdRuta, $resumen['monto'], 1, $resumen['datecreated']);
+
+            return $request;
+        } else {
+            return '0';
+        }
     }
 }

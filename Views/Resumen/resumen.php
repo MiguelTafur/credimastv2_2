@@ -235,6 +235,8 @@
                   <th>VENTAS</th>
                   <th>GASTOS</th>
                   <th>TOTAL</th>
+                  <th>HORA</th>
+                  <th>USUARIO</th>
                 </tr>
               </thead>
               <tbody class="table-group-divider" id="ultimosResumenes">

@@ -580,7 +580,7 @@ class Prestamos extends Controllers{
 									data-bs-toggle="popover" 
 									data-bs-placement="left" 
 									data-bs-content="'.$arrExplode[2].'" 
-									title="HORA / PRÉSTAMO">
+									title="VENTA '."&nbsp;<div class='vr'></div>&nbsp;".' HORA '."&nbsp;<div class='vr'></div>&nbsp;".' USUARIO">
 									<i class="bi bi-info-circle me-0"></i>
 								</a>
 								</td>';

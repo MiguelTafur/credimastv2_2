@@ -694,14 +694,15 @@ function fntDelBase(idbase)
         cancelButtonText: "No, cancelar!",
     }).then((result) => {
     if (result.isConfirmed) {
-        fntElminarBase();
+        fntElminarBase(idbase);
     }
     });
 }
 //ELIMINAR BASE
-async function fntElminarBase()
+async function fntElminarBase(idbase)
 {
     const formData = new FormData();
+    formData.append('idBase', idbase);
 
     divLoading.style.display = "flex";
     try {

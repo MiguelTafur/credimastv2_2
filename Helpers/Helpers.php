@@ -85,6 +85,7 @@
     }
 
     /**** RESUMEN ****/
+    //SI HAY MAS DE UNA BASE, TRAE LOS DATOS
     function getBaseActualAnterior(string $fecha = NULL)
     {
         require_once("Models/BaseModel.php");
@@ -166,11 +167,12 @@
             $getCobrado = getFormatCobrado($resumen['datecreated']);
             $getVentas = getFormatPrestamos($resumen['datecreated']);
             $getGastos = getFormatGastos($resumen['datecreated']);
+            $hora = $resumen['hora'] != NULL ? date("H:i", strtotime($resumen['hora'])) : " <i class='bi bi-watch'></i>";
            
             $basePopover = getBaseActualAnterior($resumen['datecreated']) == 0 
 											? $resumen['base']
                                     	  	: '<button 
-                                             class="btn btn-link btn-sm link-warning link-underline-opacity-0" 
+                                             class="btn btn-link btn-sm link-warning link-underline-opacity-0 p-0" 
                                              style="font-size: inherit;"
                                              data-bs-toggle="popover" 
                                              data-bs-placement="left" 
@@ -189,34 +191,34 @@
                                              ' . getBaseActualAnterior($resumen['datecreated'])['actual'] . ' 
                                              </button>';
 
-            $cobrado = $resumen['cobrado'] == 0 ? '<button class="btn btn-link btn-sm link-warning link-underline-opacity-0" style="font-size: inherit;">'.round($resumen['cobrado'], 0).'</button>' 
+            $cobrado = $resumen['cobrado'] == 0 ? round($resumen['cobrado'], 0) 
                                                 : '<button 
-                                                    class="btn btn-link btn-sm link-warning link-underline-opacity-0" 
+                                                    class="btn btn-link btn-sm link-warning link-underline-opacity-0 p-0" 
                                                     style="font-size: inherit;"
                                                     data-bs-toggle="popover" 
                                                     data-bs-placement="left" 
                                                     data-bs-content="'.$getCobrado.'" 
-                                                    title="USUARIO - HORA - CLIENTE: VALOR">
+                                                    title="COBRADO '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' HORA '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' USUARIO '.'">
                                                     '.round($resumen['cobrado'], 0).'
                                                     </button>';
-            $ventas = $resumen['ventas'] == 0 ? '<button class="btn btn-link btn-sm link-warning link-underline-opacity-0" style="font-size: inherit;">'.round($resumen['ventas'], 0).'</button>' 
+            $ventas = $resumen['ventas'] == 0 ? round($resumen['ventas'], 0) 
                                               : '<button 
-                                                 class="btn btn-link btn-sm link-warning link-underline-opacity-0" 
+                                                 class="btn btn-link btn-sm link-warning link-underline-opacity-0 p-0" 
                                                  style="font-size: inherit;"
                                                  data-bs-toggle="popover" 
                                                  data-bs-placement="left" 
                                                  data-bs-content="'.$getVentas.'" 
-                                                 title="USUARIO - HORA - CLIENTE: VALOR">
+                                                 title="VENTA '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' HORA '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' USUARIO '.'">
                                                  '.round($resumen['ventas'], 0).'
                                                  </button>';
-            $gastos = $resumen['gastos'] == 0 ? '<button class="btn btn-link btn-sm link-warning link-underline-opacity-0" style="font-size: inherit;">'.round($resumen['gastos'], 0).'</button>'
+            $gastos = $resumen['gastos'] == 0 ? round($resumen['gastos'], 0)
                                               : '<button 
-                                                 class="btn btn-link btn-sm link-warning link-underline-opacity-0" 
+                                                 class="btn btn-link btn-sm link-warning link-underline-opacity-0 p-0" 
                                                  style="font-size: inherit;" 
                                                  data-bs-toggle="popover" 
                                                  data-bs-placement="left" 
                                                  data-bs-content="'.$getGastos.'" 
-                                                 title="USUARIO - HORA - NOMBRE: VALOR">
+                                                 title="GASTO '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' HORA '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' USUARIO '.'">
                                                  '.round($resumen['gastos'], 0).'
                                                  </button>';
             $resumenes .= '<tr>';
@@ -237,6 +239,12 @@
             $resumenes .= '</td>';
             $resumenes .= '<td>';
             $resumenes .= '<p class="h6">'.$resumen['total'].'</p>';
+            $resumenes .= '</td>';
+            $resumenes .= '<td>';
+            $resumenes .= '<p class="h6">'.$hora.'</p>';
+            $resumenes .= '</td>';
+            $resumenes .= '<td>';
+            $resumenes .= '<p class="h6">'.$resumen['personaid'].'</p>';
             $resumenes .= '</td>';
             $resumenes .= '</tr>';   
         }
@@ -345,7 +353,7 @@
             $prestamo = "";
             for ($i=0; $i < count($request); $i++) {
                 $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])): " <i class='bi bi-watch'></i>";
-                $prestamo .= strtoupper($request[$i]['nombres']) . ': ' . $request[$i]['monto'] . "  &nbsp;<div class='vr'></div>&nbsp;  " . $hora . "  &nbsp;<div class='vr'></div>&nbsp;  <i>" .  $request[$i]['usuario'] . '</i><br>';
+                $prestamo .= nombresApellidos($request[$i]['nombres'], $request[$i]['apellidos']) . ': ' . $request[$i]['monto'] . "  &nbsp;<div class='vr'></div>&nbsp;  " . $hora . "  &nbsp;<div class='vr'></div>&nbsp;  <i>" .  $request[$i]['usuario'] . '</i><br>';
             }
             return $prestamo;
         }
@@ -426,7 +434,7 @@
         $pagos = "";
         for ($i=0; $i < count($request); $i++) {
             $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])) : " <i class='bi bi-watch'></i>";
-            $pagos .= strtoupper($request[$i]['nombres']) . ': ' . $request[$i]['abono'] . "  &nbsp;<div class='vr'></div>&nbsp;  " . $hora . "  &nbsp;<div class='vr'></div>&nbsp;  <i>" . $request[$i]['usuario'] . '</i><br>';
+            $pagos .= nombresApellidos($request[$i]['nombres'], $request[$i]['apellidos']) . ': ' . $request[$i]['abono'] . "  &nbsp;<div class='vr'></div>&nbsp;  " . $hora . "  &nbsp;<div class='vr'></div>&nbsp;  <i>" . $request[$i]['usuario'] . '</i><br>';
         }
         return $pagos;
     }
@@ -444,7 +452,7 @@
             $gasto = "";
             for ($i=0; $i < count($request); $i++) {
                 $hora = $request[$i]['hora'] != NULL ? date('H:i', strtotime($request[$i]['hora'])) . "  &nbsp;<div class='vr'></div>&nbsp;  " : " <i class='bi bi-watch'></i>  &nbsp;<div class='vr'></div>&nbsp;  ";
-                $gasto .= strtoupper($request[$i]['nombre']) . '= ' . $request[$i]['monto'] . "  &nbsp;<div class='vr'></div>&nbsp;  <i>" .$hora . $request[$i]['usuario'] . '</i><br>';
+                $gasto .= strtoupper($request[$i]['nombre']) . ': ' . $request[$i]['monto'] . "  &nbsp;<div class='vr'></div>&nbsp;  <i>" .$hora . $request[$i]['usuario'] . '</i><br>';
             }
             return $gasto;
         }

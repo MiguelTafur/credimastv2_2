@@ -52,7 +52,16 @@ class ResumenModel extends Mysql
     {
         $this->intIdRuta = $ruta;
 
-        $sql = "SELECT * FROM resumen WHERE codigoruta = $this->intIdRuta ORDER BY datecreated DESC LIMIT 8";
+        $sql = "SELECT idresumen, 
+                        (SELECT nombres FROM persona WHERE idpersona = personaid) as personaid,
+                        base, 
+                        cobrado, 
+                        ventas, 
+                        gastos,
+                        total, 
+                        hora, 
+                        datecreated 
+                FROM resumen WHERE codigoruta = $this->intIdRuta ORDER BY datecreated DESC LIMIT 8";
         $request = $this->select_all($sql);
         return $request;
     }
