@@ -99,7 +99,7 @@
                 $horaAnterior = date('H:i', strtotime($request[0]['hora']));
                 $baseActual = $request[1]['monto'];
                 $usuarioActual = $request[1]['personaid'];
-                $horaActual = $request[1]['hora'];
+                $horaActual = date('H:i', strtotime($request[1]['hora']));
                 $idBaseActual = $request[1]['idbase'];
             }
     
@@ -166,6 +166,29 @@
             $getCobrado = getFormatCobrado($resumen['datecreated']);
             $getVentas = getFormatPrestamos($resumen['datecreated']);
             $getGastos = getFormatGastos($resumen['datecreated']);
+           
+            $basePopover = getBaseActualAnterior($resumen['datecreated']) == 0 
+											? $resumen['base']
+                                    	  	: '<button 
+                                             class="btn btn-link btn-sm link-warning link-underline-opacity-0" 
+                                             style="font-size: inherit;"
+                                             data-bs-toggle="popover" 
+                                             data-bs-placement="left" 
+                                             data-bs-content=" BASE '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' HORA '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' USUARIO '."<hr class='my-2'>".'
+											 	Anterior: '.getBaseActualAnterior($resumen['datecreated'])['anterior']. 
+												"  &nbsp;<div class='vr'></div>&nbsp;" . ' '.
+												getBaseActualAnterior($resumen['datecreated'])['horaAnterior']. 
+												"  &nbsp;<div class='vr'></div>&nbsp;".'
+												'.getBaseActualAnterior($resumen['datecreated'])['usuarioAnterior'].' <br>
+												Actual: '.getBaseActualAnterior($resumen['datecreated'])['actual'].
+												"  &nbsp;<div class='vr'></div>&nbsp;" . ' '.
+												getBaseActualAnterior($resumen['datecreated'])['horaActual'].
+												"  &nbsp;<div class='vr'></div>&nbsp;" . ' 
+												'.getBaseActualAnterior($resumen['datecreated'])['usuarioActual'].'" 
+                                             title="BASE MODIFICADA">
+                                             ' . getBaseActualAnterior($resumen['datecreated'])['actual'] . ' 
+                                             </button>';
+
             $cobrado = $resumen['cobrado'] == 0 ? '<button class="btn btn-link btn-sm link-warning link-underline-opacity-0" style="font-size: inherit;">'.round($resumen['cobrado'], 0).'</button>' 
                                                 : '<button 
                                                     class="btn btn-link btn-sm link-warning link-underline-opacity-0" 
@@ -201,7 +224,7 @@
             $resumenes .= date("d-m-Y", strtotime($resumen['datecreated']));
             $resumenes .= '</td>';
             $resumenes .= '<td>';
-            $resumenes .= round($resumen['base'], 0);
+            $resumenes .= $basePopover;
             $resumenes .= '</td>';
             $resumenes .= '<td>';
             $resumenes .= $cobrado;

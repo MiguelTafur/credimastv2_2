@@ -94,7 +94,7 @@ class BaseModel extends Mysql
             $fechaBase = $fecha;
         } 
 
-        $sql = "SELECT * FROM base WHERE codigoruta = $this->intIdRuta AND datecreated = '{$fechaBase}'";
+        $sql = "SELECT idbase, (SELECT nombres FROM persona WHERE idpersona = personaid) as personaid, monto, hora, datecreated, status FROM base WHERE codigoruta = $this->intIdRuta AND datecreated = '{$fechaBase}'";
         $request = $this->select_all($sql);
 
         return $request;

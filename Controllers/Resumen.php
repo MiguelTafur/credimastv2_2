@@ -99,8 +99,6 @@ class Resumen extends Controllers{
 				$ventas = $resumen['ventas'] ?? 0;
 				$gastos = $resumen['gastos'] ?? 0;
 
-				$base = getBaseActualAnterior($resumen['datecreated']) != 0 ? getBaseActualAnterior($resumen['datecreated'])['actual'] : $resumen['base'];
-
 				$basePopover = getBaseActualAnterior($resumen['datecreated']) == 0 
 											? $resumen['base']
                                     	  	: '<button 
@@ -108,9 +106,17 @@ class Resumen extends Controllers{
                                              style="font-size: inherit;"
                                              data-bs-toggle="popover" 
                                              data-bs-placement="left" 
-                                             data-bs-content=" Anterior: '.round(getBaseActualAnterior($resumen['datecreated'])['anterior'], 0). 
-												"  &nbsp;<div class='vr'></div>&nbsp;" . ' '.getBaseActualAnterior($resumen['datecreated'])['horaAnterior'].'
-												'.getBaseActualAnterior($resumen['datecreated'])['usuarioAnterior'].'" 
+                                             data-bs-content=" BASE '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' HORA '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' USUARIO '."<hr class='my-2'>".'
+											 	Anterior: '.getBaseActualAnterior($resumen['datecreated'])['anterior']. 
+												"  &nbsp;<div class='vr'></div>&nbsp;" . ' '.
+												getBaseActualAnterior($resumen['datecreated'])['horaAnterior']. 
+												"  &nbsp;<div class='vr'></div>&nbsp;".'
+												'.getBaseActualAnterior($resumen['datecreated'])['usuarioAnterior'].' <br>
+												Actual: '.getBaseActualAnterior($resumen['datecreated'])['actual'].
+												"  &nbsp;<div class='vr'></div>&nbsp;" . ' '.
+												getBaseActualAnterior($resumen['datecreated'])['horaActual'].
+												"  &nbsp;<div class='vr'></div>&nbsp;" . ' 
+												'.getBaseActualAnterior($resumen['datecreated'])['usuarioActual'].'" 
                                              title="BASE MODIFICADA">
                                              ' . getBaseActualAnterior($resumen['datecreated'])['actual'] . ' 
                                              </button>';
