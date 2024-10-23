@@ -18,8 +18,8 @@ class Resumen extends Controllers{
 		$data['page_name'] = "Resumen";
 		$data['page_functions_js'] = "functions_resumen.js";
 
-		// $data['prueba'] = $this->model->accion($_SESSION['idRuta']);
-		// dep($data['prueba']);exit;
+		$data['prueba'] = $this->model->accionBase($_SESSION['idRuta']);
+		dep($data['prueba']);exit;
 
 		//TRAE EL RESUMEN ANTERIOR CON ESTADO 0
 		$data['resumenAnterior'] = $this->model->selectResumenAnterior($_SESSION['idRuta']);

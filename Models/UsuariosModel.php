@@ -75,8 +75,8 @@
 
 			if(empty($request))
 			{
-				$query_insert = "INSERT INTO persona(nombres,email_user,rolid,codigoruta,status)  VALUES(?,?,?,?,?)";
-				$arrData = array($this->strNombre,$this->strEmail,$this->intTipoId,$this->intRuta,$this->intStatus);
+				$query_insert = "INSERT INTO persona(nombres,email_user,rolid,codigoruta,status, datecreated)  VALUES(?,?,?,?,?,?)";
+				$arrData = array($this->strNombre,$this->strEmail,$this->intTipoId,$this->intRuta,$this->intStatus, NOWDATE);
 				$request_insert = $this->insert($query_insert, $arrData);
 				$return = $request_insert;
 			}else{

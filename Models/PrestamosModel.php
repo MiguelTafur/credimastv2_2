@@ -374,6 +374,7 @@ class PrestamosModel extends Mysql
         }
     }
 
+    //ACTUALIZA LA COLUMNA USUARIO CON EL ROL ADMINISTRADOR Y FUNCOINARIOS(1, 3)
     public function accionPrestamosUsuario(int $ruta)
     {
         $this->intIdRuta = $ruta;

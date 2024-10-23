@@ -8,7 +8,7 @@
 	date_default_timezone_set('Brazil/East');
 
 	const DB_HOST = "localhost";
-	const DB_NAME = "credimastv3";
+	const DB_NAME = "qahi319";
 	const DB_USER = "root";
 	const DB_PASSWORD = "";
 
