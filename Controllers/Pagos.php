@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class Pagos extends Controllers{
 	public function __construct()
@@ -30,7 +30,7 @@ class Pagos extends Controllers{
 				$estadoResumen = getResumenActual1($ruta)['status'] ?? 0;
 
 				if($estadoResumen === 0)
-				{			
+				{
 					//VALIDA SI HAY UN RESUMEN Y DEVUELVE LA FECHA, Si NO, LO CREA.
 					$fechaResumen = setDelResumenActual('set', $ruta)['datecreated'] ?? NULL;
 
@@ -40,17 +40,17 @@ class Pagos extends Controllers{
 					{
 						$valorActivo = valorActivoYEstimadoPrstamos()['valorActivo'];
 						$cobradoEstimado = valorActivoYEstimadoPrstamos()['cobradoEstimado'];
-						$arrResponse = array('status' => true, 
-											'msg' => 'Datos guardados correctamente.', 
+						$arrResponse = array('status' => true,
+											'msg' => 'Datos guardados correctamente.',
 											'valorActivo' => $valorActivo,
 											'cobradoEstimado' => $cobradoEstimado);
 
 					}else if($request_pago == '0')
 					{
-						$arrResponse = array("status" => false, "msg" => "Pago ya realizado.");	
+						$arrResponse = array("status" => false, "msg" => "Pago ya realizado.");
 					}else if($request_pago == '!')
 					{
-						$arrResponse = array("status" => false, "msg" => "El pago ingresado no puede ser mayor al saldo.");	
+						$arrResponse = array("status" => false, "msg" => "El pago ingresado no puede ser mayor al saldo.");
 					}else
 					{
 						$arrResponse = array("status" => false, "msg" => "No es posible almacenar los datos.");
@@ -72,28 +72,40 @@ class Pagos extends Controllers{
 			if($idprestamo > 0)
 			{
 				$arrData = $this->model->selectPagamentos($idprestamo);
-		
+
 				if(empty($arrData))
 				{
 					$arrResponse = array('status' => false, 'msg' => 'Sin pagamentos.');
 				}else{
+					$cliente = nombresApellidos($arrData[0]['nombres'], $arrData[0]['apellidos']);
 					$arrPagos = "";
+					$dias = array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
 					for ($i=0; $i < count($arrData); $i++)
-					{ 
-						$fechaF = date("d-m-Y", strtotime($arrData[$i]['datecreated']));
-						/*$dia = $dias[date('w', strtotime($arrData[$i]['datecreated']))];*/
+					{
+						$dia = $dias[date('w', strtotime($arrData[$i]['datecreated']))];
 						$arrPagos .= '
 						<tr class="text-center">';
-							$arrPagos .= '<td>'.$fechaF.'</td>';
-							if($arrData[$i]['hora'] != NULL) {
-								$arrPagos .= '<td>'.date('H:i', strtotime($arrData[$i]['hora'])).'</td>';
-							} else {
-								$arrPagos .= '<td><i class="bi bi-watch"></i></td>';
-							}
-							$arrPagos .= '<td>'.$arrData[$i]['abono'].'</td>';
-							$arrPagos .= '</tr>';
+						$arrPagos .= '<td>
+										<a
+										tabindex="0" role="button"
+										class="btn btn-secondary btn-sm"
+										data-bs-toggle="popover"
+										data-bs-placement="left"
+										data-bs-content="'.date('d-m-Y', strtotime($arrData[$i]['datecreated'])).'"
+										title="'.$dia.'">
+										<i class="bi bi-calendar4-event me-0"></i>
+										</a>
+									</td>';
+						$arrPagos .= '<td>'.$arrData[$i]['abono'].'</td>';
+						if($arrData[$i]['hora'] != NULL) {
+							$arrPagos .= '<td>'.date('H:i', strtotime($arrData[$i]['hora'])).'</td>';
+						} else {
+							$arrPagos .= '<td><i class="bi bi-watch"></i></td>';
+						}
+						$arrPagos .= '<td class="fst-italic">'.$arrData[$i]['personaid'].'</td>';
+						$arrPagos .= '</tr>';
 					}
-					$arrResponse = array('status' => true, 'pagos' => $arrPagos);
+					$arrResponse = array('status' => true, 'pagos' => $arrPagos, 'cliente' => $cliente);
 				}
 				echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 			}
@@ -117,10 +129,10 @@ class Pagos extends Controllers{
 				$estadoResumen = getResumenActual1($ruta)['status'] ?? 0;
 
 				if($estadoResumen === 0)
-				{			
+				{
 
 					$requestDelete = $this->model->deletePago($intIdprestamo, $intIdPago, $ruta);
-					
+
 					if($requestDelete)
 					{
 						//ELIMINA EL RESUMEN SI LA BASE, EL COBRADO, LAS VENTAS, Y LOS GASTOS ESTÁN NULLOS
@@ -131,13 +143,13 @@ class Pagos extends Controllers{
 							$status = true;
 						} else {
 							$status = false;
-						}	
+						}
 
 						$valorActivo = valorActivoYEstimadoPrstamos()['valorActivo'];
 						$cobradoEstimado = valorActivoYEstimadoPrstamos()['cobradoEstimado'];
 
-						$arrResponse = array('status' => true, 
-						'msg' => 'Se ha eliminado el pago.', 
+						$arrResponse = array('status' => true,
+						'msg' => 'Se ha eliminado el pago.',
 						'statusAnterior' => $status,
 						'valorActivo' => $valorActivo,
 						'cobradoEstimado' => $cobradoEstimado);
@@ -147,7 +159,7 @@ class Pagos extends Controllers{
 				} else {
 					$arrResponse = array('status' => false, 'msg' => 'Resumen finalizado. No es posible eliminar el Pago.');
 				}
-				echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);	
+				echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
 			}
 		}
 		die();

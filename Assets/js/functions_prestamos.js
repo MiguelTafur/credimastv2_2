@@ -622,8 +622,17 @@ async function fntViewPagamentos(idprestamo)
     
         if(json.status){
             document.querySelector("#tbodyPagamentos").innerHTML = json.pagos;
+            document.querySelector("#cptCliente").innerHTML = json.cliente;
+            $(function () {
+                $('[data-bs-toggle="popover"]').popover({
+                    container: "body",
+                    trigger: "focus",
+                    html: true
+                })
+            });
+
         }else{
-            document.querySelector("#tbodyPagamentos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="3">Sin pagamentos</td><tr>';
+            document.querySelector("#tbodyPagamentos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="4">Sin pagamentos</td><tr>';
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
@@ -960,8 +969,6 @@ async function fntSearchPrestamosD()
     divLoading.style.display = "none";
     return false;
 }
-
-
 
 async function accion()
 {

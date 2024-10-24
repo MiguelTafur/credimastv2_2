@@ -1,4 +1,4 @@
-<!-- Modal agregar Préstamo -->
+<!-- MODAL AGREGAR, ACTUALIZAR Y RENOVAR PRÉSTAMO -->
 <div class="modal fade" id="modalFormPrestamo" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
@@ -73,7 +73,7 @@
   </div>
 </div>
 
-<!-- Modal agregar Cliente -->
+<!-- MDOAL AGREGAR CLIENTE -->
 <div class="modal fade myModal" id="modalFormCliente" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
@@ -146,7 +146,7 @@
                 <th>CLIENTE</th>
                 <th>VALOR</th>
                 <th>HORA</th>
-                <?php if($_SESSION['idRol'] == 1){echo '<th>REGISTRADO POR</th>';} ?>
+                <?php if($_SESSION['idRol'] == 1){echo '<th>USUARIO</th>';} ?>
               </tr>
             </thead>
             <tbody id="listgraficaPrestamo">

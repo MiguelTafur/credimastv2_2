@@ -49,7 +49,17 @@ class PagosModel extends Mysql
     public function selectPagamentos(int $idprestamo)
     {
         $this->intIdPrestamo = $idprestamo;
-        $sql = "SELECT idpago, abono, hora, datecreated FROM pagos WHERE prestamoid = $this->intIdPrestamo ORDER BY datecreated DESC";
+        $sql = "SELECT  pa.idpago, 
+                        (SELECT nombres FROM persona WHERE idpersona = pa.personaid) as personaid, 
+                        pa.abono, 
+                        pa.hora, 
+                        pa.datecreated,
+                        pe.nombres,
+                        pe.apellidos
+                FROM pagos pa 
+                LEFT OUTER JOIN prestamos pr ON(pa.prestamoid = pr.idprestamo)
+                LEFT OUTER JOIN persona pe ON(pr.personaid = pe.idpersona)
+                WHERE prestamoid = $this->intIdPrestamo ORDER BY datecreated DESC";
         $request = $this->select_all($sql);
         return $request;
     }

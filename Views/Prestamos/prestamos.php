@@ -46,12 +46,14 @@
     </div>
     <div class="offcanvas-body">
       <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped align-middle caption-top">
+          <caption class="mb-2">CLIENTE: &nbsp;&nbsp;<span class="text-decoration-underline" id="cptCliente"></span></caption>
           <thead>
             <tr>
-              <th class="text-center">Fecha</th>
-              <th class="text-center">Hora</th>
-              <th class="text-center">Valor</th>
+              <th class="text-center">FECHA</th>
+              <th class="text-center">VALOR</th>
+              <th class="text-center">HORA</th>
+              <th class="text-center">USUARIO</th>
             </tr>
           </thead>
           <tbody id="tbodyPagamentos">
