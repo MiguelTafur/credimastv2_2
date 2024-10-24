@@ -165,10 +165,10 @@ svg.bi {
 
 /****** LOGIN ******/
 .material-half-bg {
-    background-color: #495057;
+    background-color: #d9a300;
 }
 .material-half-bg .cover {
-    background-color: #d9a300;
+    background-color: #222d32;
 }
 
 .login-content .login-box {
@@ -231,4 +231,10 @@ svg.bi {
 /*** WIDGET ***/
 .widget-small {
     color: var(--cm-widget-color);
+}
+
+.app-header__logo {
+    font-family: monospace;
+    line-height: 60px;
+    font-size: 30px;
 }

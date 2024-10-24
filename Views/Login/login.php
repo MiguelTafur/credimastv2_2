@@ -24,7 +24,7 @@
     </section>
     <section class="login-content">
       <div class="logo">
-        <img src="<?= media();?>/images/cm3_2.jpg" alt="CREDIMAST" width="500" height="250">
+        <img src="<?= media();?>/images/cm3.png" alt="CREDIMAST" width="300" height="420">
          <!-- <h1>CREDIMAST</h1> -->
       </div>
       <div class="login-box">

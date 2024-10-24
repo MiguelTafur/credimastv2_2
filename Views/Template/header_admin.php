@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#d9a300">
     <link rel="shortcut icon" href="<?= media();?>/images/CM.png">
     <title><?= $data['page_tag'] ?></title>
-    
+
     <!-- datatables css-->
     <link rel="stylesheet" type="text/css" href="<?= media(); ?>/css/datatables.min.css">
     <!-- sweetalert css-->
@@ -19,7 +19,7 @@
     <!-- select2 css-->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- jquery-ui -->
-    <link rel="stylesheet" type="text/css" href="<?= media(); ?>/js/datepicker/jquery-ui.min.css"> 
+    <link rel="stylesheet" type="text/css" href="<?= media(); ?>/js/datepicker/jquery-ui.min.css">
     <!-- daterangepicker -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <!-- main CSS-->
@@ -48,7 +48,8 @@
     <!-- Navbar-->
     <header class="app-header">
       <a class="app-header__logo" href="<?= base_url(); ?>/prestamos">
-        <img src="<?= media();?>/images/imgCM2.png" alt="CREDIMAST" class="m-2"  height="40px">
+        <img src="<?= media();?>/images/cm3_3.png" alt="CREDIMAST" class="my-2 mx-0"  width="150px">
+        <!-- <i class="bi bi-bank fs-4"></i> Credi<i class="fw-bold text-secondary ms-1">MAST</i> -->
       </a>
       <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
       <!-- Navbar Right Menu-->
@@ -92,4 +93,4 @@
       </ul>
     </header>
 
-    <?php require_once("nav_admin.php"); ?> 
+    <?php require_once("nav_admin.php"); ?>
