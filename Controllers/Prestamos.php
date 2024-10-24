@@ -132,11 +132,11 @@ class Prestamos extends Controllers{
 							<p class="m-0 fs-6 font-monospace">'.$arrPagos[2].'</p>
 							</button>
 						</div>';
-					//BOTÓNES DE RENOVAR ELIMINAR						
+					//BOTÓN DE RENOVAR ELIMINAR						
 					if($arrData[$i]['saldo'] == 0)
 					{
 						$btnAbono = '<div class="d-flex gap-2">
-								<button class="btn btn-warning btn-sm" onclick="fntRenovar('.$arrPagos[1].')" title="Eliminar pago">
+								<button class="btn btn-warning btn-sm" onclick="fntRenovar('.$arrData[$i]['idprestamo'].')" title="Eliminar pago">
 									RENOVAR
 								</button>
 								<button class="btn btn-success btn-sm" onclick="fntDelInfoPago('.$arrPagos[1].', '.$arrData[$i]['idprestamo'].')" title="Eliminar pago">
@@ -168,7 +168,7 @@ class Prestamos extends Controllers{
 				{
 					if($arrData[$i]['datecreated'] == $fecha)
 					{
-						$btnEdit = '<button class="btn btn-warning btn-sm" onClick="fntEditInfo('.$arrData[$i]['idprestamo'].')" title="Editar Préstamo"><i class="bi bi-pencil-square me-0"></i></button>';
+						$btnEdit = '<button class="btn btn-warning btn-sm" onClick="fntEditInfo('.$arrData[$i]['idprestamo'].', 2)" title="Editar Préstamo"><i class="bi bi-pencil-square me-0"></i></button>';
 					}
 				}
 				if($_SESSION['permisosMod']['d'])
@@ -241,6 +241,7 @@ class Prestamos extends Controllers{
 				$intPlazo = intval($_POST['txtPlazo']);
 				$intFormato = intval($_POST['listFormato']);
 				$strObservacion = strClean($_POST['txtObservacion']);
+				$renovar = intval($_POST['renovar']);
 				$cheked = isset($_POST['diasSemanales']) ?  1 : 0;
 				$ruta = $_SESSION['idRuta'];
         		$usuario = $_SESSION['idUser'];

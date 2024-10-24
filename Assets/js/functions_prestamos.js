@@ -282,10 +282,11 @@ async function fntRegistrarPrestamo()
 }
 
 // EDITAR EL PRÉSTAMO
-async function fntEditInfo(idprestamo)
+async function fntEditInfo(idprestamo, renovar)
 {
-    document.querySelector('#titleModal').innerHTML = "Editar Préstamo";
-    document.querySelector('#btnText').innerHTML = "Actualizar";
+    document.querySelector('#titleModal').innerHTML = renovar == 2 ? "Editar Préstamo" : "Renovar Préstamo";
+    document.querySelector('#btnText').innerHTML = renovar == 2 ? "Actualizar" : "Renovar";
+    document.querySelector('#btnClienteNuevo').classList.add("d-none");
 
     const formData = new FormData();
     formData.append('idPrestamo', idprestamo);
@@ -306,12 +307,14 @@ async function fntEditInfo(idprestamo)
             let cliente = json.data.nombres.toUpperCase() + ' - ' + json.data.apellidos;
             let optionCliente = '<option value="' + json.data.personaid + '">' + cliente + '</option>';
 
-            document.querySelector("#idPrestamo").value = json.data.idprestamo;
+            document.querySelector("#idPrestamo").value = renovar == 2 ? json.data.idprestamo : "";
             document.querySelector("#listClientes").innerHTML = optionCliente;
             document.querySelector('#txtMonto').value = json.data.monto;
             document.querySelector('#txtTaza').value = json.data.taza;
             document.querySelector('#txtPlazo').value = json.data.plazo;
             document.querySelector('#listFormato').value = json.data.formato;
+            document.querySelector("#renovar").value = renovar;
+
 
             if(json.data.formato == 1) {
                 checkbox.disabled = false;
@@ -364,6 +367,95 @@ async function fntEditInfo(idprestamo)
     }
     divLoading.style.display = "none";
     return false;
+}
+
+//ELIMINAR PRÉSTAMOS
+function fntDelInfo(idpersona)
+{
+    Swal.fire({
+        title: "Eliminar Préstamo",
+        text: "¿Realmente quiere eliminar el Préstamo?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d9a300",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminar!",
+        cancelButtonText: "No, cancelar!",
+    }).then((result) => {
+    if (result.isConfirmed) {
+        fntDeletePrestamo(idpersona);
+    }
+    });
+}
+
+async function fntDeletePrestamo(idprestamo)
+{
+    const formData = new FormData();
+    formData.append('idPrestamo', idprestamo);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Prestamos/delPrestamo', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            if(json.statusAnterior)
+            {
+                Swal.fire({
+                    title: json.msg,
+                    text: 'El resumen ha sido eliminado debido a que no contiene más datos',
+                    icon: "warning",
+                    confirmButtonColor: "#d9a300",
+                    confirmButtonText: "Continuar",
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    location.reload();
+                }
+                });
+            } else {
+                //Swal.fire("Eliminar!", json.msg , "success");
+                tablePrestamos.ajax.reload(null, false);
+                document.querySelector('#valorActivo').textContent = json.valorActivo;
+                document.querySelector('#cobradoEstimado').textContent = json.cobradoEstimado;
+                $("#graficaMesPrestamos").html(json.graficaMes);
+                $("#graficaAnioPrestamos").html(json.graficaAnio);
+                Toast.fire({
+                    icon: "success",
+                    title: json.msg
+                });
+            }
+            
+        }else{
+            Swal.fire("Error", json.msg, "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error"
+            });*/
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+function fntRenovar(idprestamo)
+{
+    let renovar = 1;
+    fntEditInfo(idprestamo, renovar);
+
 }
 
 //REGISTRAR CLIENTE EN LA SECCIÓN PRESTAMOS
@@ -511,88 +603,6 @@ async function fntRegistrarPagoPrestamo(idprestamo, pagoprestamo)
     return false;
 }
 
-//ELIMINAR PRÉSTAMOS
-function fntDelInfo(idpersona)
-{
-    Swal.fire({
-        title: "Eliminar Préstamo",
-        text: "¿Realmente quiere eliminar el Préstamo?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#d9a300",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Si, eliminar!",
-        cancelButtonText: "No, cancelar!",
-    }).then((result) => {
-    if (result.isConfirmed) {
-        fntDeletePrestamo(idpersona);
-    }
-    });
-}
-
-async function fntDeletePrestamo(idprestamo)
-{
-    const formData = new FormData();
-    formData.append('idPrestamo', idprestamo);
-
-    divLoading.style.display = "flex";
-    try {
-        let resp = await fetch(base_url+'/Prestamos/delPrestamo', {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            body: formData
-        });
-    
-        json = await resp.json();
-    
-        if(json.status){
-            if(json.statusAnterior)
-            {
-                Swal.fire({
-                    title: json.msg,
-                    text: 'El resumen ha sido eliminado debido a que no contiene más datos',
-                    icon: "warning",
-                    confirmButtonColor: "#d9a300",
-                    confirmButtonText: "Continuar",
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    location.reload();
-                }
-                });
-            } else {
-                //Swal.fire("Eliminar!", json.msg , "success");
-                tablePrestamos.ajax.reload(null, false);
-                document.querySelector('#valorActivo').textContent = json.valorActivo;
-                document.querySelector('#cobradoEstimado').textContent = json.cobradoEstimado;
-                $("#graficaMesPrestamos").html(json.graficaMes);
-                $("#graficaAnioPrestamos").html(json.graficaAnio);
-                Toast.fire({
-                    icon: "success",
-                    title: json.msg
-                });
-            }
-            
-        }else{
-            Swal.fire("Error", json.msg, "error");
-            /*Toast.fire({
-                icon: "error",
-                title: "Ocurrió un error"
-            });*/
-            console.log(json.msg);
-        }
-    } catch (error) {
-        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
-        /*Toast.fire({
-            icon: "error",
-            title: "Ocurrió un error interno"
-        });*/
-        console.log(error);
-    }
-    divLoading.style.display = "none";
-    return false;
-}
-
 //MUESTRA UN ARRAY DE PAGAMENTOS 
 async function fntViewPagamentos(idprestamo)
 {
@@ -709,8 +719,10 @@ async function fntDeletePago(idpago, idprestamo)
 function openModal()
 {
     document.querySelector('#idPrestamo').value ="";  
+    document.querySelector('#renovar').value ="";  
     document.querySelector('#titleModal').innerHTML = "Nuevo Préstamo";
     document.querySelector('#btnText').innerHTML = "Registrar"; 
+    document.querySelector('#btnClienteNuevo').classList.remove("d-none")
     document.querySelector("#formPrestamos").reset();
 
     fntClientesPrestamo();

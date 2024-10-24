@@ -9,7 +9,7 @@
         </div>
       </div>
       <div class="modal-body">
-        <div class="row">
+        <div class="row" id="btnClienteNuevo">
           <div class="col-12 text-end">
             <button class="btn btn-warning btn-sm mb-3" type="button" onclick="fntNewClientePrestamo();">
               <i class="bi bi-person-plus-fill"></i>Cliente
@@ -20,6 +20,7 @@
           <div class="tile-body">
             <form class="row g-3" id="formPrestamos" name="formPrestamos">
               <input type="hidden" id="idPrestamo" name="idPrestamo" value="">
+              <input type="hidden" id="renovar" name="renovar" value="">
               <div class="col-12">
                 <label for="listClientes" class="form-label">Cliente</label>
                 <select class="form-select listClientes" id="listClientes" name="listClientes" required style="width: 100%;"></select>
