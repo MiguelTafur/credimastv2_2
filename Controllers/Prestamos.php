@@ -200,6 +200,7 @@ class Prestamos extends Controllers{
 		for ($i=0; $i < count($arrData); $i++) {
 
 			$arrData[$i]['cliente'] = nombresApellidos($arrData[$i]['nombres'], $arrData[$i]['apellidos']);
+			$arrData[$i]['hora'] = date('H:i', strtotime($arrData[$i]['hora']));
 		}
 
 		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);

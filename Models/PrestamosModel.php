@@ -60,7 +60,14 @@ class PrestamosModel extends Mysql
             $whereStatus2 = " AND pr.status != 0";
         }
 
-        $sql = "SELECT pe.nombres, pe.apellidos, (SELECT nombres FROM persona WHERE idpersona = pr.usuarioid) as usuario, pr.monto, pr.formato, pr.plazo, pr.taza, pr.hora
+        $sql = "SELECT pe.nombres, 
+                        pe.apellidos, 
+                        (SELECT nombres FROM persona WHERE idpersona = pr.usuarioid) as usuario, 
+                        pr.monto, 
+                        pr.formato, 
+                        pr.plazo, 
+                        pr.taza, 
+                        pr.hora
                 FROM prestamos pr 
                 LEFT OUTER JOIN persona pe 
                 ON (pr.personaid = pe.idpersona)

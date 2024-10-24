@@ -9,8 +9,10 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Cliente</th>
-            <th>Valor</th>
+            <th>CLIENTE</th>
+            <th>VALOR</th>
+            <th>HORA</th>
+            <th>USUARIO</th>
             <!-- <th>Acciones</th> -->
           </tr>
         </thead>
@@ -32,8 +34,10 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Nombre</th>
-            <th>Valor</th>
+            <th>NOMBRE</th>
+            <th>VALOR</th>
+            <th>HORA</th>
+            <th>USUARIO</th>
           </tr>
         </thead>
         <tbody id="tbodyGastos">
@@ -43,7 +47,7 @@
   </div>
 </div>
 
-<!-- CANVAS VER GASTOS -->
+<!-- CANVAS VER BASE -->
 <?php 
   if(getBaseActualAnterior() != 0) {
     $baseAnterior = getBaseActualAnterior()['anterior'];

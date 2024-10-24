@@ -109,6 +109,11 @@ class Gastos extends Controllers{
 
 		$arrData = $this->model->selectGastosFecha($_SESSION['idRuta'], $fechaGasto);
 
+		for ($i=0; $i < count($arrData); $i++) {
+
+			$arrData[$i]['hora'] = date('H:i', strtotime($arrData[$i]['hora']));
+		}
+
 		echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
 	}
 

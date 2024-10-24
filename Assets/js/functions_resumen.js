@@ -771,15 +771,14 @@ async function fntViewPrestamos()
                 <tr>
                     <td>${prestamo.cliente}</td>    
                     <td>${prestamo.monto}</td>
+                    <td>${prestamo.hora}</td>
+                    <td class="fst-italic">${prestamo.usuario}</td>
                 </tr>`
             ;
         });
         if(trPrestamo){
 
             document.querySelector("#tbodyPrestamos").innerHTML = trPrestamo;
-            // document.querySelectorAll("#tdBotones").forEach(function(boton) {
-            //     boton.children[0].children[0].classList.add('d-none');
-            // })
         } else {
             document.querySelector("#tbodyPrestamos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="2">Sin Préstamos</td></tr>';
         }
@@ -818,6 +817,8 @@ async function fntViewGastos()
                 <tr>
                     <td>${gasto.nombre}</td>    
                     <td>${gasto.monto}</td>
+                    <td>${gasto.hora}</td>
+                    <td class="fst-italic">${gasto.usuario}</td>
                 </tr>`
             ;
         });
