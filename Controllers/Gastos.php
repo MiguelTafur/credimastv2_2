@@ -68,7 +68,7 @@ class Gastos extends Controllers{
 					}
 				}
 
-				$hora = $arrData[$i]['hora'] != NULL ? date("H:i", strtotime($arrData[$i]['hora'])) : '--:--';
+				$hora = $arrData[$i]['hora'] != NULL ? date("H:i", strtotime($arrData[$i]['hora'])) : '<i class="bi bi-watch"></i>';
 				$arrData[$i]['datecreated'] = date("d/m/Y", strtotime($arrData[$i]['datecreated'])) . ' - ' . $hora;
 
 				$arrData[$i]['options'] = '<div class="text-center d-flex justify-content-center">'.$btnEdit.' '.$btnDelete.'</div>';

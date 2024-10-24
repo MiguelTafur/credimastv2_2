@@ -232,19 +232,19 @@
             $resumenes .= $cobrado;
             $resumenes .= '</td>';
             $resumenes .= '<td>';
-            $resumenes .= '<p class="h6">'.$ventas.'</p>';
+            $resumenes .= '<span>'.$ventas.'</span>';
             $resumenes .= '</td>';
             $resumenes .= '<td>';
-            $resumenes .= '<p class="h6">'.$gastos.'</p>';
+            $resumenes .= '<span>'.$gastos.'</span>';
             $resumenes .= '</td>';
             $resumenes .= '<td>';
-            $resumenes .= '<p class="h6">'.$resumen['total'].'</p>';
+            $resumenes .= '<span>'.$resumen['total'].'</span>';
             $resumenes .= '</td>';
             $resumenes .= '<td>';
-            $resumenes .= '<p class="h6">'.$hora.'</p>';
+            $resumenes .= '<span>'.$hora.'</span>';
             $resumenes .= '</td>';
             $resumenes .= '<td>';
-            $resumenes .= '<p class="h6">'.$resumen['personaid'].'</p>';
+            $resumenes .= '<span class="fst-italic fw-normal">'.$resumen['personaid'].'</span>';
             $resumenes .= '</td>';
             $resumenes .= '</tr>';   
         }
