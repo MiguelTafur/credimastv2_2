@@ -62,7 +62,7 @@ class ClientesModel extends Mysql
 		$this->intIdRuta = $ruta;
 		$return = 0;
 
-		$sql = "SELECT * FROM persona WHERE identificacion = '{$this->strIdentificacion}'";
+		$sql = "SELECT * FROM persona WHERE identificacion = '{$this->strIdentificacion}' AND codigoruta = $this->intIdRuta";
 		$request = $this->select_all($sql);
 
 		if(empty($request))
