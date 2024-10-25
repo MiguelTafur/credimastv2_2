@@ -229,7 +229,7 @@
             <table class="table table-striped align-middle">
               <thead>
                 <tr>
-                  <th>DIA</th>
+                  <th class="text-center">DIA</th>
                   <th>BASE</th>
                   <th>COBRADO</th>
                   <th>VENTAS</th>
