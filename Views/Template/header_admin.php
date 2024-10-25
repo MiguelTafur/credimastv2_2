@@ -55,7 +55,7 @@
       <!-- Navbar Right Menu-->
       <ul class="app-nav">
         <!-- Dark mode -->
-        <li class="nav-item dropdown">
+        <!-- <li class="nav-item dropdown">
           <button class="btn btn-link nav-link py-2 px-0 px-lg-2 dropdown-toggle d-flex align-items-center"
                   id="bd-theme"
                   type="button"
@@ -89,7 +89,7 @@
               </button>
             </li>
           </ul>
-        </li>
+        </li> -->
       </ul>
     </header>
 
