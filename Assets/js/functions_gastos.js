@@ -47,6 +47,7 @@ function fntTableGastos()
             {"data":"datecreated"},
             {"data":"nombre"},
             {"data":"monto"},
+            {"data":"hora"},
             {"data":"options"}
         ],
 

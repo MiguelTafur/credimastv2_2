@@ -71,6 +71,7 @@
                       <th>FECHA</th>
                       <th>NOMBRE</th>
                       <th>VALOR</th>
+                      <th>HORA</th>
                       <th>DETALLES</th>
                     </tr>
                   </thead>
