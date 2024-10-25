@@ -27,9 +27,9 @@
     </ul>
   </div>
 
-  <button class="btn btn-danger mb-3" onclick="accion()">Acción pagos</button>
+  <!-- <button class="btn btn-danger mb-3" onclick="accion()">Acción pagos</button>
   <button class="btn btn-danger mb-3" onclick="accionPrestamos()">Acción préstamos</button>
-  <button class="btn btn-danger mb-3" onclick="accionPrestamosUsuario()">Acción préstamos usuarioid</button>
+  <button class="btn btn-danger mb-3" onclick="accionPrestamosUsuario()">Acción préstamos usuarioid</button> -->
 
   <!-- ALERTAS DELR ESUMEN ANTERIOR -->
   <?php

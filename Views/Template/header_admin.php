@@ -27,7 +27,7 @@
     <!-- style CSS-->
     <link rel="stylesheet" type="text/css" href="<?= media(); ?>/css/style.css">
   </head>
-  <body class="app sidebar-mini">
+  <body class="app sidebar-mini" data-bs-theme="dark">
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
       <symbol id="circle-half" viewBox="0 0 16 16">
         <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>

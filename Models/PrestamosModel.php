@@ -23,6 +23,8 @@ class PrestamosModel extends Mysql
     public function selectPrestamos(int $ruta)
     {
         $this->intIdRuta = $ruta;
+        $resumenAnterior = getResumenAnterior()['datecreated'] ?? NOWDATE;
+
         $sql = "SELECT 
                     pr.idprestamo, 
                     pr.personaid,
@@ -40,7 +42,7 @@ class PrestamosModel extends Mysql
                 FROM prestamos pr 
                 INNER JOIN persona pe 
                 ON (pr.personaid = pe.idpersona)
-                WHERE (pe.codigoruta = $this->intIdRuta and pr.status = 1) or (pe.codigoruta = $this->intIdRuta AND pr.status = 2 and pr.datefinal = '" . NOWDATE . "') ORDER BY pr.datecreated ASC";
+                WHERE (pe.codigoruta = $this->intIdRuta and pr.status = 1) or (pe.codigoruta = $this->intIdRuta AND pr.status = 2 and pr.datefinal = '" . $resumenAnterior . "') ORDER BY pr.datecreated ASC";
         $request = $this->select_all($sql);
         return $request;
     }
