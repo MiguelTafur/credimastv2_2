@@ -95,7 +95,7 @@
           <div class="tile">
             <div class="container-title d-flex justify-content-between flex-wrap">
               <h3 class="tile-title">Gráfica Mensual</h3>
-              <form>
+              <form class="mb-2 mb-md-0">
                 <div class="input-group">
                   <input class="date-picker gastosMes form-control" name="gastosMes" id="gastosMes" placeholder="Mes y Año">
                   <button type="button" class="btn btn-warning btn-sm" id="button-addon2" onclick="fntSearchGastosMes()">
@@ -112,7 +112,7 @@
           <div class="tile">
             <div class="container-title d-flex justify-content-between flex-wrap">
               <h3 class="tile-title">Gráfica Anual</h3> 
-              <form>
+              <form class="mb-2 mb-md-0">
                 <div class="input-group">
                   <input class="gastosAnio form-control" name="gastosAnio" id="gastosAnio" placeholder="Mes y Año" minlength="4" maxlength="4" onkeypress="return controlTag(event)">
                   <button type="button" class="btn btn-warning btn-sm" id="button-addon2" onclick="fntSearchGastosAnio()">
