@@ -232,9 +232,3 @@ svg.bi {
 .widget-small {
     color: var(--cm-widget-color);
 }
-
-.app-header__logo {
-    font-family: monospace;
-    line-height: 60px;
-    font-size: 30px;
-}

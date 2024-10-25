@@ -88,53 +88,56 @@ function fntTablePrestamos()
             '<li class="list-group-item d-flex justify-content-center align-items-center active">'+
                 'INFORMACIÓN DEL PRÉSTAMO'+
             '</li>'+
-            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
-                'FECHA INICIO'+
-                '<span class="badge text-bg-secondary rounded-pill">' + inicio + '</span>'+
+            '<li class="list-group-item d-flex justify-content-center align-items-center">'+
+                'SALDO'+
+                '<span class="badge text-bg-secondary rounded-pill ms-2">' + saldo + '</span>'+
             '</li>'+
-            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
-                'FECHA VENCIMIENTO'+
-                '<span class="badge text-bg-secondary rounded-pill">' + final + '</span>'+
+            '<li class="list-group-item d-flex justify-content-center align-items-center">'+
+                'PAGADO'+
+                '<span class="badge text-bg-secondary rounded-pill ms-2">' + pagado + '</span>'+
             '</li>'+
-            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
-                'CRÉDITO'+
-                '<span class="badge text-bg-secondary rounded-pill">' + monto + '</span>'+
+            '<li class="list-group-item d-flex justify-content-center align-items-center">'+
+                'PARCELAS PENDIENTES'+
+                '<span class="badge text-bg-secondary rounded-pill ms-2">' + pendiente + '</span>'+
             '</li>'+
-            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
-                'TASA DE INTERÉS'+
-                '<span class="badge text-bg-secondary rounded-pill">' + taza + '%</span>'+
-            '</li>'+
-            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
-                'TOTAL A PAGAR'+
-                '<span class="badge text-bg-secondary rounded-pill">' + total + '</span>'+
-            '</li>'+
-            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
-                'PLAZO'+
-                '<span class="badge text-bg-secondary rounded-pill">' + plazo + '</span>'+
-            '</li>'+
-            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
-                'VALOR PARCELA'+
-                '<span class="badge text-bg-secondary rounded-pill">' + parcela + '</span>'+
+            '<li class="list-group-item d-flex justify-content-center align-items-center">'+
+                'PARCELAS CANCELADAS'+
+                '<span class="badge text-bg-secondary rounded-pill ms-2">' + cancelado + '</span>'+
             '</li>'+
             '<li">'+
                 '<hr class="border border-secondary border-2 opacity-75">'+
             '</li>'+
-            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
-                'SALDO'+
-                '<span class="badge text-bg-secondary rounded-pill">' + saldo + '</span>'+
+
+            '<li class="list-group-item d-flex justify-content-center align-items-center">'+
+                'FECHA INICIO'+
+                '<span class="badge text-bg-secondary rounded-pill ms-2">' + inicio + '</span>'+
             '</li>'+
-            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
-                'PAGADO'+
-                '<span class="badge text-bg-secondary rounded-pill">' + pagado + '</span>'+
+            '<li class="list-group-item d-flex justify-content-center align-items-center">'+
+                'FECHA VENCIMIENTO'+
+                '<span class="badge text-bg-secondary rounded-pill ms-2">' + final + '</span>'+
             '</li>'+
-            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
-                'PARCELAS PENDIENTES'+
-                '<span class="badge text-bg-secondary rounded-pill">' + pendiente + '</span>'+
+            '<li class="list-group-item d-flex justify-content-center align-items-center">'+
+                'CRÉDITO'+
+                '<span class="badge text-bg-secondary rounded-pill ms-2">' + monto + '</span>'+
             '</li>'+
-            '<li class="list-group-item d-flex justify-content-between align-items-center">'+
-                'PARCELAS CANCELADAS'+
-                '<span class="badge text-bg-secondary rounded-pill">' + cancelado + '</span>'+
+            '<li class="list-group-item d-flex justify-content-center align-items-center">'+
+                'TASA DE INTERÉS'+
+                '<span class="badge text-bg-secondary rounded-pill ms-2">' + taza + '%</span>'+
             '</li>'+
+            '<li class="list-group-item d-flex justify-content-center align-items-center">'+
+                'TOTAL A PAGAR'+
+                '<span class="badge text-bg-secondary rounded-pill ms-2">' + total + '</span>'+
+            '</li>'+
+            '<li class="list-group-item d-flex justify-content-center align-items-center">'+
+                'PLAZO'+
+                '<span class="badge text-bg-secondary rounded-pill ms-2">' + plazo + '</span>'+
+            '</li>'+
+            '<li class="list-group-item d-flex justify-content-center align-items-center">'+
+                'VALOR PARCELA'+
+                '<span class="badge text-bg-secondary rounded-pill ms-2">' + parcela + '</span>'+
+            '</li>'+
+
+            
         '</ul>';
     }
 
@@ -451,6 +454,7 @@ async function fntDeletePrestamo(idprestamo)
     return false;
 }
 
+//RENOVAR PRÉSTAMO
 function fntRenovar(idprestamo)
 {
     let renovar = 1;
