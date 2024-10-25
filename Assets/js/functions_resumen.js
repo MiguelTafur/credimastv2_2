@@ -826,7 +826,7 @@ async function fntViewGastos()
 
             document.querySelector("#tbodyGastos").innerHTML = trGasto;
         } else {
-            document.querySelector("#tbodyGastos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="2">Sin Gastos</td></tr>';
+            document.querySelector("#tbodyGastos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="4">Sin Gastos</td></tr>';
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
