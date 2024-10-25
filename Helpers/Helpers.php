@@ -223,7 +223,7 @@
                                                  </button>';
             $resumenes .= '<tr>';
             $resumenes .= '<td>';
-            $resumenes .= date("d-m-Y", strtotime($resumen['datecreated']));
+            $resumenes .= fechaInline(date("d-m-Y", strtotime($resumen['datecreated'])));
             $resumenes .= '</td>';
             $resumenes .= '<td>';
             $resumenes .= $basePopover;
