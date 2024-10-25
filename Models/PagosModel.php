@@ -123,7 +123,7 @@ class PagosModel extends Mysql
                     //ACTUALIZA EL STATUS DEL PRÉSTAMO SI EL SALDO ES 0
                     if($estado == 2){
                         $query_update = "UPDATE prestamos SET datefinal = ?, status = ? WHERE idprestamo = $this->intIdPrestamo";
-                        $arrData = array(NOWDATE, $estado);
+                        $arrData = array($this->strFecha, $estado);
                         $request = $this->update($query_update,$arrData);
                     }
 

@@ -3,6 +3,7 @@
         const base_url = "<?= base_url(); ?>";
         const smoney = "<?= SMONEY; ?>";
         const ruta = "<?= $_SESSION['idRuta']; ?>";
+        const fechaActual = "<?= getResumenAnterior()['datecreated'] ?? NOWDATE; ?>";
     </script>
 
     <!-- jquery js-->

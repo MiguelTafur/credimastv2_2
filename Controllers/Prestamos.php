@@ -48,9 +48,10 @@ class Prestamos extends Controllers{
 				$btnView = '';
 				$btnEdit = '';
 				$btnDelete = '';
+				$icono = '<div class="d-none" id="div-'.$arrData[$i]['idprestamo'].'"><i class="bi bi-circle-fill"></i></div>';
 
 				//JUNTANDO EL NOMBRE Y EL NEGOCIO DEL CLIENTE
-				$arrData[$i]['cliente'] = nombresApellidos($arrData[$i]['nombres'], $arrData[$i]['apellidos']);
+				$arrData[$i]['cliente'] = '<div class="d-flex gap-1">'.nombresApellidos($arrData[$i]['nombres'], $arrData[$i]['apellidos']) . ' ' . $icono . '</div>';
 
 				//CREANDO Y ASIGNANDO A UNA VARIABLE EL PLAZO
 				$arrData[$i]['intPlazo'] = $arrData[$i]['plazo'];
@@ -68,6 +69,29 @@ class Prestamos extends Controllers{
 					$arrData[$i]['datecreatedFormat'] = date("d/m/Y", strtotime($arrData[$i]['datecreated']));
 				}
 				$arrData[$i]['fechavenceFormat'] = date("d/m/Y", strtotime($arrData[$i]['fechavence']));
+
+				//CALCULANDO LOS ÚLTIMOS 4 DIAS ANTES DE VENCER EL PRÉSTRAMO
+				if($arrData[$i]['fechavence'] != NULL)
+				{
+					$diasVencimiento4 = date("Y-m-d", strtotime('-4 day', strtotime($arrData[$i]['fechavence'])));
+					$diasVencimiento3 = date("Y-m-d", strtotime('-3 day', strtotime($arrData[$i]['fechavence'])));
+					$diasVencimiento2 = date("Y-m-d", strtotime('-2 day', strtotime($arrData[$i]['fechavence'])));
+					$diasVencimiento1 = date("Y-m-d", strtotime('-1 day', strtotime($arrData[$i]['fechavence'])));
+					
+					if($diasVencimiento4 == NOWDATE || 
+					$diasVencimiento3 == NOWDATE || 
+					$diasVencimiento2 == NOWDATE || 
+					$diasVencimiento1 == NOWDATE || 
+					$arrData[$i]['fechavence'] == NOWDATE)
+					{
+					$arrData[$i]['diasVence'] = false;
+					}else if($arrData[$i]['fechavence'] < NOWDATE)
+					{
+					$arrData[$i]['diasVence'] = "vencido";
+					}else{
+					$arrData[$i]['diasVence'] = true;
+					}
+				}
 
 				//CALCULANDO LA PARCELA DEL PRESTAMO
 				$parcela = $arrData[$i]['monto'] + ($arrData[$i]['monto'] * ($arrData[$i]['taza'] * 0.01));
@@ -153,6 +177,7 @@ class Prestamos extends Controllers{
 							<button type="submit" class="btn btn-warning btn-sm" type="button" id="button-addon2" onclick="fntNewPagoPrestamo('.$arrData[$i]['idprestamo'].')">Pagar</button>
 						</div>';
 				}
+
 				$arrData[$i]['pagamento'] = '
 							<form onsubmit="return false;">
 								<div style="width: 130px">

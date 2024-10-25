@@ -161,6 +161,51 @@ function fntTablePrestamos()
             tdi.first().addClass("bi-eye-slash");
         }
     });
+    tablePrestamos.on("init.dt", function()
+    {
+        iconosPrestamos();
+    });
+}
+
+function iconosPrestamos()
+{
+    for (let i = 0; i < tablePrestamos.rows().count(); i++)
+    {
+        let row = tablePrestamos.row(i);
+        let fechaInicio = row.data().datecreated;
+        let fechaFinal = row.data().datefinal;
+        let vencimiento = row.data().diasVence;
+        let id = row.data().idprestamo;
+
+        //console.log(row.data());
+
+        if(fechaInicio == fechaActual)
+        {
+            //$(row.node()).addClass("table-success");
+            document.querySelector("#div-" + id).classList.remove("d-none");
+            document.querySelector("#div-" + id).classList.add("text-success");
+        }
+
+        if(fechaFinal != null)
+        {
+            //$(row.node()).addClass("table-warning");
+            document.querySelector("#div-" + id).classList.remove("d-none");
+            document.querySelector("#div-" + id).classList.add("text-secondary");
+        }
+
+        if(vencimiento == false && fechaFinal == null)
+        {
+            //$(row.node()).addClass("table-warning");
+            document.querySelector("#div-" + id).classList.remove("d-none");
+            document.querySelector("#div-" + id).classList.add("text-warning");
+        }
+        if(vencimiento == "vencido" && fechaFinal == null)
+        {
+            //$(row.node()).addClass("table-danger");
+            document.querySelector("#div-" + id).classList.remove("d-none");
+            document.querySelector("#div-" + id).classList.add("text-danger");
+        }
+    }
 }
 
 //TRAER TODOS LOS CLIENTES EN EL SELECT
@@ -249,7 +294,8 @@ async function fntRegistrarPrestamo()
         });
         json = await resp.json();
         if(json.status) {
-            tablePrestamos.ajax.reload(null, false);
+            
+            tablePrestamos.ajax.reload(() => iconosPrestamos());
             $('#modalFormPrestamo').modal("hide");
             formPrestamos.reset();
             document.querySelector('#valorActivo').textContent = json.valorActivo;
@@ -423,7 +469,7 @@ async function fntDeletePrestamo(idprestamo)
                 });
             } else {
                 //Swal.fire("Eliminar!", json.msg , "success");
-                tablePrestamos.ajax.reload(null, false);
+                tablePrestamos.ajax.reload(() => iconosPrestamos());
                 document.querySelector('#valorActivo').textContent = json.valorActivo;
                 document.querySelector('#cobradoEstimado').textContent = json.cobradoEstimado;
                 $("#graficaMesPrestamos").html(json.graficaMes);
@@ -580,7 +626,7 @@ async function fntRegistrarPagoPrestamo(idprestamo, pagoprestamo)
     
         if(json.status){
             //Swal.fire("Eliminar!", json.msg , "success");
-            tablePrestamos.ajax.reload(null, false);
+            tablePrestamos.ajax.reload(() => iconosPrestamos());
             document.querySelector('#valorActivo').textContent = json.valorActivo;
             document.querySelector('#cobradoEstimado').textContent = json.cobradoEstimado;
             Toast.fire({
@@ -701,7 +747,7 @@ async function fntDeletePago(idpago, idprestamo)
                 });
             } else {
                 //Swal.fire("Eliminar!", json.msg , "success");
-                tablePrestamos.ajax.reload(null, false);
+                tablePrestamos.ajax.reload(() => iconosPrestamos());
                 document.querySelector('#valorActivo').textContent = json.valorActivo;
                 document.querySelector('#cobradoEstimado').textContent = json.cobradoEstimado;
                 Toast.fire({
