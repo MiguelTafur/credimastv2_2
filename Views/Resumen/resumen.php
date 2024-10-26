@@ -41,7 +41,7 @@
       <div class="tile">
         <div class="tile-body">
           <div class="row justify-content-center">
-            <div class="col-6">
+            <div class="col-9">
               <div class="card mb-4">
                 <div class="card-header text-center text-body-secondary h6">Información del Resumen <?= $resumenAnterior ?? ''; ?></div>
                 <div class="card-body">
