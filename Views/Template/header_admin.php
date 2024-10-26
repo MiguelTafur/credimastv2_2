@@ -90,6 +90,13 @@
             </li>
           </ul>
         </li> -->
+        <li class="nav-item dropdown">
+          <div class="fs-2">
+            <a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu">
+              <i class="bi bi-play-circle"></i>
+            </a>
+          </div>
+        </li>
       </ul>
     </header>
 
