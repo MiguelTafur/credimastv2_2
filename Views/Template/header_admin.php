@@ -91,11 +91,11 @@
           </ul>
         </li> -->
         <li class="nav-item dropdown">
-          <div class="fs-2">
-            <a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu">
-              <i class="bi bi-play-circle"></i>
-            </a>
-          </div>
+          <a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu">
+            <div class="fs-2">
+              <i class="bi bi-info-circle"></i>
+            </div>
+          </a>
         </li>
       </ul>
     </header>

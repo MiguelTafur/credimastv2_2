@@ -80,4 +80,13 @@
           </a>
         </li>
       </ul>
+
+      <ul class="app-menu">
+        <li>
+          <a class="app-menu__item" href="<?= base_url(); ?>/ajuda">
+            <i class="app-menu__icon bi bi-info-circle"></i>
+            <span class="app-menu__label">Ajuda</span>
+          </a>
+        </li>
+      </ul>
     </aside>
