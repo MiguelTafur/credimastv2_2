@@ -8,13 +8,13 @@
 	date_default_timezone_set('Brazil/East');
 
 	const DB_HOST = "localhost:3307";
-	const DB_NAME = "qahi319";
+	/*const DB_NAME = "qahi319";
 	const DB_USER = "root";
-	const DB_PASSWORD = "";
+	const DB_PASSWORD = "";*/
 
-	/*const DB_NAME = "u124563208_credimast";
+	const DB_NAME = "u124563208_credimast";
 	const DB_USER = "u124563208_credimast";
-	const DB_PASSWORD = "m!Guel03";*/
+	const DB_PASSWORD = "m!Guel03";
 
 	const DB_CHARSET = "utf8";
 
