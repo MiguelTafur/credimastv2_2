@@ -6,7 +6,7 @@
 
 <main class="app-content">
   <div class="app-title">
-    <div>
+    <div class="mt-2 mt-lg-0">
       <h1>
         <i class="bi bi-clipboard2-pulse"></i>
         <?= $data['page_title'] ?>
