@@ -193,7 +193,7 @@
 
             $cobrado = $resumen['cobrado'] == 0 ? round($resumen['cobrado'], 0) 
                                                 : '<button 
-                                                    class="btn btn-link btn-sm link-warning link-underline-opacity-0 p-0" 
+                                                    class="btn btn-link btn-sm link-warning link-underline-opacity-0 p-0 infoCobrado" 
                                                     style="font-size: inherit;"
                                                     data-bs-toggle="popover" 
                                                     data-bs-placement="left" 

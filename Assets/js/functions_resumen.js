@@ -17,6 +17,17 @@ function iniciarApp() {
     });
 }
 
+function sincronizarPopovers()
+{
+    $('.infoCobrado').popover({
+        title: "COBRADO",
+        content: 'ejemplo cobrado',
+        html: true,
+        trigger: "focus",
+        animation: true
+    });
+}
+
 //CONSULTA SI HAY UNA BASE REGISTRADA
 async function fntBase()
 {
