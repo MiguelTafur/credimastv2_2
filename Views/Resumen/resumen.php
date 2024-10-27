@@ -241,15 +241,6 @@
               </thead>
               <tbody class="table-group-divider" id="ultimosResumenes">
                 <?= getUltimosResumenes(); ?>
-                 <!-- <tr>
-                  <td>
-                    <a tabindex="0" role="button" class="btn btn-link btn-sm link-warning link-underline-opacity-0 p-0 infoCobrado">100</a>
-                  </td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                 </tr> -->
               </tbody>
             </table>
           </div>

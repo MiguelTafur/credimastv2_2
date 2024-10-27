@@ -101,7 +101,9 @@ class Resumen extends Controllers{
 
 				$basePopover = getBaseActualAnterior($resumen['datecreated']) == 0 
 											? $resumen['base']
-                                    	  	: '<button 
+                                    	  	: '<a
+											 tabindex="0"
+                                             role="button" 
                                              class="btn btn-link btn-sm link-warning link-underline-opacity-0" 
                                              style="font-size: inherit;"
                                              data-bs-toggle="popover" 
@@ -119,11 +121,13 @@ class Resumen extends Controllers{
 												'.getBaseActualAnterior($resumen['datecreated'])['usuarioActual'].'" 
                                              title="BASE MODIFICADA">
                                              ' . getBaseActualAnterior($resumen['datecreated'])['actual'] . ' 
-                                             </button>';
+                                             </a>';
 
 				$cobradoPopover = $cobrado == 0 
 											? $cobrado
-                                    	  : '<button 
+                                    	  : '<a
+										  	tabindex="0"
+                                            role="button" 
                                              class="btn btn-link btn-sm link-warning link-underline-opacity-0" 
                                              style="font-size: inherit;"
                                              data-bs-toggle="popover" 
@@ -131,10 +135,12 @@ class Resumen extends Controllers{
                                              data-bs-content="'.getFormatCobrado($resumen['datecreated']).'" 
                                              title="COBRADO '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' HORA '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' USUARIO">
                                              '.round($cobrado, 0).'
-                                             </button>';
+                                             </a>';
 
 				$ventasPopover = $ventas == 0 ? $ventas
-										: '<button 
+										: '<a
+											tabindex="0"
+                                            role="button" 
 											class="btn btn-link btn-sm link-warning link-underline-opacity-0" 
 											style="font-size: inherit;"
 											data-bs-toggle="popover" 
@@ -142,10 +148,12 @@ class Resumen extends Controllers{
 											data-bs-content="'.getFormatPrestamos($resumen['datecreated']).'" 
 											title="VENTA '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' HORA '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' USUARIO">
 											'.round($ventas, 0).'
-											</button>';
+											</a>';
 
 				$gastosPopover = $gastos == 0 ? $gastos
-										: '<button 
+										: '<a
+											tabindex="0"
+                                            role="button" 
 											class="btn btn-link btn-sm link-warning link-underline-opacity-0" 
 											style="font-size: inherit;"
 											data-bs-toggle="popover" 
@@ -153,10 +161,10 @@ class Resumen extends Controllers{
 											data-bs-content="'.getFormatGastos($resumen['datecreated']).'" 
 											title="GASTO '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' HORA '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' USUARIO">
 											'.round($gastos, 0).'
-											</button>';
+											</a>';
 
 				$detalles .= '<tr class="text-center">'; 
-				$detalles .= '<td>'.$resumen['datecreated'].'</td>';
+				$detalles .= '<td>'.fechaInline(date("d-m-Y", strtotime($resumen['datecreated']))).'</td>';
 				$detalles .= '<td>'.$basePopover.'</td>';
 				$detalles .= '<td>'.$cobradoPopover.'</td>';
 				$detalles .= '<td>'.$ventasPopover.'</td>';
