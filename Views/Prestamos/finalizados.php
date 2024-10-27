@@ -57,7 +57,7 @@
                 ?>
 
                   <tr>
-                    <td><?= date("d-m-Y", strtotime($prestamo['datefinal'])); ?></td>
+                    <td><?= fechaInline(date("d-m-Y", strtotime($prestamo['datefinal']))); ?></td>
                     <td><?= nombresApellidos($prestamo['nombre'], $prestamo['negocio']); ?></td>
                     <td class="text-center">
                       <button 
