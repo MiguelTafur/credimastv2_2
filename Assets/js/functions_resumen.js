@@ -13,8 +13,10 @@ function iniciarApp() {
             container: "body",
             trigger: "focus",
             html: true
-        })
+        });
+        sincronizarPopovers();
     });
+
 }
 
 function sincronizarPopovers()
