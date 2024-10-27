@@ -9,11 +9,11 @@ function iniciarApp() {
     fntNewResumen();
     fntBase();
     $(function () {
-        $('[data-bs-toggle="popover"]').popover({
-            container: "body",
-            trigger: "focus",
-            html: true
-        });
+        // $('[data-bs-toggle="popover"]').popover({
+        //     container: "body",
+        //     trigger: "focus",
+        //     html: true
+        // });
         sincronizarPopovers();
     });
 

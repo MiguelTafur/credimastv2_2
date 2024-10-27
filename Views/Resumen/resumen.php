@@ -240,7 +240,16 @@
                 </tr>
               </thead>
               <tbody class="table-group-divider" id="ultimosResumenes">
-                <?= getUltimosResumenes(); ?>
+                <!-- <?php //getUltimosResumenes(); ?> -->
+                 <tr>
+                  <td>
+                    <button class="btn btn-link btn-sm link-warning link-underline-opacity-0 p-0 infoCobrado">100</button>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                 </tr>
               </tbody>
             </table>
           </div>
