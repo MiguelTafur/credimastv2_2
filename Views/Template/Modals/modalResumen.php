@@ -92,19 +92,21 @@
           </div>
         </form>
         <div id="divResumenD" class="d-none">
-          <table class="table align-middle">
-            <thead>
-            <tr class="text-center">
-                <th>DIA</th>
-                <th>BASE</th>
-                <th>COBRADO</th>
-                <th>VENTAS</th>
-                <th>GASTOS</th>
-                <th>TOTAL</th>
-              </tr>
-            </thead>
-            <tbody id="datosResumenD"></tbody>
-          </table>
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead>
+              <tr class="text-center">
+                  <th>DIA</th>
+                  <th>BASE</th>
+                  <th>COBRADO</th>
+                  <th>VENTAS</th>
+                  <th>GASTOS</th>
+                  <th>TOTAL</th>
+                </tr>
+              </thead>
+              <tbody id="datosResumenD"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
