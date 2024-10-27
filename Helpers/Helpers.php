@@ -171,7 +171,9 @@
            
             $basePopover = getBaseActualAnterior($resumen['datecreated']) == 0 
 											? $resumen['base']
-                                    	  	: '<button 
+                                    	  	: '<a
+                                             tabindex="0"
+                                             role="button" 
                                              class="btn btn-link btn-sm link-warning link-underline-opacity-0 p-0" 
                                              style="font-size: inherit;"
                                              data-bs-toggle="popover" 
@@ -189,18 +191,20 @@
 												'.getBaseActualAnterior($resumen['datecreated'])['usuarioActual'].'" 
                                              title="BASE MODIFICADA">
                                              ' . getBaseActualAnterior($resumen['datecreated'])['actual'] . ' 
-                                             </button>';
+                                             </a>';
 
             $cobrado = $resumen['cobrado'] == 0 ? round($resumen['cobrado'], 0) 
-                                                : '<button 
-                                                    class="btn btn-link btn-sm link-warning link-underline-opacity-0 p-0 infoCobrado" 
+                                                : '<a
+                                                    tabindex="0"
+                                                    role="button" 
+                                                    class="btn btn-link btn-sm link-warning link-underline-opacity-0 p-0" 
                                                     style="font-size: inherit;"
                                                     data-bs-toggle="popover" 
                                                     data-bs-placement="left" 
                                                     data-bs-content="'.$getCobrado.'" 
                                                     title="COBRADO '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' HORA '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' USUARIO '.'">
                                                     '.round($resumen['cobrado'], 0).'
-                                                    </button>';
+                                                    </a>';
             $ventas = $resumen['ventas'] == 0 ? round($resumen['ventas'], 0) 
                                               : '<button 
                                                  class="btn btn-link btn-sm link-warning link-underline-opacity-0 p-0" 

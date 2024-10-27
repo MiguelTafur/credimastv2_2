@@ -9,17 +9,17 @@ function iniciarApp() {
     fntNewResumen();
     fntBase();
     $(function () {
-        // $('[data-bs-toggle="popover"]').popover({
-        //     container: "body",
-        //     trigger: "focus",
-        //     html: true
-        // });
-        sincronizarPopovers();
+        $('[data-bs-toggle="popover"]').popover({
+            container: "body",
+            trigger: "focus",
+            html: true
+        });
+        //sincronizarPopovers();
     });
 
 }
 
-function sincronizarPopovers()
+/*function sincronizarPopovers()
 {
     $('.infoCobrado').popover({
         title: "COBRADO",
@@ -28,7 +28,7 @@ function sincronizarPopovers()
         trigger: "focus",
         animation: true
     });
-}
+}*/
 
 //CONSULTA SI HAY UNA BASE REGISTRADA
 async function fntBase()
