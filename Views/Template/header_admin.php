@@ -42,7 +42,7 @@
     </svg>
     <div id="divLoading">
       <div>
-        <div class="spinner-grow"></div>
+        <div class="spinner-grow text-warning"></div>
       </div>
     </div>
     <!-- Navbar-->

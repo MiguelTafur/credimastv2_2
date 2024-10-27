@@ -179,7 +179,7 @@
             <input type="text" readonly class="form-control" id="fechaPrestamos" placeholder="Selecciona una fecha">
             </div>
             <div class="col-2">
-              <button type="button" class="btn btn-warning mb-2" onclick="fntSearchPrestamosD()"><i class="bi bi-search me-0"></i></button>
+              <button type="button" class="btn btn-warning mb-2" onclick="fntSearchPrestamosD('<?= $data['prestamo'] ?>')"><i class="bi bi-search me-0"></i></button>
             </div>
           </div>
         </form>

@@ -48,12 +48,26 @@
         <?php endif; ?>
         <!-- PRESTAMOS -->
         <?php if(!empty($_SESSION['permisos'][MPRESTAMOS]['r'])) : ?>
-        <li>
-          <a class="app-menu__item" href="<?= base_url(); ?>/prestamos">
+        <li class="treeview">
+          <a class="app-menu__item" href="#" data-toggle="treeview">
             <i class="app-menu__icon bi bi-cash-coin"></i>
             <span class="app-menu__label">Préstamos</span>
+            <i class="treeview-indicator bi bi-chevron-right"></i>
           </a>
+          <ul class="treeview-menu">
+            <li>
+              <a class="treeview-item" href="<?= base_url(); ?>/prestamos">
+                <i class="icon bi bi-circle-fill"></i> Activos
+              </a>
+            </li>
+            <li>
+              <a class="treeview-item" href="<?= base_url(); ?>/prestamos/finalizados">
+                <i class="icon bi bi-circle-fill"></i> Finalizados
+              </a>
+            </li>
+          </ul>
         </li>
+        
         <?php endif; ?>
         <!-- VENTAS -->
         <?php if(!empty($_SESSION['permisos'][MPRESTAMOS]['r'])) : ?>

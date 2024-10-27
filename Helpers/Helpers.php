@@ -396,7 +396,7 @@
     }
 
     /**** PAGOS ****/
-    //TRAE LA SUMA DE TODOS LOS PAGAMENTOS DEL PRÉSTAMO
+    //TRAE LA SUMA DE TODOS LOS PAGOS DEL PRÉSTAMO
     function sumaPagamentosPrestamos(int $idprestamo)
     {
         require_once("Models/PagosModel.php");
@@ -405,7 +405,7 @@
         return $request['sumaPagos'];
     }
 
-    //TRAE LA SUMA DE TODOS LOS PAGAMENTOS DE LOS PRÉSTAMOS
+    //TRAE LA SUMA DE TODOS LOS PAGOS DE LOS PRÉSTAMOS
     function totalPagamentosPrestamos(int $ruta)
     {
         require_once("Models/PagosModel.php");
@@ -431,7 +431,7 @@
         return $fechaPago.'|'.$idPago.'|'.$abono;
     }
 
-    //TRAE UN ARRAY CON TODOS LOS PAGAMENTOS DEL PRÉSTAMO Y DEVUELVE UN STRING
+    //TRAE UN ARRAY CON TODOS LOS PAGOS DE LOS PRÉSTAMOS CON UNA FECHA ESPECÍFICA Y DEVUELVE UN STRING
     function getFormatCobrado(string $fecha)
     {
         require_once("Models/PagosModel.php");
@@ -445,6 +445,28 @@
             $pagos .= nombresApellidos($request[$i]['nombres'], $request[$i]['apellidos']) . ': ' . $request[$i]['abono'] . "  &nbsp;<div class='vr'></div>&nbsp;  " . $hora . "  &nbsp;<div class='vr'></div>&nbsp;  <i>" . $request[$i]['usuario'] . '</i><br>';
         }
         return $pagos;
+    }
+
+    //TRAE UN ARRAY CON TODOS LOS PAGOS DEL PRÉSTAMO
+    function getPagosPrestamo(int $idprestamo)
+    {
+        require_once("Models/PagosModel.php");
+        $ruta = $_SESSION['idRuta'];
+        $objPagos = new PagosModel();
+        $request = $objPagos->selectPagamentos($idprestamo);
+        $cobrado = '';
+        
+        foreach ($request as $pago) {
+            $hora = $pago['hora'] != NULL ? date("H:i", strtotime($pago['hora'])) : " <i class='bi bi-watch'></i>";
+
+            $cobrado .= $pago['datecreated'] . "&nbsp;&nbsp;<div class='vr'></div>&nbsp;&nbsp;" .  
+                        $pago['abono'] . "&nbsp;&nbsp;<div class='vr'></div>&nbsp;&nbsp;" .
+                        $hora . "&nbsp;&nbsp;<div class='vr'></div>&nbsp;&nbsp;" .
+                        $pago['personaid'] .
+                        '<br>';     
+        }
+
+        return $cobrado;
     }
 
     /**** GASTOS ****/

@@ -12,6 +12,7 @@ class PrestamosModel extends Mysql
     PRIVATE $intTaza;
     PRIVATE $strObservacion;
     PRIVATE $strFecha;
+    PRIVATE $strFecha2;
     PRIVATE $strVence;
 
     public function __construct()
@@ -308,19 +309,19 @@ class PrestamosModel extends Mysql
 	}
 
     //BUSCADOR DE RANGO DE FECHAS
-    public function selectPrestamosD(string $fechaI, string $fechaF, int $ruta)
+    public function selectPrestamosD(string $fechaI, string $fechaF, int $ruta, string $tipo)
 	{
 		$this->strFecha = $fechaI;
 		$this->strFecha2 = $fechaF;
 		$this->intIdRuta = $ruta;
 		$arrDatos = array();
 
+        $estado = $tipo == 'finalizado' ? $estado = " AND pr.status = 2 " : ' '; 
+
 		$sql = "SELECT (SELECT nombres FROM persona WHERE idpersona = pr.usuarioid) as usuario, SUM(pr.monto) AS monto, pr.hora, pr.datecreated FROM prestamos pr 
                 LEFT OUTER JOIN persona pe ON(pr.personaid = pe.idpersona)
-                WHERE pr.datecreated BETWEEN '{$this->strFecha}' AND '{$this->strFecha2}' AND pr.codigoruta = $ruta GROUP BY pr.datecreated";
+                WHERE pr.datecreated BETWEEN '{$this->strFecha}' AND '{$this->strFecha2}' AND pr.codigoruta = $ruta" . $estado . "GROUP BY pr.datecreated";
 		$request = $this->select_all($sql);
-
-		//dep($request);exit;
 
 		foreach ($request as $prestamos)
 		{
@@ -400,4 +401,28 @@ class PrestamosModel extends Mysql
             $this->update($query_update, $arrData);
         }
     }
+
+    //TRAE LOS PRÉSTAMOS FINALIZADOS
+    public function prestamosFinalizados(int $ruta)
+	{
+		$this->intIdRuta = $ruta;
+        $contador = 0;
+        $arrDatos = array();
+		$sql = "SELECT
+					idprestamo,
+					(SELECT nombres FROM persona WHERE idpersona = personaid) as nombre,
+					(SELECT apellidos FROM persona WHERE idpersona = personaid) as negocio,
+					(SELECT nombres FROM persona WHERE idpersona = usuarioid) as usuario,
+					monto,
+					formato,
+					taza,
+					plazo,
+					datecreated,
+					datefinal
+				FROM prestamos
+				WHERE status = 2 AND codigoruta = $this->intIdRuta ORDER BY datefinal DESC LIMIT 8";
+		$request = $this->select_all($sql);
+
+		return $request;
+	}
 }

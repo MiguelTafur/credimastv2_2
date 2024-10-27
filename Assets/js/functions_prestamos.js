@@ -10,7 +10,13 @@ document.addEventListener('DOMContentLoaded', function(){
 function iniciarApp() {
     fntTablePrestamos();
     fntNewPrestamo();
-    //fntNewPagoPrestamo();
+    $(function () {
+        $('[data-bs-toggle="popover"]').popover({
+            container: "body",
+            trigger: "focus",
+            html: true
+        })
+    });
 }
 
 //MOSTRAR DATEPICKER EN EL BUSCADOR
@@ -970,10 +976,11 @@ function fntViewDetallePrestamos()
         $(this).val('');
     });
 }
-//INFORMACIÓN DEL BUSCADOR DATERANGEPICKER
-async function fntSearchPrestamosD()
+//INFORMACIÓN DEL BUSCADOR DE PRÉSTAMOS DATERANGEPICKER
+async function fntSearchPrestamosD(tipo)
 {
     let fecha = document.querySelector("#fechaPrestamos").value;
+    
     if(fecha == "")
     {
         Swal.fire("Error", "Seleccione la fecha", "error");
@@ -985,12 +992,13 @@ async function fntSearchPrestamosD()
 
     divLoading.style.display = "flex";
     try {
-        let resp = await fetch(base_url+'/Prestamos/getPrestamosD', {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            body: formData
-        });
+        formData.append('prestamo', tipo);
+            let resp = await fetch(base_url+'/Prestamos/getPrestamosD', {
+                method: 'POST',
+                mode: 'cors',
+                cache: 'no-cache',
+                body: formData
+            });
     
         json = await resp.json();
     
@@ -1019,6 +1027,7 @@ async function fntSearchPrestamosD()
     divLoading.style.display = "none";
     return false;
 }
+
 
 async function accion()
 {

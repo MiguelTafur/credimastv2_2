@@ -29,6 +29,7 @@ class Prestamos extends Controllers{
 
 		//TRAE EL RESUMEN ANTERIOR CON ESTADO 0
 		$data['resumenAnterior'] = getResumenAnterior();
+		$data['prestamo'] = 'activo';
 		
 		$this->views->getView($this,"prestamos",$data);
 	}
@@ -572,7 +573,7 @@ class Prestamos extends Controllers{
 			$totalPrestamos = 0;
 			$dias = array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
 
-			$prestamosD = $this->model->selectPrestamosD($fechaI, $fechaF, $ruta);
+			$prestamosD = $this->model->selectPrestamosD($fechaI, $fechaF, $ruta, $_POST['prestamo']);
 
 			for ($i=0; $i < COUNT($prestamosD['prestamos']); $i++)
 			{ 
@@ -686,4 +687,23 @@ class Prestamos extends Controllers{
 		}
 		die();
 	}
+
+	/**** PRÉSTAMOS FINALIZADOS ****/
+	public function finalizados()
+    {
+		$data['page_tag'] = "Prestamos Finalizados";
+		$data['page_title'] = "PRESTAMOS FINALIZADOS";
+		$data['page_name'] = "prestamos finalizados";
+		$data['page_functions_js'] = "functions_prestamos.js";
+
+		//TRAE EL RESUMEN ANTERIOR CON ESTADO 0
+		$data['resumenAnterior'] = getResumenAnterior();
+
+		//TRAE LOS PRESTAMOS FINALIZADOS
+		$data['prestamosFinalizados'] = $this->model->prestamosFinalizados($_SESSION['idRuta']);
+		$data['prestamo'] = 'finalizado';
+		//dep($data['prestamosFinalizados']);exit;
+		
+		$this->views->getView($this,"finalizados",$data);
+    }
 }
