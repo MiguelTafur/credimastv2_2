@@ -243,7 +243,7 @@
                 <!-- <?php //getUltimosResumenes(); ?> -->
                  <tr>
                   <td>
-                    <button class="btn btn-link btn-sm link-warning link-underline-opacity-0 p-0 infoCobrado">100</button>
+                    <a tabindex="0" role="button" class="btn btn-link btn-sm link-warning link-underline-opacity-0 p-0 infoCobrado">100</a>
                   </td>
                   <td></td>
                   <td></td>
