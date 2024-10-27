@@ -206,7 +206,9 @@
                                                     '.round($resumen['cobrado'], 0).'
                                                     </a>';
             $ventas = $resumen['ventas'] == 0 ? round($resumen['ventas'], 0) 
-                                              : '<button 
+                                              : '<a
+                                                 tabindex="0"
+                                                 role="button" 
                                                  class="btn btn-link btn-sm link-warning link-underline-opacity-0 p-0" 
                                                  style="font-size: inherit;"
                                                  data-bs-toggle="popover" 
@@ -214,9 +216,11 @@
                                                  data-bs-content="'.$getVentas.'" 
                                                  title="VENTA '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' HORA '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' USUARIO '.'">
                                                  '.round($resumen['ventas'], 0).'
-                                                 </button>';
+                                                 </a>';
             $gastos = $resumen['gastos'] == 0 ? round($resumen['gastos'], 0)
-                                              : '<button 
+                                              : '<a
+                                                 tabindex="0"
+                                                 role="button" 
                                                  class="btn btn-link btn-sm link-warning link-underline-opacity-0 p-0" 
                                                  style="font-size: inherit;" 
                                                  data-bs-toggle="popover" 
@@ -224,7 +228,7 @@
                                                  data-bs-content="'.$getGastos.'" 
                                                  title="GASTO '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' HORA '  ."&nbsp;<div class='vr'></div>&nbsp;"  .' USUARIO '.'">
                                                  '.round($resumen['gastos'], 0).'
-                                                 </button>';
+                                                 </a>';
             $resumenes .= '<tr>';
             $resumenes .= '<td>';
             $resumenes .= fechaInline(date("d-m-Y", strtotime($resumen['datecreated'])));
