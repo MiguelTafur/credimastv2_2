@@ -230,6 +230,6 @@ class ResumenModel extends Mysql
             $request2 = $this->update($query_update, $arrData);
         }
 
-        return $request;
+        return $request2;
     }
 }
