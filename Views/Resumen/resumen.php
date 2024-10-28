@@ -211,7 +211,7 @@
           </div>
         </div>
         <div class="col-md-6">
-          <div class="widget-small light "><i class="icon bi bi-piggy-bank-fill fs-1"></i>
+          <div class="widget-small light "><i class="icon bi bi-currency-dollar fs-1"></i>
             <div class="info">
               <h4>CAJA</h4>
               <p><span class="fst-italic" id="cajaResumen"><?= $caja ?></span></p>
