@@ -23,7 +23,7 @@ async function fntBase()
 {
     const formData = new FormData();
     formData.append('idRuta', ruta);
-    divLoading.style.display = "flex";
+    //divLoading.style.display = "flex";
     try {
         let resp = await fetch(base_url+'/Base/getBase', {
             method: 'POST',

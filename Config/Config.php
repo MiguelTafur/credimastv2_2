@@ -1,20 +1,20 @@
 <?php 
 	
 	//define("BASE_URL", "http://localhost/tienda_virtual/");
-	const BASE_URL = "https://prestamos.webmast.com.br/credimast2_2";
-	//const BASE_URL = "http://localhost/credimastv2_2";
+	//const BASE_URL = "https://prestamos.webmast.com.br/credimastv2";
+	const BASE_URL = "http://localhost/credimastv2_2";
 
 	//Zona horaria
 	date_default_timezone_set('Brazil/East');
 
 	const DB_HOST = "localhost";
-	/*const DB_NAME = "qahi319_real";
+	const DB_NAME = "qahi319_real";
 	const DB_USER = "root";
-	const DB_PASSWORD = "";*/
+	const DB_PASSWORD = "";
 
-	const DB_NAME = "u124563208_credimast";
+	/*const DB_NAME = "u124563208_credimast";
 	const DB_USER = "u124563208_credimast";
-	const DB_PASSWORD = "m!Guel03";
+	const DB_PASSWORD = "m!Guel03";*/
 
 	const DB_CHARSET = "utf8";
 
