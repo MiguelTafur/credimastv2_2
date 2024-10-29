@@ -89,6 +89,16 @@ function fntTablePrestamos()
         let saldo = d.saldo;
         let pendiente = d.pendiente;
         let cancelado = d.cancelado;
+        let formato = d.formato;
+        let dia = '';
+        if(formato == 2) {
+            dia = '<li class="list-group-item d-flex justify-content-center align-items-center">'+
+                'DIA DE PAGO'+
+                '<span class="badge text-bg-secondary rounded-pill ms-2">' + d.diaPago.toUpperCase() + '</span>'+
+            '</li>';
+        } else {
+            dia = '';
+        }
 
         return '<ul class="list-group">'+
             '<li class="list-group-item d-flex justify-content-center align-items-center active">'+
@@ -96,11 +106,11 @@ function fntTablePrestamos()
             '</li>'+
             '<li class="list-group-item d-flex justify-content-center align-items-center">'+
                 'SALDO'+
-                '<span class="badge text-bg-secondary rounded-pill ms-2">' + saldo + '</span>'+
+                '<span class="badge text-bg-danger rounded-pill ms-2">' + saldo + '</span>'+
             '</li>'+
             '<li class="list-group-item d-flex justify-content-center align-items-center">'+
                 'PAGADO'+
-                '<span class="badge text-bg-secondary rounded-pill ms-2">' + pagado + '</span>'+
+                '<span class="badge text-bg-success rounded-pill ms-2">' + pagado + '</span>'+
             '</li>'+
             '<li class="list-group-item d-flex justify-content-center align-items-center">'+
                 'PARCELAS PENDIENTES'+
@@ -113,7 +123,6 @@ function fntTablePrestamos()
             '<li">'+
                 '<hr class="border border-secondary border-2 opacity-75">'+
             '</li>'+
-
             '<li class="list-group-item d-flex justify-content-center align-items-center">'+
                 'FECHA INICIO'+
                 '<span class="badge text-bg-secondary rounded-pill ms-2">' + inicio + '</span>'+
@@ -138,6 +147,7 @@ function fntTablePrestamos()
                 'PLAZO'+
                 '<span class="badge text-bg-secondary rounded-pill ms-2">' + plazo + '</span>'+
             '</li>'+
+            dia +
             '<li class="list-group-item d-flex justify-content-center align-items-center">'+
                 'VALOR PARCELA'+
                 '<span class="badge text-bg-secondary rounded-pill ms-2">' + parcela + '</span>'+

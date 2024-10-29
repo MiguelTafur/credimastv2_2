@@ -43,6 +43,7 @@ class Prestamos extends Controllers{
 
 			$resumenAnterior = getResumenAnterior();
 			$fecha = $resumenAnterior['datecreated'] ?? NOWDATE;
+			$dias = array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
 
 			for ($i=0; $i < count($arrData); $i++) {
 				
@@ -129,6 +130,8 @@ class Prestamos extends Controllers{
 					{
 						$arrData[$i]['plazo'] = $arrData[$i]['plazo'].' '.'Semanas';
 					}
+					
+					$arrData[$i]['diaPago'] = $dias[date("w", strtotime($arrData[$i]['datecreated']))];
 				}
 
 				// MENSUAL
