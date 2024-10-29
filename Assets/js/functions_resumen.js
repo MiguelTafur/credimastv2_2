@@ -781,7 +781,7 @@ async function fntViewPrestamos()
 
             document.querySelector("#tbodyPrestamos").innerHTML = trPrestamo;
         } else {
-            document.querySelector("#tbodyPrestamos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="2">Sin Préstamos</td></tr>';
+            document.querySelector("#tbodyPrestamos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="4">Sin Préstamos</td></tr>';
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
