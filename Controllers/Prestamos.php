@@ -174,7 +174,7 @@ class Prestamos extends Controllers{
 				} else {
 					$btnAbono = '
 						<div class="input-group">
-							<input type="text" class="form-control valid validNumber" name="txtPagoPrestamo" id="txtPagoPrestamo-'.$arrData[$i]['idprestamo'].'" placeholder="'.$parcela.'" aria-label="100" aria-describedby="button-addon2" onkeypress="return controlTag(event)">
+							<input type="tel" class="form-control valid validNumber" name="txtPagoPrestamo" id="txtPagoPrestamo-'.$arrData[$i]['idprestamo'].'" placeholder="'.$parcela.'" aria-label="100" aria-describedby="button-addon2" onkeypress="return controlTag(event)">
 							<button type="submit" class="btn btn-warning btn-sm" type="button" id="button-addon2" onclick="fntNewPagoPrestamo('.$arrData[$i]['idprestamo'].')">Pagar</button>
 						</div>';
 				}
