@@ -10,8 +10,8 @@
 
   .payAll {
     position: absolute;
-    left: 3%;
-    top: .5%;
+    left: 2%;
+    top: 0%;
   }
   
   @media (min-width: 768px) {
