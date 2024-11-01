@@ -3,6 +3,25 @@
   getModal('modalPrestamos',$data);
 ?>
 
+<style>
+  #tile {
+    position: relative;
+  }
+
+  .payAll {
+    position: absolute;
+    left: 3%;
+    top: .5%;
+  }
+  
+  @media (min-width: 768px) {
+    .payAll {
+      position: absolute;
+      left: 50%;
+    }
+}
+</style>
+
 
 <main class="app-content">
   <div class="app-title">
@@ -68,7 +87,11 @@
     <div class="tab-pane fade show active" id="lista-tab-pane" role="tabpanel" aria-labelledby="lista-tab" tabindex="0">
       <div class="row">
         <div class="col-md-12">
-          <div class="tile">
+          <div class="tile" id="tile">
+            <!-- BOTÓN DE PAGAR VARIOS ABONOS -->
+            <div class="payAll fs-1 text-warning">
+              <a href="#" onclick="fntPayAll();"><i class="bi bi-coin me-0" aria-hidden="true"></i></a>
+            </div>
             <div class="tile-body">
               <div class="table-responsive">
                 <table class="table table-striped align-middle" id="tablePrestamos">

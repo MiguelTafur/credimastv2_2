@@ -64,6 +64,57 @@ class Pagos extends Controllers{
 		die();
     }
 
+	//INSERTA UNO O VARIOS PAGAMENTOS
+	public function setPayAll()
+	{
+		if($_POST){
+			//VERIFICANDO SI HAY UN RESUMEN CON EL ESTADO 1
+			$estadoResumen = getResumenActual1($_SESSION['idRuta'])['status'] ?? 0;
+			
+			if($estadoResumen === 0)
+			{
+				
+				$datos = json_decode($_POST['datos'], true);
+				$codigoPrestamo = intval($datos['id']);
+				$intMonto = intval($datos['pago']);
+				$ruta = $_SESSION['idRuta'];
+
+				//VALIDA SI HAY UN RESUMEN Y DEVUELVE LA FECHA, Si NO, LO CREA.
+				$fechaResumen = setDelResumenActual('set', $ruta)['datecreated'] ?? NULL;
+
+				if($intMonto == 0){
+					$arrResponse = array("status" => false, "msg" => "El valor no puede ser 0.");
+				} else {
+					$request_pago = $this->model->insertPago($codigoPrestamo, $intMonto, $_SESSION['idUser'], $ruta, $fechaResumen);
+					if($request_pago > 0)
+					{
+						$valorActivo = valorActivoYEstimadoPrstamos()['valorActivo'];
+						$cobradoEstimado = valorActivoYEstimadoPrstamos()['cobradoEstimado'];
+						$arrResponse = array('status' => true,
+											'msg' => 'Datos guardados correctamente.',
+											'valorActivo' => $valorActivo,
+											'cobradoEstimado' => $cobradoEstimado);
+
+					}else if($request_pago == '0')
+					{
+						$arrResponse = array("status" => false, "msg" => "Pago ya realizado.");
+					}else if($request_pago == '!')
+					{
+						$arrResponse = array("status" => false, "msg" => "El pago ingresado no puede ser mayor al saldo.");
+					}else
+					{
+						$arrResponse = array("status" => false, "msg" => "No es posible almacenar los datos.");
+					}				
+				}
+
+				echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+
+			} else {
+				$arrResponse = array('status' => false, 'msg' => 'Resumen finalizado. No es posible registrar el Pago.');
+			}
+		}
+	} 
+
 	//TRAE LOS TODOS LOS PAGAMENTOS Y LOS DEVUELVE EN UNA ETIQUETA "<tr>"
 	public function getPagos()
 	{

@@ -668,6 +668,63 @@ async function fntRegistrarPagoPrestamo(idprestamo, pagoprestamo)
     divLoading.style.display = "none";
     return false;
 }
+//REGISTRAR VARIOS PAGOS
+async function fntPayAll()
+{
+    let txtPago = document.getElementsByClassName("inputPago");
+    for (let i = 0; i < txtPago.length; i++) {
+        if(txtPago[i].value != ""){
+            idpago = txtPago[i].id.split("-")[1];
+            let pago = {
+                'pago': txtPago[i].value,
+                'id': idpago
+            }
+
+            let datos = JSON.stringify(pago);
+    
+            const formData = new FormData();
+            formData.append('datos', datos);
+    
+            divLoading.style.display = "flex";
+            try {
+                let resp = await fetch(base_url+'/Pagos/setPayAll', {
+                    method: 'POST',
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    body: formData
+                });
+            
+                json = await resp.json();
+            
+                if(json.status){
+                    //Swal.fire("Eliminar!", json.msg , "success");
+                    document.querySelector('#valorActivo').textContent = json.valorActivo;
+                    document.querySelector('#cobradoEstimado').textContent = json.cobradoEstimado;
+                    Toast.fire({
+                        icon: "success",
+                        title: json.msg
+                    });
+                }else{
+                    Swal.fire("Error", json.msg, "error");
+                    /*Toast.fire({
+                        icon: "error",
+                        title: "Ocurrió un error"
+                    });*/
+                    console.log(json.msg);
+                }
+            } catch (error) {
+                Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+                /*Toast.fire({
+                    icon: "error",
+                    title: "Ocurrió un error interno"
+                });*/
+                console.log(error);
+            }
+            divLoading.style.display = "none";
+        }
+    }
+    tablePrestamos.ajax.reload(() => iconosPrestamos());
+}
 
 //MUESTRA UN ARRAY DE PAGAMENTOS 
 async function fntViewPagamentos(idprestamo)
