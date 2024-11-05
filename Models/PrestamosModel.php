@@ -420,7 +420,7 @@ class PrestamosModel extends Mysql
 					datecreated,
 					datefinal
 				FROM prestamos
-				WHERE status = 2 AND codigoruta = $this->intIdRuta ORDER BY datefinal DESC LIMIT 8";
+				WHERE status = 2 AND codigoruta = $this->intIdRuta ORDER BY datefinal DESC LIMIT 30";
 		$request = $this->select_all($sql);
 
 		return $request;
