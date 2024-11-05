@@ -181,7 +181,7 @@ async function fntRegistrarResumen()
                 confirmButtonText: "Continuar",
             }).then((result) => {
             if (result.isConfirmed) {
-                location.reload();
+                window.location = base_url+'/prestamos';
             }
             });
         } else {
