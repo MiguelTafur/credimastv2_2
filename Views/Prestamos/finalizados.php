@@ -36,7 +36,7 @@
             <table class="table table-striped align-middle" id="tablePrestamosFinalizados">
               <thead>
                 <tr>
-                  <th>CIERRE</th>
+                  <th class="text-center">CIERRE</th>
                   <th>CLIENTE</th>
                   <th class="text-center">PAGOS</th>
                   <th class="text-center">DETALLES</th>
