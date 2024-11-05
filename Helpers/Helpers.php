@@ -459,7 +459,7 @@
         foreach ($request as $pago) {
             $hora = $pago['hora'] != NULL ? date("H:i", strtotime($pago['hora'])) : " <i class='bi bi-watch'></i>";
 
-            $cobrado .= $pago['datecreated'] . "&nbsp;&nbsp;<div class='vr'></div>&nbsp;&nbsp;" .  
+            $cobrado .= date("d-m-Y", strtotime($pago['datecreated'])) . "&nbsp;&nbsp;<div class='vr'></div>&nbsp;&nbsp;" .  
                         $pago['abono'] . "&nbsp;&nbsp;<div class='vr'></div>&nbsp;&nbsp;" .
                         $hora . "&nbsp;&nbsp;<div class='vr'></div>&nbsp;&nbsp;" .
                         $pago['personaid'] .

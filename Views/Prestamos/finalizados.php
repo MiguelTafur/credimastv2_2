@@ -51,7 +51,7 @@
                     $detalles = '<b>Inicio</b>:  '.date("d-m-Y", strtotime($prestamo['datecreated'])).'<br>
                                   <b>Crédito</b>: '.$prestamo['monto'].'<br>
                                   <b>Formato</b>: '.$formato.'<br>
-                                  <b>Taza</b>: '.$prestamo['taza'].'%<br>
+                                  <b>Taza</b>: '.$prestamo['taza'].' %<br>
                                   <b>Parcela</b>: '.$parcela.'<br>
                                   <b>Pagado</b>: '.$total.'<br>';
                 ?>
