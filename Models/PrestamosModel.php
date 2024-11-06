@@ -49,7 +49,7 @@ class PrestamosModel extends Mysql
     }
 
     //TRAE TODOS LOS PRÉSTAMOS DEPENDIENDO DE LA FECHA
-    public function selectPrestamosFecha(int $ruta, string $fecha = NULL)
+    public function selectPrestamosFecha(int $ruta, string $fecha = NULL, string $tipo = NULL)
     {
         $this->intIdRuta = $ruta;
         $this->strFecha = $fecha;
@@ -59,7 +59,8 @@ class PrestamosModel extends Mysql
 
         if($this->strFecha != NULL)
         {
-            $whereFecha = " AND pr.datecreated = " . "'{$this->strFecha}'";
+            $tipo == 'finalizado' ? $tipo = 'pr.datefinal' : $tipo = 'pr.datecreated';
+            $whereFecha = " AND $tipo = " . "'{$this->strFecha}'";
             $whereStatus2 = " AND pr.status != 0";
         }
 
@@ -308,19 +309,21 @@ class PrestamosModel extends Mysql
 
 	}
 
-    //BUSCADOR DE RANGO DE FECHAS
-    public function selectPrestamosD(string $fechaI, string $fechaF, int $ruta, string $tipo)
+    //BUSCADOR DE RANGO DE FECHAS DE PRÉSTAMOS ACTIVOS
+    public function selectPrestamosD(string $fechaI, string $fechaF, int $ruta)
 	{
 		$this->strFecha = $fechaI;
 		$this->strFecha2 = $fechaF;
 		$this->intIdRuta = $ruta;
 		$arrDatos = array();
 
-        $estado = $tipo == 'finalizado' ? $estado = " AND pr.status = 2 " : ' '; 
-
-		$sql = "SELECT (SELECT nombres FROM persona WHERE idpersona = pr.usuarioid) as usuario, SUM(pr.monto) AS monto, pr.hora, pr.datecreated FROM prestamos pr 
+		$sql = "SELECT (SELECT nombres FROM persona WHERE idpersona = pr.usuarioid) as usuario, 
+                        SUM(pr.monto) AS monto, 
+                        pr.hora, 
+                        pr.datecreated 
+                FROM prestamos pr 
                 LEFT OUTER JOIN persona pe ON(pr.personaid = pe.idpersona)
-                WHERE pr.datecreated BETWEEN '{$this->strFecha}' AND '{$this->strFecha2}' AND pr.codigoruta = $ruta" . $estado . "GROUP BY pr.datecreated";
+                WHERE pr.datecreated BETWEEN '{$this->strFecha}' AND '{$this->strFecha2}' AND pr.codigoruta = $ruta GROUP BY pr.datecreated";
 		$request = $this->select_all($sql);
 
 		foreach ($request as $prestamos)
@@ -330,6 +333,43 @@ class PrestamosModel extends Mysql
 			$prestamosD .= $prestamos['monto'];
 			$prestamosD .= " | ";
 			$prestamosD .= getFormatPrestamos($prestamos['datecreated']);
+            $prestamosD .= " | ";
+			$prestamosD .= $prestamos['hora'];
+            $prestamosD .= " | ";
+			$prestamosD .= $prestamos['usuario'];
+			array_push($arrDatos, $prestamosD);
+		}
+
+		$arrData = array("prestamos" => $arrDatos);
+
+		return $arrData;
+
+	}
+
+    //BUSCADOR DE RANGO DE FECHAS DE PRÉSTAMOS FINALIZADOS
+    public function selectPrestamosFinalizadosD(string $fechaI, string $fechaF, int $ruta)
+	{
+		$this->strFecha = $fechaI;
+		$this->strFecha2 = $fechaF;
+		$this->intIdRuta = $ruta;
+		$arrDatos = array();
+
+		$sql = "SELECT (SELECT nombres FROM persona WHERE idpersona = pr.usuarioid) as usuario, 
+                        SUM(pr.monto) AS monto, 
+                        pr.hora, 
+                        pr.datefinal 
+                FROM prestamos pr 
+                LEFT OUTER JOIN persona pe ON(pr.personaid = pe.idpersona)
+                WHERE pr.datefinal BETWEEN '{$this->strFecha}' AND '{$this->strFecha2}' AND pr.codigoruta = $ruta GROUP BY pr.datefinal";
+		$request = $this->select_all($sql);
+
+		foreach ($request as $prestamos)
+		{
+			$prestamosD = $prestamos['datefinal'];
+			$prestamosD .= " | ";
+			$prestamosD .= $prestamos['monto'];
+			$prestamosD .= " | ";
+			$prestamosD .= getFormatPrestamos($prestamos['datefinal'], 'finalizado');
             $prestamosD .= " | ";
 			$prestamosD .= $prestamos['hora'];
             $prestamosD .= " | ";

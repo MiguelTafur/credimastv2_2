@@ -190,7 +190,7 @@
               <th>DIA</th>
               <th>VALOR</th>
               <th>INFO</th>
-              <?php if($_SESSION['idRol'] == 1){echo '<th>REGISTRADO POR</th>';} ?>
+              <?php //if($_SESSION['idRol'] == 1){echo '<th>REGISTRADO POR</th>';} ?>
               </tr>
             </thead>
             <tbody id="datosPrestamosD"></tbody>

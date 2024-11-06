@@ -576,7 +576,8 @@ class Prestamos extends Controllers{
 			$totalPrestamos = 0;
 			$dias = array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
 
-			$prestamosD = $this->model->selectPrestamosD($fechaI, $fechaF, $ruta, $_POST['prestamo']);
+			$_POST['prestamo'] == 'activo' ? $prestamosD = $this->model->selectPrestamosD($fechaI, $fechaF, $ruta)
+											: $prestamosD = $this->model->selectPrestamosFinalizadosD($fechaI, $fechaF, $ruta);
 
 			for ($i=0; $i < COUNT($prestamosD['prestamos']); $i++)
 			{ 
@@ -616,7 +617,7 @@ class Prestamos extends Controllers{
 								</a>
 								</td>';
 				}
-				if($_SESSION['idRol'] == 1){$detalles .= '<td class="fst-italic">'.$arrExplode[4].'</td>';}/*USUARIO*/
+				//if($_SESSION['idRol'] == 1){$detalles .= '<td class="fst-italic">'.$arrExplode[4].'</td>';}/*USUARIO*/
 				$detalles .= '</tr>';
 				$totalPrestamos += $arrExplode[1];
 			}

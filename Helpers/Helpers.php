@@ -350,12 +350,12 @@
 
     //TRAE EL CLIENTE Y EL MONTO DE LOS PRÉSTAMOS DEPENDIENDO DE LA FECHA
     //DEVUELVE UN STRING CON EL NOMBRE Y EL MONTO
-    function getFormatPrestamos(string $fecha)
+    function getFormatPrestamos(string $fecha, string $tipo = NULL)
     {
         require_once("Models/PrestamosModel.php");
         $objPrestamos = new PrestamosModel();
         $ruta = $_SESSION['idRuta'];
-        $request = $objPrestamos->selectPrestamosFecha($ruta, $fecha);
+        $request = $objPrestamos->selectPrestamosFecha($ruta, $fecha, $tipo);
         if(is_array($request))
         {
             $prestamo = "";
