@@ -87,7 +87,7 @@ class ClientesModel extends Mysql
 		$this->strDireccion1 = $direccion1;
 		$this->strDireccion2 = $direccion2;
 
-		$sql = "SELECT * FROM persona WHERE identificacion = '{$this->strIdentificacion}' AND idpersona != $this->intIdUsuario";
+		$sql = "SELECT * FROM persona WHERE identificacion = '{$this->strIdentificacion}' AND codigoruta = $this->intIdRuta AND idpersona != $this->intIdUsuario";
 		$request = $this->select_all($sql);
 
 		if(empty($request))
