@@ -21,9 +21,11 @@
       <li class="nav-item" role="presentation">
         <button class="nav-link active" id="lista-tab" data-bs-toggle="tab" data-bs-target="#lista-tab-pane" type="button" role="tab" aria-controls="lista-tab-pane" aria-selected="true">LISTA</button>
       </li>
+      <?php if($_SESSION['idRol'] == 1) : ?>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard-tab-pane" type="button" role="tab" aria-controls="dashboard-tab-pane" aria-selected="false">DASHBOARD</button>
       </li>
+      <?php endif; ?>
     </ul>
   </div>
 
