@@ -233,3 +233,8 @@ svg.bi {
 .widget-small {
     color: var(--cm-widget-color);
 }
+
+/*** ACCORDION ***/
+.accordion-button:not(.collapsed) {
+    color: var(--bs-warning);
+}

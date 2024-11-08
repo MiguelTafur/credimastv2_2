@@ -96,11 +96,34 @@
       </ul>
 
       <ul class="app-menu">
-        <li>
-          <a class="app-menu__item" href="<?= base_url(); ?>/ajuda">
+        <li class="treeview">
+          <a class="app-menu__item" href="#" data-toggle="treeview">
             <i class="app-menu__icon bi bi-info-circle"></i>
             <span class="app-menu__label">Ajuda</span>
+            <i class="treeview-indicator bi bi-chevron-right"></i>
           </a>
+          <ul class="treeview-menu">
+            <li>
+              <a class="treeview-item" href="<?= base_url(); ?>/ajuda">
+                <i class="icon bi bi-circle-fill"></i> Clientes
+              </a>
+            </li>
+            <li>
+              <a class="treeview-item" href="<?= base_url(); ?>/ajuda/prestamos">
+                <i class="icon bi bi-circle-fill"></i> Préstamos
+              </a>
+            </li>
+            <li>
+              <a class="treeview-item" href="<?= base_url(); ?>/ajuda/resumen">
+                <i class="icon bi bi-circle-fill"></i> Resumen
+              </a>
+            </li>
+            <li>
+              <a class="treeview-item" href="<?= base_url(); ?>/ajuda/gastos">
+                <i class="icon bi bi-circle-fill"></i> Gastos
+              </a>
+            </li>
+          </ul>
         </li>
       </ul>
     </aside>

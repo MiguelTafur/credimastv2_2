@@ -17,7 +17,7 @@
 
               <div class="form-group col-md-6">
                 <label class="form-label" for="txtNombre">Nombre</label>
-                <input type="text" class="form-control valid validText" id="txtNombre" name="txtNombre" placeholder="Nombre" required>
+                <input type="text" class="form-control valid" id="txtNombre" name="txtNombre" placeholder="Nombre" required>
               </div> 
               <div class="form-group col-md-6">
                 <label class="form-label" for="txtCodigo">Código</label>
