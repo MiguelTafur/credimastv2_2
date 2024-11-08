@@ -32,7 +32,7 @@ class GastosModel extends Mysql
         $this->intIdRuta = $ruta;
         $this->strFecha = $fecha;
 
-        $sql = "SELECT (SELECT nombres FROM persona WHERE idpersona = personaid) as usuario, nombre, monto, hora FROM gastos WHERE codigoruta = $this->intIdRuta AND datecreated = '{$this->strFecha}'";
+        $sql = "SELECT idgasto, (SELECT nombres FROM persona WHERE idpersona = personaid) as usuario, nombre, monto, hora FROM gastos WHERE codigoruta = $this->intIdRuta AND datecreated = '{$this->strFecha}'";
         $request = $this->select_all($sql);
 
         return $request;

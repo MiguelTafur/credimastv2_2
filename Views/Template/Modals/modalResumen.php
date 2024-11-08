@@ -31,13 +31,14 @@
   </div>
   <div class="offcanvas-body">
     <div class="table-responsive">
-      <table class="table table-striped">
+      <table class="table table-striped align-middle">
         <thead>
           <tr>
             <th>NOMBRE</th>
             <th>VALOR</th>
             <th>HORA</th>
             <th>USUARIO</th>
+            <th>ACCIÓN</th>
           </tr>
         </thead>
         <tbody id="tbodyGastos">

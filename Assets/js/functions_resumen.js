@@ -815,11 +815,12 @@ async function fntViewGastos()
         let trGasto = '';
         json.forEach(function(gasto) {
             trGasto += `
-                <tr>
+                <tr class="text-center">
                     <td>${gasto.nombre}</td>    
                     <td>${gasto.monto}</td>
                     <td>${gasto.hora}</td>
                     <td class="fst-italic">${gasto.usuario}</td>
+                    <td><button class="btn btn-danger btn-sm" onclick="fntDelGasto(${gasto.idgasto})"><i class="bi bi-trash3-fill me-0"></i></button></td>
                 </tr>`
             ;
         });
@@ -827,7 +828,7 @@ async function fntViewGastos()
 
             document.querySelector("#tbodyGastos").innerHTML = trGasto;
         } else {
-            document.querySelector("#tbodyGastos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="4">Sin Gastos</td></tr>';
+            document.querySelector("#tbodyGastos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="5">Sin Gastos</td></tr>';
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
@@ -840,6 +841,74 @@ async function fntViewGastos()
     divLoading.style.display = "none";
     return false;
 }
+
+//ALERTA PARA ELMINAR GASTO
+function fntDelGasto(idgasto)
+{
+    Swal.fire({
+        title: "Eliminar Gasto",
+        text: "¿Realmente quiere eliminar el Gasto?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d9a300",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminar!",
+        cancelButtonText: "No, cancelar!",
+    }).then((result) => {
+    if (result.isConfirmed) {
+        fntDeleteGasto(idgasto);
+    }
+    });
+}
+//ELIMINAR GASTO
+async function fntDeleteGasto(idgasto)
+{
+    const formData = new FormData();
+    formData.append('idGasto', idgasto);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Gastos/delGasto', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            Swal.fire({
+                title: json.msg,
+                text: '',
+                icon: "success",
+                confirmButtonColor: "#d9a300",
+                confirmButtonText: "Continuar",
+            }).then((result) => {
+            if (result.isConfirmed) {
+                location.reload();
+            }
+            });
+        }else{
+            Swal.fire("Error", json.msg, "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error"
+            });*/
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
 
 //VISTA PARA VER LA BASE
 // async function fntViewBase()
