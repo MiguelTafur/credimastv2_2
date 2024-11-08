@@ -64,7 +64,8 @@ class PrestamosModel extends Mysql
             $whereStatus2 = " AND pr.status != 0";
         }
 
-        $sql = "SELECT pe.nombres, 
+        $sql = "SELECT pr.idprestamo,
+                        pe.nombres, 
                         pe.apellidos, 
                         (SELECT nombres FROM persona WHERE idpersona = pr.usuarioid) as usuario, 
                         pr.monto, 

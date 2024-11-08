@@ -6,14 +6,14 @@
   </div>
   <div class="offcanvas-body">
     <div class="table-responsive">
-      <table class="table table-striped">
+      <table class="table table-striped align-middle">
         <thead>
           <tr>
             <th>CLIENTE</th>
             <th>VALOR</th>
             <th>HORA</th>
             <th>USUARIO</th>
-            <!-- <th>Acciones</th> -->
+            <th>ACCIÓN</th>
           </tr>
         </thead>
         <tbody id="tbodyPrestamos">

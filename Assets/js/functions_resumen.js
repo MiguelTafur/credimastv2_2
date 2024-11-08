@@ -769,11 +769,12 @@ async function fntViewPrestamos()
         let trPrestamo = '';
         json.forEach(function(prestamo) {
             trPrestamo += `
-                <tr>
+                <tr class="text-center">
                     <td>${prestamo.cliente}</td>    
                     <td>${prestamo.monto}</td>
                     <td>${prestamo.hora}</td>
                     <td class="fst-italic">${prestamo.usuario}</td>
+                    <td><button class="btn btn-danger btn-sm" onclick="fntDelPrestamo(${prestamo.idprestamo})"><i class="bi bi-trash3-fill me-0"></i></button></td>
                 </tr>`
             ;
         });
@@ -781,7 +782,74 @@ async function fntViewPrestamos()
 
             document.querySelector("#tbodyPrestamos").innerHTML = trPrestamo;
         } else {
-            document.querySelector("#tbodyPrestamos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="4">Sin Préstamos</td></tr>';
+            document.querySelector("#tbodyPrestamos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="5">Sin Préstamos</td></tr>';
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+function fntDelPrestamo(idprestamo)
+{
+    Swal.fire({
+        title: "Eliminar Préstamo",
+        text: "¿Realmente quiere eliminar el Préstamo?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d9a300",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, eliminar!",
+        cancelButtonText: "No, cancelar!",
+    }).then((result) => {
+    if (result.isConfirmed) {
+        fntDeletePrestamo(idprestamo);
+    }
+    });
+}
+
+async function fntDeletePrestamo(idprestamo)
+{
+    const formData = new FormData();
+    formData.append('idPrestamo', idprestamo);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Prestamos/delPrestamo', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            Swal.fire({
+                title: json.msg,
+                text: '',
+                icon: "success",
+                confirmButtonColor: "#d9a300",
+                confirmButtonText: "Continuar",
+            }).then((result) => {
+            if (result.isConfirmed) {
+                location.reload();
+            }
+            });   
+            
+        }else{
+            Swal.fire("Error", json.msg, "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error"
+            });*/
+            console.log(json.msg);
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
@@ -909,133 +977,3 @@ async function fntDeleteGasto(idgasto)
     return false;
 }
 
-
-//VISTA PARA VER LA BASE
-// async function fntViewBase()
-// {
-//     const formData = new FormData();
-//     formData.append('idRuta', ruta);
-
-//     divLoading.style.display = "flex";
-//     try {
-//         let resp = await fetch(base_url+'/Base/getBase', {
-//             method: 'POST',
-//             mode: 'cors',
-//             cache: 'no-cache',
-//             body: formData
-//         });
-
-//         json = await resp.json();
-
-//         let trGasto = '';
-//         json.forEach(function(gasto) {
-//             trGasto += `
-//                 <tr>
-//                     <td>${gasto.nombre}</td>    
-//                     <td>${gasto.monto}</td>
-//                 </tr>`
-//             ;
-//         });
-//         if(trGasto){
-
-//             document.querySelector("#tbodyGastos").innerHTML = trGasto;
-//         } else {
-//             document.querySelector("#tbodyGastos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="2">Sin Gastos</td></tr>';
-//         }
-//     } catch (error) {
-//         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
-//         /*Toast.fire({
-//             icon: "error",
-//             title: "Ocurrió un error interno"
-//         });*/
-//         console.log(error);
-//     }
-//     divLoading.style.display = "none";
-//     return false;
-//}
-
-
-//EDITAR EL PRÉSTAMO
-// async function fntEditInfo(idprestamo)
-// {
-//     document.querySelector('#titleModal').innerHTML = "Editar Préstamo";
-//     document.querySelector('#btnText').innerHTML = "Actualizar";
-
-//     const formData = new FormData();
-//     formData.append('idPrestamo', idprestamo);
-
-//     divLoading.style.display = "flex";
-//     try {
-//         let resp = await fetch(base_url + '/Prestamos/getPrestamo', {
-//             method: 'POST',
-//             mode: 'cors',
-//             cache: 'no-cache',
-//             body: formData
-//         });
-    
-//         json = await resp.json();
-    
-//         if(json.status)
-//         {
-//             let cliente = json.data.nombres.toUpperCase() + ' - ' + json.data.apellidos;
-//             let optionCliente = '<option value="' + json.data.personaid + '">' + cliente + '</option>';
-
-//             document.querySelector("#idPrestamo").value = json.data.idprestamo;
-//             document.querySelector("#listClientes").innerHTML = optionCliente;
-//             document.querySelector('#txtMonto').value = json.data.monto;
-//             document.querySelector('#txtTaza').value = json.data.taza;
-//             document.querySelector('#txtPlazo').value = json.data.plazo;
-//             document.querySelector('#listFormato').value = json.data.formato;
-
-//             if(json.data.formato == 1) {
-//                 checkbox.disabled = false;
-//             } else if(json.data.formato == 2 || json.data.formato == 3) {
-//                 checkbox.disabled = true;
-//             }
-
-//             $('#listClientes').select2({
-//                 dropdownParent: $('#modalFormPrestamo'),
-//                 placeholder: 'Seleccione un Formato',
-//                 language: {
-//                     noResults: function() {
-//                         return "No hay resultado";        
-//                     },
-//                     searching: function() {
-//                         return "Buscando...";
-//                     }
-//                 },
-//                 disabled: true
-//             });
-
-//             $('#listFormato').select2({
-//                 dropdownParent: $('#modalFormPrestamo'),
-//                 language: {
-//                     noResults: function() {
-//                         return "No hay resultado";        
-//                     },
-//                     searching: function() {
-//                         return "Buscando...";
-//                     }
-//                 }
-//             });
-            
-//             $('#modalFormPrestamo').modal('show');
-//         }else{
-//             Swal.fire("Error", json.msg, "error");
-//             /*Toast.fire({
-//                 icon: "error",
-//                 title: "Ocurrió un error interno"
-//             });*/
-//             console.log(json.msg);
-//         }
-//     } catch (error) {
-//         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
-//         /*Toast.fire({
-//             icon: "error",
-//             title: "Ocurrió un error interno"
-//         });*/
-//         console.log(error);
-//     }
-//     divLoading.style.display = "none";
-//     return false;
-// }
