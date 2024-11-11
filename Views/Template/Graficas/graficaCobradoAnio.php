@@ -1,18 +1,18 @@
 <?php 
-	if($grafica = "prestamosAnio"){
-		$prestamosAnio = $data;
+	if($grafica = "cobradoAnio"){
+		$cobradoAnio = $data;
  ?>
 
 <script>
-    Highcharts.chart('graficaAnioPrestamos', {
+    Highcharts.chart('graficaAnioCobrado', {
         chart: {
             type: 'column'
         },
         title: {
-            text: '<?= $prestamosAnio['anio']; ?>'
+            text: '<?= $cobradoAnio['anio']; ?>'
         },
         subtitle: {
-            text: '<b>Total: <?= $prestamosAnio['totalPrestamos']; ?></b>'
+            text: '<b>Total: <?= $cobradoAnio['totalCobrado']; ?></b>'
         },
         xAxis: {
             type: 'category',
@@ -37,7 +37,7 @@
             pointFormat: '{point.y}'
         },
         series: [{
-            name: 'Préstamos',
+            name: 'Cobrado',
             colors: [
                 '#9b20d9', '#9215ac', '#861ec9', '#7a17e6', '#7010f9', '#691af3',
                 '#6225ed', '#5b30e7', '#533be1', '#4c46db', '#4551d5', '#3e5ccf',
@@ -47,8 +47,8 @@
             groupPadding: 0,
             data: [
             <?php 
-                foreach ($prestamosAnio['meses'] as $mes) {
-                echo "['".$mes['mes']."',".$mes['total']."],";
+                foreach ($cobradoAnio['meses'] as $mes) {
+                echo "['".$mes['mes']."',".$mes['cobrado']."],";
                 }
             ?> 
             ],

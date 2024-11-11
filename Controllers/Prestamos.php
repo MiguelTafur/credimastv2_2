@@ -18,15 +18,20 @@ class Prestamos extends Controllers{
 		$data['page_name'] = "prestamos";
 		$data['page_functions_js'] = "functions_prestamos.js";
 
-		/*** INICIO GRÁFICAS ***/ 
+		/*** GRÁFICAS VENTAS ***/ 
 		$anio = date("Y");
 		$mes = date("m");
 		//MENSUAL
 		$data['prestamosMDia'] = $this->model->selectPrestamosMes($anio,$mes);
 		//ANUAL
 		$data['prestamosAnio'] = $this->model->selectPrestamosAnio($anio);
-		/*** FIN GRÁFICAS ***/
 
+		/*** GRÁFICAS COBRADO ***/
+		//MENSUAL
+		$data['cobradoMDia'] = $this->model->selectCobradoMes($anio,$mes);
+		//ANUAL
+		$data['cobradoAnio'] = $this->model->selectCobradoAnio($anio);
+		
 		//TRAE EL RESUMEN ANTERIOR CON ESTADO 0
 		$data['resumenAnterior'] = getResumenAnterior();
 		$data['prestamo'] = 'activo';
@@ -532,7 +537,7 @@ class Prestamos extends Controllers{
 		die();
 	}
 
-	//BUSCADOR MENSUAL
+	//BUSCADOR MENSUAL DE VENTAS
 	public function prestamosMes()
 	{
 		if($_POST)
@@ -549,7 +554,7 @@ class Prestamos extends Controllers{
 		}
 	}
 
-	//BUSCADOR ANUAL
+	//BUSCADOR ANUAL DE VENTAS
 	public function prestamosAnio()
 	{
 		if($_POST){
@@ -562,7 +567,7 @@ class Prestamos extends Controllers{
 		}
 	}
 
-	//BUSCADOR DE RANGO DE FECHAS
+	//BUSCADOR DE RANGO DE FECHAS DE VENTAS
 	public function getPrestamosD()
 	{
 		if($_POST)
@@ -628,6 +633,98 @@ class Prestamos extends Controllers{
 		}
 	}
 
+	//BUSCADOR MENSUAL DE COBRADO
+	public function cobradoMes()
+	{
+		if($_POST)
+		{
+			$grafica = "cobradoMes";
+			$nFecha = str_replace(" ", "", $_POST['fecha']);
+			$arrFecha = explode('-', $nFecha);
+			$mes = $arrFecha[0];
+			$anio = $arrFecha[1];
+			$cobrado = $this->model->selectCobradoMes($anio,$mes);
+			$script = getFile("Template/Graficas/graficaCobradoMes", $cobrado);
+			echo $script;
+			die();
+		}
+	}
+
+	//BUSCADOR ANUAL DE COBRADO
+	public function cobradoAnio()
+	{
+		if($_POST){
+			$grafica = "cobradoAnio";
+			$anio = intval($_POST['anio']);
+			$cobrado = $this->model->selectCobradoAnio($anio);
+			$script = getFile("Template/Graficas/graficaCobradoAnio",$cobrado);
+			echo $script;
+			die();
+		}
+	}
+
+	//BUSCADOR DE RANGO DE FECHAS DE COBRADO
+	public function getCobradoD()
+	{
+		if($_POST)
+		{
+			$arrayFechas = explode("-", $_POST['fecha']);
+			$fechaI = date("Y-m-d", strtotime(str_replace("/", "-", $arrayFechas[0])));
+			$fechaF = date("Y-m-d", strtotime(str_replace("/", "-", $arrayFechas[1])));
+			$ruta = $_SESSION['idRuta'];
+			$detalles = '';
+			$arrExplode = '';
+			$totalCobrado = 0;
+			$dias = array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
+
+			$cobradoD = $this->model->selectCobradoD($fechaI, $fechaF, $ruta);
+
+			for ($i=0; $i < COUNT($cobradoD['cobrado']); $i++)
+			{ 
+				$arrExplode = explode("|",$cobradoD['cobrado'][$i]);
+				$fechaF = $dias[date('w', strtotime($arrExplode[0]))];
+				$detalles .= '<tr class="text-center">'; 
+				$detalles .= '<td>
+								<a 
+									tabindex="0" role="button" 
+									class="btn btn-secondary btn-sm" 
+									data-bs-toggle="popover" 
+									data-bs-placement="left" 
+									data-bs-content="'.date('d-m-Y', strtotime($arrExplode[0])).'" 
+									title="'.$fechaF.'">
+									<i class="bi bi-calendar4-event me-0"></i>
+								</a>
+								</td>';
+				$detalles .= '<td>'.$arrExplode[1].'</td>';
+				if($arrExplode[1] == 0)
+				{
+					$detalles .= '<td>
+								<a style="cursor: not-allowed;opacity: 0.65;" tabindex="0" role="button" class="btn btn-secondary btn-sm">
+									<i class="bi bi-info-circle me-0"></i>
+								</a>
+								</td>';	
+				}else{
+					$detalles .= '<td>
+								<a 
+									tabindex="0" role="button" 
+									class="btn btn-secondary btn-sm" 
+									data-bs-toggle="popover" 
+									data-bs-placement="left" 
+									data-bs-content="'.$arrExplode[2].'" 
+									title="COBRADO '."&nbsp;<div class='vr'></div>&nbsp;".' HORA '."&nbsp;<div class='vr'></div>&nbsp;".' USUARIO">
+									<i class="bi bi-info-circle me-0"></i>
+								</a>
+								</td>';
+				}
+				$detalles .= '</tr>';
+				$totalCobrado += $arrExplode[1];
+			}
+			
+			$arrResponse = array('cobradoD' => $detalles, 'totalCobrado' => $totalCobrado);
+
+			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+		}
+	}
 
 	public function accion()
 	{

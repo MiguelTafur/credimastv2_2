@@ -164,6 +164,40 @@
   </div>
 </div>
 
+<!-- MODAL INFORMACIÓN EN LA GRÁFICA DE COBRADO -->
+<div class="modal fade" id="modalViewCobradoGrafica" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header header-primary">
+        <h5 class="modal-title" id="titleModal">Cobrado: <span id="dateCobradoGrafica" class="fst-italic fw-normal"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">  
+        <div class="table-responsive">
+          <table class="table table-striped text-center">
+            <thead>
+              <tr>
+                <th>CLIENTE</th>
+                <th>VALOR</th>
+                <th>HORA</th>
+                <?php if($_SESSION['idRol'] == 1){echo '<th>USUARIO</th>';} ?>
+              </tr>
+            </thead>
+            <tbody id="listgraficaCobrado">
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL BUSCAR PRÉSTAMOS POR RANGO DE FECHA -->
 <div class="modal fade" id="modalDetallePrestamos" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog ">
@@ -198,6 +232,47 @@
           <br>
           <div class="tile-footer text-end" id="divPrestamosD">
             <b>VALOR TOTAL: <i><mark id="markPrestamos"></mark></i></b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL BUSCAR COBRADO POR RANGO DE FECHA -->
+<div class="modal fade" id="modalDetalleCobrado" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titleModal">Cobrado </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-10">
+            <input type="text" readonly class="form-control" id="fechaCobrado" placeholder="Selecciona una fecha">
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn btn-warning mb-2" onclick="fntSearchCobradoD()"><i class="bi bi-search me-0"></i></button>
+            </div>
+          </div>
+        </form>
+        <div id="divCobradoD" class="d-none">
+          <table class="table">
+            <thead>
+            <tr class="text-center">
+              <th>DIA</th>
+              <th>VALOR</th>
+              <th>INFO</th>
+              <?php //if($_SESSION['idRol'] == 1){echo '<th>REGISTRADO POR</th>';} ?>
+              </tr>
+            </thead>
+            <tbody id="datosCobradoD"></tbody>
+          </table>
+          <br>
+          <div class="tile-footer text-end" id="divCobradoD">
+            <b>VALOR TOTAL: <i><mark id="markCobrado"></mark></i></b>
           </div>
         </div>
       </div>

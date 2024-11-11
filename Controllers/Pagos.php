@@ -215,4 +215,43 @@ class Pagos extends Controllers{
 		}
 		die();
 	}
+
+	//TRAE LOS PAGOS DEPENDIENDO DE LA FECHA
+	public function getDatosGraficaCobrado()
+	{
+		if($_POST)
+		{
+			$fechaGrafica = $_POST['fecha'];
+			$arrData = $this->model->selectPagamentosFecha($fechaGrafica,$_SESSION['idRuta']);
+			$informacion_td = "";
+
+			//dep($arrData);exit;
+
+			foreach($arrData as $cobrado)
+			{
+				$informacion_td .= "<tr>";
+				$informacion_td .= '<td>'.nombresApellidos($cobrado['nombres'], $cobrado['apellidos']).'</td>';
+				$informacion_td .= '<td>'.$cobrado['abono'].'</td>';
+				if($cobrado['hora'] != NULL) {
+					$informacion_td .= '<td>'.date('H:i', strtotime($cobrado['hora'])).'</td>';
+				} else {
+					$informacion_td .= '<td><i class="bi bi-watch"></i></td>';
+				}
+				if($_SESSION['idRol'] == 1){$informacion_td .= '<td class="fst-italic">'.$cobrado['usuario'].'</td>';}
+			}
+
+			$informacion_td .= "</tr>";
+			
+			if($arrData)
+			{
+				$fecha = date("d/m/Y", strtotime($fechaGrafica));
+			 	$arrResponse = array('status' => true, 'data' => $informacion_td, 'fecha' => $fecha);	
+			} else {
+				$arrResponse = array('status' => false, 'msg' => 'Nenhum dado encontrado.');
+			}
+
+			echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+		}
+		die();
+	}
 }

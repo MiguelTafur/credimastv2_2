@@ -226,7 +226,7 @@ class PrestamosModel extends Mysql
     }
 
     /***** GRÁFICAS *****/
-	//MENSUAL
+	//MENSUAL VENTAS
 	public function selectPrestamosMes(string $anio, string $mes)
 	{
 		$totalPrestamosMes = 0;
@@ -273,7 +273,7 @@ class PrestamosModel extends Mysql
 		return $request;
 	}
 
-    //ANUAL
+    //ANUAL VENTAS
 	public function selectPrestamosAnio(string $anio) 
     {
 		$arrMPrestamos = array();
@@ -307,6 +307,71 @@ class PrestamosModel extends Mysql
 
 		$arrUsuarios = array('totalPrestamos' => $totalPrestamos, 'anio' => $anio, 'meses' => $arrMPrestamos);
 		return $arrUsuarios;
+
+	}
+
+    //MENSUAL COBRADO
+    public function selectCobradoMes(int $anio, int $mes)
+	{
+		$totalCobradoMes = 0;
+		$arrVentasDias = array();
+		$rutaId = $_SESSION['idRuta'];
+		$dias = cal_days_in_month(CAL_GREGORIAN,$mes,$anio);
+		$n_dia = 1;
+		for ($i=0; $i < $dias; $i++)
+		{
+			$date = date_create($anio.'-'.$mes.'-'.$n_dia);
+			$fechaVenta = date_format($date, "Y-m-d");
+			$sql = "SELECT DAY(datecreated) as dia, cobrado FROM resumen WHERE DATE(datecreated) = '$fechaVenta' AND codigoruta = $rutaId";
+			$ventaDia = $this->select($sql);
+
+			$sqlTotal = "SELECT SUM(cobrado) as total FROM resumen WHERE DATE(datecreated) = '$fechaVenta' AND codigoruta = $rutaId";
+			$cobradoDiaTotal = $this->select($sqlTotal);
+			$cobradoDiaTotal = $cobradoDiaTotal['total'];
+
+			$ventaDia['dia'] = $n_dia;
+			$ventaDia['cobrado'] = $cobradoDiaTotal;
+			$ventaDia['cobrado'] = $ventaDia['cobrado'] == "" ? 0 : $ventaDia['cobrado'];
+			$totalCobradoMes += $cobradoDiaTotal;
+			array_push($arrVentasDias, $ventaDia);
+			$n_dia++;
+
+		}
+		$meses = Meses();
+		$arrData = array('anio' => $anio, 'mes' => $meses[intval($mes - 1)], 'numeroMes' => $mes, 'total' => $totalCobradoMes, 'totalCobrado' => $arrVentasDias);
+		return $arrData;
+	}
+
+    //ANUAL COBRADO
+    public function selectCobradoAnio(string $anio) {
+		$arrMCobrado = array();
+		$arrMeses = Meses();
+		$totalCobrado = 0;
+		$ruta = $_SESSION['idRuta'];
+
+		for ($i=1; $i <= 12; $i++) {
+			$arrData = array('anio' => '', 'no_mes' => '', 'mes' => '');
+			$sql = "SELECT $anio AS anio, $i AS mes, sum(cobrado) AS cobrado FROM resumen
+					WHERE month(datecreated) = $i AND year(datecreated) = $anio AND codigoruta = $ruta
+					GROUP BY month(datecreated)";
+			$cobradoMes = $this->select($sql);
+			$arrData['mes'] = $arrMeses[$i-1];
+
+			if(empty($cobradoMes)){
+				$arrData['anio'] = $anio;
+				$arrData['no_mes'] = $i;
+				$arrData['cobrado'] = 0;
+			}else{
+				$arrData['anio'] = $cobradoMes['anio'];
+				$arrData['no_mes'] = $cobradoMes['mes'];
+				$arrData['cobrado'] = $cobradoMes['cobrado'];
+				$totalCobrado += $cobradoMes['cobrado'];
+			}
+			array_push($arrMCobrado, $arrData);
+		}
+
+		$arrCobrado = array('totalCobrado' => $totalCobrado, 'anio' => $anio, 'meses' => $arrMCobrado);
+		return $arrCobrado;
 
 	}
 
@@ -384,9 +449,64 @@ class PrestamosModel extends Mysql
 
 	}
 
+    //TRAE LOS PRÉSTAMOS FINALIZADOS
+    public function prestamosFinalizados(int $ruta)
+	{
+		$this->intIdRuta = $ruta;
+        $contador = 0;
+        $arrDatos = array();
+		$sql = "SELECT
+					idprestamo,
+					(SELECT nombres FROM persona WHERE idpersona = personaid) as nombre,
+					(SELECT apellidos FROM persona WHERE idpersona = personaid) as negocio,
+					(SELECT nombres FROM persona WHERE idpersona = usuarioid) as usuario,
+					monto,
+					formato,
+					taza,
+					plazo,
+					datecreated,
+					datefinal
+				FROM prestamos
+				WHERE status = 2 AND codigoruta = $this->intIdRuta ORDER BY datefinal DESC LIMIT 30";
+		$request = $this->select_all($sql);
 
+		return $request;
+	}
 
-    //ACTUALIZA LA COLUMNA PERSONAID DE LA TABLA PAGOS
+    //BUSCADOR DE RANGO DE FECHAS DE COBRADO
+    public function selectCobradoD(string $fechaI, string $fechaF, int $ruta)
+	{
+		$this->strFecha = $fechaI;
+		$this->strFecha2 = $fechaF;
+		$this->intIdRuta = $ruta;
+		$contador = 1;
+		$arrDatos = array();
+
+		$sql = "SELECT datecreated, cobrado FROM resumen
+											WHERE datecreated
+											BETWEEN '{$this->strFecha}' AND '{$this->strFecha2}'
+											AND codigoruta = $ruta";
+		$request = $this->select_all($sql);
+
+		foreach ($request as $cobrado)
+		{
+			$clientes = $cobrado['datecreated'];
+			$clientes .= " | ";
+			$clientes .= $cobrado['cobrado'];
+			$clientes .= " | ";
+			$clientes .= getFormatCobrado($cobrado['datecreated']);
+			array_push($arrDatos, $clientes);
+			$contador++;
+
+		}
+
+		$arrData = array("cobrado" => $arrDatos);
+
+		return $arrData;
+
+	}
+
+    /*//ACTUALIZA LA COLUMNA PERSONAID DE LA TABLA PAGOS
     public function accionPagos(int $ruta)
     {
         $this->intIdRuta = $ruta;
@@ -441,29 +561,5 @@ class PrestamosModel extends Mysql
             $arrData = array($idpersona);
             $this->update($query_update, $arrData);
         }
-    }
-
-    //TRAE LOS PRÉSTAMOS FINALIZADOS
-    public function prestamosFinalizados(int $ruta)
-	{
-		$this->intIdRuta = $ruta;
-        $contador = 0;
-        $arrDatos = array();
-		$sql = "SELECT
-					idprestamo,
-					(SELECT nombres FROM persona WHERE idpersona = personaid) as nombre,
-					(SELECT apellidos FROM persona WHERE idpersona = personaid) as negocio,
-					(SELECT nombres FROM persona WHERE idpersona = usuarioid) as usuario,
-					monto,
-					formato,
-					taza,
-					plazo,
-					datecreated,
-					datefinal
-				FROM prestamos
-				WHERE status = 2 AND codigoruta = $this->intIdRuta ORDER BY datefinal DESC LIMIT 30";
-		$request = $this->select_all($sql);
-
-		return $request;
-	}
+    }*/
 }

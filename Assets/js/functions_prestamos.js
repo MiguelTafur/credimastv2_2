@@ -875,7 +875,7 @@ function openModal()
     $('#modalFormPrestamo').modal('show');
 }
 
-/** GRÁFICA **/
+/** GRÁFICAS **/
 //INFORMACIÓN DE CADA PUNTO DE LA GRÁGICA DEL PRÉSTAMO
 async function fntInfoChartPrestamo(fecha) 
 {
@@ -924,7 +924,7 @@ async function fntInfoChartPrestamo(fecha)
     return false;
 }
 
-//BUSCADOR MENSUAL
+//BUSCADOR MENSUAL DE VENTAS
 async function fntSearchPrestamosMes()
 {
     let fecha = document.querySelector(".prestamosMes").value;
@@ -961,7 +961,7 @@ async function fntSearchPrestamosMes()
     return false;
 }
 
-//BUSCADOR ANUAL
+//BUSCADOR ANUAL DE VENTAS
 async function fntSearchPrestamosAnio(){
     let anio = document.querySelector(".prestamosAnio").value;
     if(anio == ""){
@@ -997,7 +997,7 @@ async function fntSearchPrestamosAnio(){
     }
 }
 
-//DATERANGEPICKER
+//DATERANGEPICKER VENTAS
 function fntViewDetallePrestamos()
 {
     $('#modalDetallePrestamos').modal('show');
@@ -1095,6 +1095,223 @@ async function fntSearchPrestamosD(tipo)
     return false;
 }
 
+//INFORMACIÓN DE CADA PUNTO DE LA GRÁGICA DEL COBRADO
+async function fntInfoChartCobrado(fecha) 
+{
+    let fechaFormateada = fecha.join("-");
+
+    const formData = new FormData();
+    formData.append('fecha', fechaFormateada);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Pagos/getDatosGraficaCobrado', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.json();
+    
+        if(json.status){
+            
+            let tdAnotaciones = json.data;
+            let fecha = json.fecha;
+            
+            document.querySelector("#listgraficaCobrado").innerHTML = tdAnotaciones;
+            document.querySelector("#dateCobradoGrafica").textContent = fecha;
+
+            $('#modalViewCobradoGrafica').modal('show');
+        }else{
+            // Swal.fire("Error", json.msg, "error");
+            Toast.fire({
+                icon: "error",
+                title: "Sin datos"
+            });
+            console.log(json.msg);
+        }
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+//BUSCADOR MENSUAL DE COBRADO   
+async function fntSearchCobradoMes()
+{
+    let fecha = document.querySelector(".cobradoMes").value;
+    if(fecha == "")
+    {
+        Swal.fire("", "Selecione el mes y el año", "error");
+        return false;
+    }
+
+    const formData = new FormData();
+    formData.append('fecha', fecha);
+
+    divLoading.style.display = "flex";
+    try {
+        let resp = await fetch(base_url+'/Prestamos/cobradoMes', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            body: formData
+        });
+    
+        json = await resp.text();
+    
+        $("#graficaMesCobrado").html(json);
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
+
+//BUSCADOR ANUAL DE COBRADO
+async function fntSearchCobradoAnio(){
+    let anio = document.querySelector(".cobradoAnio").value;
+    if(anio == ""){
+        Swal.fire("", "Digite el Año" , "error");
+        return false;
+    }else{
+
+        const formData = new FormData();
+        formData.append('anio', anio);
+
+        divLoading.style.display = "flex";
+        try {
+            let resp = await fetch(base_url+'/Prestamos/cobradoAnio', {
+                method: 'POST',
+                mode: 'cors',
+                cache: 'no-cache',
+                body: formData
+            });
+        
+            json = await resp.text();
+        
+            $("#graficaAnioCobrado").html(json);
+        } catch (error) {
+            Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+            /*Toast.fire({
+                icon: "error",
+                title: "Ocurrió un error interno"
+            });*/
+            console.log(error);
+        }
+        divLoading.style.display = "none";
+        return false;  
+    }
+}
+
+//DATERANGEPICKER COBRADO
+function fntViewDetalleCobrado()
+{
+    $('#modalDetalleCobrado').modal('show');
+    $('#fechaCobrado').daterangepicker({
+        "autoUpdateInput": false,
+        "locale": {
+            "format": "DD/MM/YYYY",
+            "separator": " - ",
+            "applyLabel": "Aplicar",
+            "cancelLabel": "Cancelar",
+            "daysOfWeek": [
+                "Dom",
+                "Seg",
+                "Ter",
+                "Qua",
+                "Qui",
+                "Sex",
+                "Sab"
+            ],
+            "monthNames": [
+                "Janeiro",
+                "Fevereiro",
+                "Março",
+                "Abil",
+                "Maio",
+                "Junho",
+                "Julho",
+                "Agosto",
+                "Setembro",
+                "Outubro",
+                "Novembro",
+                "Dezembro"
+            ],
+            "firstDay": 1
+        }
+    });
+
+    $('#fechaCobrado').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+    });
+
+    $('#fechaCobrado').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });
+}
+//INFORMACIÓN DEL BUSCADOR DE COBRADO DATERANGEPICKER
+async function fntSearchCobradoD()
+{
+    let fecha = document.querySelector("#fechaCobrado").value;
+    
+    if(fecha == "")
+    {
+        Swal.fire("Error", "Seleccione la fecha", "error");
+        return false;
+    }
+
+    const formData = new FormData();
+    formData.append('fecha', fecha);
+
+    divLoading.style.display = "flex";
+    try {
+            let resp = await fetch(base_url+'/Prestamos/getCobradoD', {
+                method: 'POST',
+                mode: 'cors',
+                cache: 'no-cache',
+                body: formData
+            });
+    
+        json = await resp.json();
+    
+        arrCobrado = json.cobradoD;
+        totalC = json.totalCobrado;
+
+        $(function () {
+            $('[data-bs-toggle="popover"]').popover({
+                container: "body",
+                trigger: "focus",
+                html: true
+            })
+        });
+
+        document.querySelector("#datosCobradoD").innerHTML = arrCobrado;
+        document.querySelector("#markCobrado").innerHTML = totalC;
+        document.querySelector("#divCobradoD").classList.remove("d-none");
+    } catch (error) {
+        Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
+        /*Toast.fire({
+            icon: "error",
+            title: "Ocurrió un error interno"
+        });*/
+        console.log(error);
+    }
+    divLoading.style.display = "none";
+    return false;
+}
 
 async function accion()
 {
