@@ -24,7 +24,7 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label" for="txtNegocio">Negocio</label>
-                <input class="form-control valid validText" id="txtNegocio" name="txtNegocio" type="text" required placeholder="Negocio del Cliente" >
+                <input class="form-control valid" id="txtNegocio" name="txtNegocio" type="text" required placeholder="Negocio del Cliente" >
               </div>
               <div class="col-md-6">
                 <label class="form-label" for="txtTelefono">Teléfono</label>

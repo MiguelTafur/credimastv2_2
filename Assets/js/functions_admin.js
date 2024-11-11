@@ -102,7 +102,7 @@ function controlTag(e){
 }
 
 function testText(txtString){
-	var stringText = new RegExp(/^[a-zA-ZÑñÁáÉéÍíÓóÚúÜü\s]+$/);
+	var stringText = new RegExp(/^[a-zA-ZÑñÁáÀàÂâÃãÉéÍíÓóÔôÕõÚúÜüÇç\s]+$/);
 	if(stringText.test(txtString)){
 		return true;
 	}else{

@@ -1,4 +1,4 @@
-<!-- Modal agregar Ruta -->
+<!-- Modal agregar Gasto -->
 <div class="modal fade" id="modalFormGastos" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
@@ -16,7 +16,7 @@
 
               <div class="form-group col-md-6">
                 <label class="form-label" for="txtNombre">Nombre</label>
-                <input type="text" class="form-control valid validText" id="txtNombre" name="txtNombre" placeholder="Nombre" required>
+                <input type="text" class="form-control valid" id="txtNombre" name="txtNombre" placeholder="Nombre" required>
               </div> 
               <div class="form-group col-md-6">
                 <label class="form-label" for="txtValor">Valor</label>
