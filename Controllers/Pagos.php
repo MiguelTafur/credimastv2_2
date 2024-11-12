@@ -40,14 +40,25 @@ class Pagos extends Controllers{
 					{
 						$valorActivo = valorActivoYEstimadoPrstamos()['valorActivo'];
 						$cobradoEstimado = valorActivoYEstimadoPrstamos()['cobradoEstimado'];
+
+						/*** GRÁFICAS ***/
+						$anio = date("Y");
+						$mes = date("m");
+						$cobradoMes = $this->model->selectCobradoMes($anio,$mes);
+						$cobradoAnio = $this->model->selectCobradoAnio($anio);
+						$scriptMes = getFile("Template/Graficas/graficaCobradoMes", $cobradoMes);
+						$scriptAnio = getFile("Template/Graficas/graficaCobradoAnio",$cobradoAnio);
+
 						$arrResponse = array('status' => true,
 											'msg' => 'Datos guardados correctamente.',
 											'valorActivo' => $valorActivo,
-											'cobradoEstimado' => $cobradoEstimado);
+											'cobradoEstimado' => $cobradoEstimado, 
+											'graficaMes' => $scriptMes,
+											'graficaAnio' => $scriptAnio);
 
 					}else if($request_pago == '0')
 					{
-						$arrResponse = array("status" => false, "msg" => "Pago ya realizado.");
+						$arrResponse = array("status" => false, "msg" => "Pago ya realizado.", );
 					}else if($request_pago == '!')
 					{
 						$arrResponse = array("status" => false, "msg" => "El pago ingresado no puede ser mayor al saldo.");
@@ -90,10 +101,21 @@ class Pagos extends Controllers{
 					{
 						$valorActivo = valorActivoYEstimadoPrstamos()['valorActivo'];
 						$cobradoEstimado = valorActivoYEstimadoPrstamos()['cobradoEstimado'];
+
+						/*** GRÁFICAS ***/
+						$anio = date("Y");
+						$mes = date("m");
+						$cobradoMes = $this->model->selectCobradoMes($anio,$mes);
+						$cobradoAnio = $this->model->selectCobradoAnio($anio);
+						$scriptMes = getFile("Template/Graficas/graficaCobradoMes", $cobradoMes);
+						$scriptAnio = getFile("Template/Graficas/graficaCobradoAnio",$cobradoAnio);
+
 						$arrResponse = array('status' => true,
 											'msg' => 'Datos guardados correctamente.',
 											'valorActivo' => $valorActivo,
-											'cobradoEstimado' => $cobradoEstimado);
+											'cobradoEstimado' => $cobradoEstimado,
+											'graficaMes' => $scriptMes,
+											'graficaAnio' => $scriptAnio);
 
 					}else if($request_pago == '0')
 					{
@@ -198,12 +220,21 @@ class Pagos extends Controllers{
 
 						$valorActivo = valorActivoYEstimadoPrstamos()['valorActivo'];
 						$cobradoEstimado = valorActivoYEstimadoPrstamos()['cobradoEstimado'];
+						/*** GRÁFICAS ***/
+						$anio = date("Y");
+						$mes = date("m");
+						$cobradoMes = $this->model->selectCobradoMes($anio,$mes);
+						$cobradoAnio = $this->model->selectCobradoAnio($anio);
+						$scriptMes = getFile("Template/Graficas/graficaCobradoMes", $cobradoMes);
+						$scriptAnio = getFile("Template/Graficas/graficaCobradoAnio",$cobradoAnio);
 
 						$arrResponse = array('status' => true,
 						'msg' => 'Se ha eliminado el pago.',
 						'statusAnterior' => $status,
 						'valorActivo' => $valorActivo,
-						'cobradoEstimado' => $cobradoEstimado);
+						'cobradoEstimado' => $cobradoEstimado,
+						'graficaMes' => $scriptMes,
+						'graficaAnio' => $scriptAnio);
 					}else{
 						$arrResponse = array('status' => false, 'msg' => 'Error al eliminar el Pago.');
 					}

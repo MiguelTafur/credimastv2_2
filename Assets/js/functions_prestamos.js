@@ -603,7 +603,7 @@ async function fntRegistrarClientePrestamo()
     return false;
 }
 
-//CREA EL PAGO
+//VALIDACIÓN AL REGISTRAR PAGO
 function fntNewPagoPrestamo(idprestamo)
 {
     let pagoPrestamo = document.querySelector('#txtPagoPrestamo-'+idprestamo).value;
@@ -623,6 +623,7 @@ function fntNewPagoPrestamo(idprestamo)
 
     fntRegistrarPagoPrestamo(idprestamo, pagoPrestamo);    
 }
+//REGISTRAR PAGO
 async function fntRegistrarPagoPrestamo(idprestamo, pagoprestamo)
 {
     const formData = new FormData();
@@ -645,6 +646,9 @@ async function fntRegistrarPagoPrestamo(idprestamo, pagoprestamo)
             tablePrestamos.ajax.reload(() => iconosPrestamos());
             document.querySelector('#valorActivo').textContent = json.valorActivo;
             document.querySelector('#cobradoEstimado').textContent = json.cobradoEstimado;
+            $("#graficaMesCobrado").html(json.graficaMes);
+            $("#graficaAnioCobrado").html(json.graficaAnio);
+
             Toast.fire({
                 icon: "success",
                 title: json.msg
@@ -700,6 +704,8 @@ async function fntPayAll()
                     //Swal.fire("Eliminar!", json.msg , "success");
                     document.querySelector('#valorActivo').textContent = json.valorActivo;
                     document.querySelector('#cobradoEstimado').textContent = json.cobradoEstimado;
+                    $("#graficaMesCobrado").html(json.graficaMes);
+                    $("#graficaAnioCobrado").html(json.graficaAnio);
                     Toast.fire({
                         icon: "success",
                         title: json.msg
@@ -769,7 +775,7 @@ async function fntViewPagamentos(idprestamo)
     return false;
 }
 
-//ELIMINAR PAGAMENTO
+//ALERTA PARA ELIMINAR EL PAGO
 function fntDelInfoPago(idpago, idprestamo)
 {
     Swal.fire({
@@ -787,6 +793,7 @@ function fntDelInfoPago(idpago, idprestamo)
     }
     });
 }
+//ELIMINA EL PAGO
 async function fntDeletePago(idpago, idprestamo)
 {
     const formData = new FormData();
@@ -823,6 +830,8 @@ async function fntDeletePago(idpago, idprestamo)
                 tablePrestamos.ajax.reload(() => iconosPrestamos());
                 document.querySelector('#valorActivo').textContent = json.valorActivo;
                 document.querySelector('#cobradoEstimado').textContent = json.cobradoEstimado;
+                $("#graficaMesCobrado").html(json.graficaMes);
+                $("#graficaAnioCobrado").html(json.graficaAnio);
                 Toast.fire({
                     icon: "success",
                     title: json.msg
