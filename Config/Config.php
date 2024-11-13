@@ -2,7 +2,7 @@
 	
 	//define("BASE_URL", "http://localhost/tienda_virtual/");
 	//const BASE_URL = "https://prestamos.webmast.com.br/credimastv2";
-	const BASE_URL = "http://localhost/credimastv2_2";
+	const BASE_URL = "http://localhost/credimast2_2";
 
 	//Zona horaria
 	date_default_timezone_set('Brazil/East');
