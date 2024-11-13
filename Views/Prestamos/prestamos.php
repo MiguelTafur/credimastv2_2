@@ -66,7 +66,7 @@
   <!-- LISTA DE PAGAMENTOS -->
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
     <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasRightLabel">PAGAMENTOS</h5>
+      <h5 class="offcanvas-title" id="offcanvasRightLabel">PAGOS</h5>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
@@ -106,7 +106,7 @@
                       <th></th>
                       <th>CLIENTE</th>
                       <th>ABONO</th>
-                      <th>DETALLES</th>
+                      <th>PAGOS</th>
                     </tr>
                   </thead>
                   <tbody class="table-group-divider">
