@@ -35,6 +35,9 @@
       $resumenAnterior = 'Anterior';
     } 
 
+    if(getResumenActual1($_SESSION['idRuta'])) {
+      resumenOk($data);
+    }
   ?>
 
   <!-- LISTA Y DASHBOARD -->

@@ -34,6 +34,10 @@
     if(!empty($data['resumenAnterior'])) {
       resumenAnterior($data);
     }
+
+    if(getResumenActual1($_SESSION['idRuta'])) {
+      resumenOk($data);
+    }
   ?>
 
   <!-- LISTA DE PAGAMENTOS -->
