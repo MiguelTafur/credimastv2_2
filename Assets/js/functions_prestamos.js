@@ -750,6 +750,7 @@ async function fntViewPagamentos(idprestamo)
         json = await resp.json();
     
         if(json.status){
+            document.querySelector("#cptCliente").parentNode.classList.remove("d-none");
             document.querySelector("#tbodyPagamentos").innerHTML = json.pagos;
             document.querySelector("#cptCliente").innerHTML = json.cliente;
             $(function () {
@@ -761,6 +762,7 @@ async function fntViewPagamentos(idprestamo)
             });
 
         }else{
+            document.querySelector("#cptCliente").parentNode.classList.add("d-none");
             document.querySelector("#tbodyPagamentos").innerHTML = '<tr><td class="fst-italic" style="text-align: center;" colspan="4">Sin pagamentos</td><tr>';
         }
     } catch (error) {
