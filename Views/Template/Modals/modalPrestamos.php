@@ -26,12 +26,16 @@
                 <select class="form-select listClientes" id="listClientes" name="listClientes" required style="width: 100%;"></select>
               </div>
               <div class="col-md-6">
-              <label for="txtMonto" class="form-label">Monto</label>
-              <input type="tel" class="form-control valid validNumber" id="txtMonto" name="txtMonto" required placeholder="Monto" onkeypress="return controlTag(event)">
+                <div class="form-floating mb-3">
+                  <input type="tel" class="form-control valid validNumber" id="txtMonto" name="txtMonto" required placeholder="Monto" onkeypress="return controlTag(event)">
+                  <label for="txtMonto">Monto</label>
+                </div>
               </div>
               <div class="col-md-6" id="divListRuta">
-                <label for="txtTaza" class="form-label">Taza</label>
-                <input type="tel" class="form-control valid validNumber" id="txtTaza" name="txtTaza" required placeholder="Taza" onkeypress="return controlTag(event)">
+                 <div class="form-floating mb-3"> 
+                   <input type="tel" class="form-control valid validNumber" id="txtTaza" name="txtTaza" required placeholder="Taza" onkeypress="return controlTag(event)">
+                   <label for="txtTaza">Taza</label>
+                </div>
               </div>
               <div class="col-md-6" id="divListRol">
                 <label for="listFormato" class="form-label">Formato</label>
@@ -43,12 +47,16 @@
                 </select>
               </div>
               <div class="col-md-6" id="divListStatus">
-                <label for="txtPlazo" class="form-label">Plazo</label>
-                <input type="tel" class="form-control valid validNumber" id="txtPlazo" name="txtPlazo" required placeholder="Plazo" onkeypress="return controlTag(event)">
+                <div class="form-floating mb-3">
+                  <input type="tel" class="form-control valid validNumber" id="txtPlazo" name="txtPlazo" required placeholder="Plazo" onkeypress="return controlTag(event)">
+                  <label for="txtPlazo">Plazo</label>
+                </div>
               </div>
               <div class="col-12">
-                <label for="txtObservacion" class="form-label">Observación</label>
-                <textarea class="form-control" id="txtObservacion" name="txtObservacion"></textarea>
+                <div class="form-floating mb-3">  
+                  <textarea class="form-control" id="txtObservacion" name="txtObservacion"></textarea>
+                  <label for="txtObservacion">Observación</label>
+                </div>
               </div>
               <div class="col-12 form-check">
                 <input class="form-check-input" type="checkbox" name="diasSemanales" id="diasSemanales">
