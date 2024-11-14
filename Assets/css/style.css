@@ -99,6 +99,10 @@ svg.bi {
     border-color: var(--bs-warning-border-subtle);
 }
 
+.input-group > .form-control, .input-group > .form-select, .input-group > .form-floating{
+    color: #d9a300;
+}
+
 /*** BOTONES ***/
 .btn-warning {
     --bs-btn-bg: #d9a300;
