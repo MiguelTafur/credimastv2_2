@@ -90,28 +90,40 @@
               <input type="hidden" id="idCliente" name="idCliente" value="">
               <p class="text-warning fst-italic">Todos los campos son obligatorios.</p>
               <div class="col-md-6">
-                <label class="form-label" for="txtIdentificacion">Identificación</label>
-                <input class="form-control valid" id="txtIdentificacion" name="txtIdentificacion" type="text" required placeholder="Identificación del Cliente" >
+                <div class="form-floating mb-3">
+                  <input class="form-control valid" id="txtIdentificacion" name="txtIdentificacion" type="text" required placeholder="Identificación del Cliente" >
+                  <label for="txtIdentificacion">Identificación</label>
+                </div>
               </div>
               <div class="col-md-6">
-                <label class="form-label" for="txtNombre">Nombre</label>
-                <input class="form-control valid validText" id="txtNombre" name="txtNombre" type="text" required placeholder="Nombre del Cliente" >
+                <div class="form-floating mb-3">
+                  <input class="form-control valid validText" id="txtNombre" name="txtNombre" type="text" required placeholder="Nombre del Cliente" >
+                  <label for="txtNombre">Nombre</label>
+                </div>
               </div>
               <div class="col-md-6">
-                <label class="form-label" for="txtNegocio">Negocio</label>
-                <input class="form-control valid validText" id="txtNegocio" name="txtNegocio" type="text" required placeholder="Negocio del Cliente" >
+                <div class="form-floating mb-3">
+                  <input class="form-control valid validText" id="txtNegocio" name="txtNegocio" type="text" required placeholder="Negocio del Cliente" >
+                  <label for="txtNegocio">Negocio</label>
+                </div>
               </div>
               <div class="col-md-6">
-                <label class="form-label" for="txtTelefono">Teléfono</label>
-                <input type="tel" class="form-control valid validNumber" id="txtTelefono" name="txtTelefono" required onkeypress="return controlTag(event)" placeholder="Teléfono del Cliente" >
+                <div class="form-floating mb-3">
+                  <input type="tel" class="form-control valid validNumber" id="txtTelefono" name="txtTelefono" required onkeypress="return controlTag(event)" placeholder="Teléfono del Cliente" >
+                  <label for="txtTelefono">Teléfono</label>
+                </div>
               </div>
               <div class="col-md-6">
-                <label class="form-label" for="txtDireccion1">Dirección Negocio</label>
-                <input class="form-control valid validText" id="txtDireccion1" name="txtDireccion1" type="text" required placeholder="Dirección del Negocio" >
+                <div class="form-floating mb-3">
+                  <input class="form-control valid validText" id="txtDireccion1" name="txtDireccion1" type="text" required placeholder="Dirección del Negocio" >
+                  <label for="txtDireccion1">Dirección Negocio</label>
+                </div>
               </div>
               <div class="col-md-6 mb-3">
-                <label class="form-label" for="txtDireccion2">Dirección Casa</label>
-                <input class="form-control valid" id="txtDireccion2" name="txtDireccion2" type="text" placeholder="Dirección de la Casa" >
+                <div class="form-floating mb-3">
+                  <input class="form-control valid" id="txtDireccion2" name="txtDireccion2" type="text" placeholder="Dirección de la Casa" >
+                  <label for="txtDireccion2">Dirección Casa</label>
+                </div>
               </div>
               <div class="tile-footer">
                 <button class="btn btn-warning" type="submit">
