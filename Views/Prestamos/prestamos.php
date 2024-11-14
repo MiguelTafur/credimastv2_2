@@ -108,7 +108,7 @@
                       <th></th>
                       <th>CLIENTE</th>
                       <th>ABONO</th>
-                      <th>DETALLES</th>
+                      <th>ACCIONES</th>
                     </tr>
                   </thead>
                   <tbody class="table-group-divider">
