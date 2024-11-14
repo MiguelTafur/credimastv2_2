@@ -31,7 +31,7 @@
           <!-- <i class="bi bi-cash-coin"></i> -->
           
           <button class="btn btn-warning btn-sm ms-1" type="button" onclick="openModal();" >
-              <i class="bi bi-plus-lg"></i>Venta
+              <i class="bi bi-plus-circle"></i>Venta
           </button>
         </h1>
       </div>
