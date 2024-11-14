@@ -349,7 +349,7 @@ async function fntRegistrarPrestamo()
 // EDITAR EL PRÉSTAMO
 async function fntEditInfo(idprestamo, renovar)
 {
-    document.querySelector('#titleModal').innerHTML = renovar == 2 ? "Editar Préstamo" : "Renovar Préstamo";
+    document.querySelector('#titleModal').innerHTML = renovar == 2 ? "Editar Préstamo" : "Renovar Venta";
     document.querySelector('#btnText').innerHTML = renovar == 2 ? "Actualizar" : "Renovar";
     document.querySelector('#btnClienteNuevo').classList.add("d-none");
 
@@ -863,7 +863,7 @@ function openModal()
 {
     document.querySelector('#idPrestamo').value ="";  
     document.querySelector('#renovar').value ="";  
-    document.querySelector('#titleModal').innerHTML = "Nuevo Préstamo";
+    document.querySelector('#titleModal').innerHTML = "Nueva Venta";
     document.querySelector('#btnText').innerHTML = "Registrar"; 
     document.querySelector('#btnClienteNuevo').classList.remove("d-none")
     document.querySelector("#formPrestamos").reset();
