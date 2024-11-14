@@ -8,24 +8,26 @@
 
 <main class="app-content">
   <div class="app-title">
-    <div class="mt-2 mt-lg-0">
-      <h1>
-        <i class="bi bi-file-earmark-diff"></i> 
-        <?= $data['page_title'] ?> 
-      </h1>
+    <div class="d-flex justify-content-between w-100 mt-2">
+      <div class="mt-2 mt-lg-0">
+        <h1>
+          <i class="bi bi-file-earmark-diff"></i> 
+          <?= $data['page_title'] ?> 
+        </h1>
+      </div>
+      <div class="vr"></div>
+      <!-- UL DE LA LISTA Y EL DASHBOARD -->
+      <ul class="nav nav-underline" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="resumen-tab" data-bs-toggle="tab" data-bs-target="#resumen-tab-pane" type="button" role="tab" aria-controls="resumen-tab-pane" aria-selected="true">INFO</button>
+        </li>
+        <?php if($_SESSION['idRol'] == 1) : ?>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard-tab-pane" type="button" role="tab" aria-controls="dashboard-tab-pane" aria-selected="false">DASHBOARD</button>
+        </li>
+        <?php endif; ?>
+      </ul>
     </div>
-
-    <!-- UL DE LA LISTA Y EL DASHBOARD -->
-    <ul class="nav nav-underline" id="myTab" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="resumen-tab" data-bs-toggle="tab" data-bs-target="#resumen-tab-pane" type="button" role="tab" aria-controls="resumen-tab-pane" aria-selected="true">RESUMEN</button>
-      </li>
-      <?php if($_SESSION['idRol'] == 1) : ?>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard-tab-pane" type="button" role="tab" aria-controls="dashboard-tab-pane" aria-selected="false">DASHBOARD</button>
-      </li>
-      <?php endif; ?>
-    </ul>
   </div>
 
   <!-- ALERTAS DELR ESUMEN ANTERIOR -->
