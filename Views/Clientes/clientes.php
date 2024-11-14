@@ -5,29 +5,29 @@
 
 <main class="app-content">
   <div class="app-title">
-    <div class="mt-2 mt-lg-0">
-      <h1>
-        <i class="bi bi-people-fill m-0"></i>
-        <?= $data['page_title'] ?> 
-        <?php if($_SESSION['permisosMod']['w']){ ?>
-        <button class="btn btn-warning btn-sm ms-1" type="button" onclick="openModal();" >
-            <i class="bi bi-person-plus-fill m-0"></i>
-        </button>
-        <?php } ?>
-      </h1>
-    </div>
+    <div class="d-flex justify-content-between w-100 mt-2">
+      <div class="mt-2 mt-lg-0">
+        <h1>
+          <?php if($_SESSION['permisosMod']['w']){ ?>
+          <button class="btn btn-warning btn-sm ms-1" type="button" onclick="openModal();" >
+              <i class="bi bi-person-plus-fill"></i>Cliente
+          </button>
+          <?php } ?>
+        </h1>
+      </div>
 
-    <!-- UL DE LA LISTA Y EL DASHBOARD -->
-    <ul class="nav nav-underline" id="myTab" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="lista-tab" data-bs-toggle="tab" data-bs-target="#lista-tab-pane" type="button" role="tab" aria-controls="lista-tab-pane" aria-selected="true">LISTA</button>
-      </li>
-      <?php if($_SESSION['idRol'] == 1) : ?>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard-tab-pane" type="button" role="tab" aria-controls="dashboard-tab-pane" aria-selected="false">DASHBOARD</button>
-      </li>
-      <?php endif; ?>
-    </ul>
+      <!-- UL DE LA LISTA Y EL DASHBOARD -->
+      <ul class="nav nav-underline" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="lista-tab" data-bs-toggle="tab" data-bs-target="#lista-tab-pane" type="button" role="tab" aria-controls="lista-tab-pane" aria-selected="true">LISTA</button>
+        </li>
+        <?php if($_SESSION['idRol'] == 1) : ?>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard-tab-pane" type="button" role="tab" aria-controls="dashboard-tab-pane" aria-selected="false">DASHBOARD</button>
+        </li>
+        <?php endif; ?>
+      </ul>
+    </div>
   </div>
 
   <!-- ALERTAS DELR ESUMEN ANTERIOR -->
