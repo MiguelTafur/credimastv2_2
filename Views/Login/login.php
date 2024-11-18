@@ -39,16 +39,22 @@
             <i class="bi bi-person me-2"></i>INICIAR SESIÓN
           </h3>
           <div class="mb-3">
-            <label for="txtEmail" class="form-label">USUARIO</label>
-            <input class="form-control valid validEmail" id="txtEmail" name="txtEmail" type="email" placeholder="Email" autocomplete="username" required autofocus>
+            <div class="form-floating mb-3">
+              <input class="form-control valid validEmail" id="txtEmail" name="txtEmail" type="email" placeholder="Email" autocomplete="username" required autofocus>
+              <label for="txtEmail">USUARIO</label>
+            </div>
           </div>
           <div class="mb-3">
-            <label for="txtCodigo" class="form-label">CÓDIGO</label>
-            <input class="form-control valid validNumber" id="txtCodigo" name="txtCodigo" type="password" placeholder="Código" required autocomplete="current-password" onkeypress="return controlTag(event)">
+            <div class="form-floating mb-3">
+              <input class="form-control valid validNumber" id="txtCodigo" name="txtCodigo" type="password" placeholder="Código" required autocomplete="current-password" onkeypress="return controlTag(event)">
+              <label for="txtCodigo">CÓDIGO</label>
+            </div>
           </div>
           <div class="mb-3">
-          <label for="txtRuta" class="form-label">RUTA</label>
-          <input class="form-control" type="text" id="txtRuta" name="txtRuta" placeholder="Ruta" required>
+            <div class="form-floating mb-3">
+              <input class="form-control" type="text" id="txtRuta" name="txtRuta" placeholder="Ruta" required>
+              <label for="txtRuta">RUTA</label>
+            </div>
           </div>
           <div class="mb-3 btn-container d-grid">
             <button class="btn btn-warning btn-block"><i class="bi bi-box-arrow-in-right me-2 fs-5"></i>INICIAR SESIÓN</button>

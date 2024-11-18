@@ -13,8 +13,10 @@
           <div class="tile-body">    
             <form id="formBase" name="formBase" class="row">
               <div class="form-group col-12 mb-4">
-                <label class="form-label" for="txtValor">Valor</label>
-                <input type="tel" class="form-control" id="txtValor" name="txtValor" placeholder="Valor" required onkeypress="return controlTag(event)">
+                <div class="form-floating mb-3">
+                  <input type="tel" class="form-control" id="txtValor" name="txtValor" placeholder="Valor" required onkeypress="return controlTag(event)">
+                  <label for="txtValor">Valor</label>
+                </div>  
               </div>  
               <div class="tile-footer mt-4">
                 <button class="btn btn-warning" type="submit">

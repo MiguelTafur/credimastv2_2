@@ -15,12 +15,16 @@
               <input type="hidden" id="idGasto" name="idGasto" value="">
 
               <div class="form-group col-md-6">
-                <label class="form-label" for="txtNombre">Nombre</label>
-                <input type="text" class="form-control valid" id="txtNombre" name="txtNombre" placeholder="Nombre" required>
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control valid" id="txtNombre" name="txtNombre" placeholder="Nombre" required>
+                  <label for="txtNombre">Nombre</label>
+                </div> 
               </div> 
               <div class="form-group col-md-6">
-                <label class="form-label" for="txtValor">Valor</label>
-                <input type="tel" class="form-control" id="txtValor" name="txtValor" placeholder="Valor" required onkeypress="return controlTag(event)">
+                <div class="form-floating mb-3">
+                  <input type="tel" class="form-control" id="txtValor" name="txtValor" placeholder="Valor" required onkeypress="return controlTag(event)">
+                  <label for="txtValor">Valor</label>
+                </div>  
               </div>  
 
               <div class="tile-footer mt-4">
