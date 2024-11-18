@@ -458,8 +458,8 @@ function fntNewGasto()
         formGasto.onsubmit = function(e)
         {
             e.preventDefault();
-            let strNombre = formGasto.children[1].children[1].value;
-            let strValor = formGasto.children[2].children[1].value;
+            let strNombre = formGasto.children[1].children[0].children[0].value;
+            let strValor = formGasto.children[2].children[0].children[0].value;
 
             if(strNombre == '' || strValor == '')
             {
