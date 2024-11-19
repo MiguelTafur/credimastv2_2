@@ -242,3 +242,49 @@ svg.bi {
 .accordion-button:not(.collapsed) {
     color: var(--bs-warning);
 }
+
+/*** DATERANGEPICKER ***/
+.daterangepicker .calendar-table {
+    background-color: #495057;
+}
+
+.daterangepicker .drp-calendar.left {
+    background: #495057;
+}
+
+.daterangepicker .calendar-table .next span, .daterangepicker .calendar-table .prev span {
+    border-color: #fff;
+}
+
+.daterangepicker .drp-calendar.right {
+    background: #495057;
+}
+
+.daterangepicker.show-calendar .drp-buttons {
+    background: #495057;
+}
+
+.daterangepicker.show-calendar .drp-buttons .cancelBtn{
+    background: var(--bs-danger);
+}
+.daterangepicker.show-calendar .drp-buttons .applyBtn{
+    background: #d9a300;
+    border-color: #d9a300;
+}
+
+.calendar-table {
+    border-color: #495057 !important;
+}
+
+.daterangepicker td.off, .daterangepicker td.off.in-range, .daterangepicker td.off.start-date, .daterangepicker td.off.end-date {
+    background-color: transparent;
+}
+
+.daterangepicker td.active, .daterangepicker td.active:hover {
+    background-color: #d9a300;
+    color: #000;
+}
+
+.daterangepicker .calendar-table th:hover, .daterangepicker .calendar-table td:hover {
+    color: #000;
+}
