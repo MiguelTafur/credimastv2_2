@@ -132,6 +132,15 @@ class PagosModel extends Mysql
 
                     //ACTUALIZA LA COLUMNA "COBRADO" DE LA TABLA RESUMEN
                     setUpdateResumen($this->intIdRuta, $sumaPagamentos, 2, $this->strFecha);
+
+                    //ACTUALIZA LA COLUMNA "BASE" DE LA TABLA RESUMEN
+                    $base = getBase($this->strFecha);
+					if($base == NULL)
+					{
+						$monto = getResumenAnterior1();
+						setBase($monto);
+                        setUpdateResumen($this->intIdRuta, $monto, 1, $this->strFecha);
+					}
                 }
             }else {
                 //PAGAMENTO REPETIDO

@@ -34,7 +34,7 @@ class BaseModel extends Mysql
 
             if(!empty($request))
             {
-                //ACTUALIZA LA COLUMNA "VENTAS" DE LA TABLA RESUMEN
+                //ACTUALIZA LA COLUMNA "BASE" DE LA TABLA RESUMEN
                 setUpdateResumen($this->intIdRuta, $this->intMonto, 1, $this->strFecha);
             }
 

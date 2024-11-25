@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 function iniciarApp() {
     fntNewResumen();
-    fntBase();
+    //fntBase();
     $(function () {
         $('[data-bs-toggle="popover"]').popover({
             container: "body",
@@ -33,10 +33,9 @@ async function fntBase()
         });
     
         json = await resp.json();
-    
+
         if(!json.base){
-            let total = parseInt(document.querySelector("#totalResumen").firstChild.textContent);
-            fntTotalUltimoResumenCerrado(total);
+            fntTotalUltimoResumenCerrado();
         }
     } catch (error) {
         Swal.fire("Error", "La sesión expiró, recarga la página para entrar nuevamente" , "error");
@@ -50,7 +49,7 @@ async function fntBase()
     return false;
 }
 //TRAE EL TOTAL DEL ULTIMO RESUMEN CON ESTADO 1
-async function fntTotalUltimoResumenCerrado(total)
+async function fntTotalUltimoResumenCerrado()
 {
     const formData = new FormData();
     formData.append('idRuta', ruta);
@@ -66,7 +65,7 @@ async function fntTotalUltimoResumenCerrado(total)
         json = await resp.json();
     
         if(json.status){
-            fntRegistrarBaseResumenAnterior(json.base, total);
+            fntRegistrarBaseResumenAnterior(json.base);
         }else{
             Swal.fire("Atención!", json.msg, "warning");
             /*Toast.fire({
@@ -86,7 +85,7 @@ async function fntTotalUltimoResumenCerrado(total)
     return false;
 }
 //REGISTRAR LA BASE CON EL TOTAL DEL RESUMEN ANTERIOR
-async function fntRegistrarBaseResumenAnterior(base, total)
+async function fntRegistrarBaseResumenAnterior(base)
 {
     divLoading.style.display = "flex";
     try {
@@ -100,7 +99,7 @@ async function fntRegistrarBaseResumenAnterior(base, total)
         });
         json = await resp.json();
         if(json.status) {
-            document.querySelector("#totalResumen").firstChild.textContent = base + total;
+            /*document.querySelector("#totalResumen").firstChild.textContent = base + total;
             document.querySelector("#baseResumen").firstChild.textContent = base;
             document.querySelector('#carteraResumen').textContent = json.carteraResumen;
             document.querySelector('#cajaResumen').textContent = json.cajaResumen;
@@ -111,7 +110,8 @@ async function fntRegistrarBaseResumenAnterior(base, total)
                     trigger: "focus",
                     html: true
                 })
-            });
+            });*/
+            location.reload();
         } else {
             Swal.fire("Error", json.msg , "error");
             /*Toast.fire({

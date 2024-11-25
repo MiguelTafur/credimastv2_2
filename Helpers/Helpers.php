@@ -494,6 +494,25 @@
         }
     }
 
+    /**** BASE ****/
+    //TRAE LA BASE SI ESTÁ CREADA
+    function getBase(string $fecha = NULL)
+    {
+        require_once("Models/BaseModel.php");
+        $objBase = new BaseModel();
+        $request = $objBase->selectBaseActualAnterior($_SESSION['idRuta'], $fecha);
+        return $request;
+    }
+
+    //INSERTA LA BASE
+    function setBase(int $monto)
+    {
+        require_once("Models/BaseModel.php");
+        $objBase = new BaseModel();
+        $request = $objBase->insertBase($_SESSION['idUser'], $_SESSION['idRuta'], $monto, NOWDATE);
+        return $request;
+    }
+
     //Fecha formateada en linea recta
     function fechaInline(string $fecha) 
     {

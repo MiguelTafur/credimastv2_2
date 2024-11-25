@@ -40,6 +40,7 @@
     if(getResumenActual1($_SESSION['idRuta'])) {
       resumenOk($data);
     }
+
   ?>
 
   <!-- LISTA Y DASHBOARD -->
@@ -48,6 +49,7 @@
       <div class="tile">
         <div class="tile-body">
           <div class="row justify-content-center">
+            <?php $fecha = $data['resumenAnterior']['datecreated'] ?? NULL; if(getResumenActual($fecha)) { ?>
             <div class="col-9">
               <div class="card mb-4">
                 <div class="card-header text-center text-body-secondary h6">Información del Resumen <?= $resumenAnterior ?? ''; ?></div>
@@ -195,6 +197,9 @@
                 </div>
               </div>
             </div>
+            <?php } else { ?>
+              <button class="btn btn-success btn-lg" onClick="fntBase()">INICIAR RESUMEN</button>
+            <?php } ?>
           </div>
         </div>
       </div>
@@ -210,7 +215,8 @@
                 <span class="fst-italic" id="carteraResumen">
                   <?php
                     $carteraResumen = valorActivoYEstimadoPrstamos()['valorActivo'];
-                    echo $carteraResumen + $caja;
+                    $caja = $data['resumenAnterior']['total'] ?? $data['resumenActual']['total'] ?? $data['resumenCerrado']['total'] ?? getResumenAnterior1();
+                    echo $carteraResumen + $caja; 
                   ?>
                 </span>
               </p>
@@ -221,7 +227,7 @@
           <div class="widget-small light "><i class="icon bi bi-currency-dollar fs-1"></i>
             <div class="info">
               <h4>CAJA</h4>
-              <p><span class="fst-italic" id="cajaResumen"><?= $caja ?></span></p>
+              <p><span class="fst-italic" id="cajaResumen"><?= $caja > 0 ? $caja : getResumenAnterior1(); ?></span></p>
             </div>
           </div>
         </div>

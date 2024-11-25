@@ -152,6 +152,17 @@ class PrestamosModel extends Mysql
             //ACTUALIZA LA COLUMNA "VENTAS" DE LA TABLA RESUMEN
             $updateResumen = setUpdateResumen($this->intIdRuta, $sumaPrestamos, 3, $this->strFecha);
 
+            //INSERTA REGISTRO EN LA TABLA BASE SE NO ESTÁ CREADA
+            //ACTUALIZA LA COLUMNA "BASE" DE LA TABLA RESUMEN
+            $base = getBase($this->strFecha);
+            if($base == NULL)
+            {
+                $monto = getResumenAnterior1();
+                setBase($monto);
+                setUpdateResumen($this->intIdRuta, $monto, 1, $this->strFecha);
+            }
+
+
             $return = $updateResumen;
 
         }else {
